@@ -108,6 +108,10 @@
 ?><?php
 
 /*
+TODO: alle Funktionen mit @see ausstatten
+*/
+
+/*
 
 		class cPeriod
 		=============
