@@ -11,6 +11,15 @@ echo "\n test app";
  	echo "\n Catched an exception: " .  $e->getMessage( )  ;
      }
 
+
+function myfunc( $dt ) {
+  echo "\n" . $dt->AsSQL( );
+}
+
+
+
+
+
 function tst_func( ) {
 
     $dt_01 = new libdatephp\cDate( );
@@ -27,6 +36,14 @@ function tst_func( ) {
 
     echo "\n period_01 = "; var_dump( $period_01 );
     echo "\n period_01 has " . $period_01->GetLen( )  . ' days';
+
+    $p = new libdatephp\cPeriod( new libdatephp\cDate( 11, 23, 2016 ), new libdatephp\cDate( 11, 25, 2016 ) );
+
+    echo $p->GetLast( )->AsSQL( );
+
+    $p1 = new libdatephp\cPeriod( new libdatephp\cDate( 11, 23, 2016 ), new libdatephp\cDate( 11, 25, 2016 ) );
+    $func = 'myfunc';
+    $p1->ForEachDate( $func );
 
 }	// function tst_func( )
 

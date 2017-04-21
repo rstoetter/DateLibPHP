@@ -70,6 +70,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
 ?><?php
 
 // class cDateTime
@@ -77,6 +78,17 @@
 namespace libdatephp;
 
 // require_once( './classes/cDate.class.php' );
+
+
+/**
+  *
+  * represents a timestamp (a datetime obect)
+  *
+  * @author Rainer Stötter
+  * @copyright 2010-2017 Rainer Stötter
+  * @license MIT
+  *
+  */
 
 class cDateTime {
     /**
