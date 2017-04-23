@@ -192,19 +192,19 @@ class cDateStrategyMonthlyFixed extends cDateStrategy {
 
     public function FromString( $str ) {
 
-        sscanf( $str, "s5-%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-{%d:%d:%d:%d:%d:%d:%d}-{%d:%d:%d:%d:%d:%d}",
-            $this->directionOnSaturday, $this->directionOnSunday, $this->directionOnCelebrity,
+        sscanf( $str, "s5-%d:%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-{%d:%d:%d:%d:%d:%d:%d}-{%d:%d:%d:%d:%d:%d}",
+            $this->m_directionOnSaturday, $this->m_directionOnSunday, $this->m_directionOnCelebrity,$this->m_directionOnHoliday,
             $startday, $startmonth, $startyear,
             $endday, $endmonth, $endyear,
             $this->onSunday, $this->onMonday, $this->onTuesday, $this->onWednesday, $this->onThursday, $this->onFriday, $this->onSaturday,
             $this->onFirst, $this->onSecond, $this->onThird, $this->onFourth, $this->onFifth, $this->onLast);
 
-        $this->startDate->SetDate($startmonth, $startday, $startyear );
+        $this->m_start_date->SetDate($startmonth, $startday, $startyear );
 
         if ($endday==0) {
-            $this->endDate = undef;
+            $this->m_end_date = undef;
         } else {
-            $this->endDate = new cDate($endmonth, $endday, $endyear );
+            $this->m_end_date = new cDate($endmonth, $endday, $endyear );
         }
 
             $this->IsValid();
@@ -213,17 +213,17 @@ class cDateStrategyMonthlyFixed extends cDateStrategy {
 
     public function AsString( ) {
 
-        if ( $this->endDate == undef ){
+        if ( $this->m_end_date == undef ){
             $endday = $endmonth = $endyear = 0;
         } else {
-            $endday = $this->endDate->Day();
-            $endmonth = $this->endDate->Month();
-            $endyear = $this->endDate->Year();
+            $endday = $this->m_end_date->Day();
+            $endmonth = $this->m_end_date->Month();
+            $endyear = $this->m_end_date->Year();
         }
 
-        return sprintf( "s5-%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-{%d:%d:%d:%d:%d:%d:%d}-{%d:%d:%d:%d:%d:%d}",
-            $this->directionOnSaturday, $this->directionOnSunday, $this->directionOnCelebrity,
-            $this->startDate->Day(), $this->startDate->Month(), $this->startDate->Year(),
+        return sprintf( "s5-%d:%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-{%d:%d:%d:%d:%d:%d:%d}-{%d:%d:%d:%d:%d:%d}",
+            $this->m_directionOnSaturday, $this->m_directionOnSunday, $this->m_directionOnCelebrity,$this->m_directionOnHoliday,
+            $this->m_start_date->Day(), $this->m_start_date->Month(), $this->m_start_date->Year(),
             $endday, $endmonth, $endyear,
             $this->onSunday, $this->onMonday, $this->onTuesday, $this->onWednesday, $this->onThursday, $this->onFriday, $this->onSaturday,
             $this->onFirst, $this->onSecond, $this->onThird, $this->onFourth, $this->onFifth, $this->onLast );
@@ -522,8 +522,8 @@ class cDateStrategyMonthlyFixed extends cDateStrategy {
                 if ( $this->onSaturday )  { $dateObj->SeekWeekday(6); }
             }
 
-            if ( $this->Overflow( $dateObj ) ) { return undef; }
-            if ( $this->Underflow( $dateObj ) ) { return undef; }
+            if ( $this->IsOverflow( $dateObj ) ) { return undef; }
+            if ( $this->IsUnderflow( $dateObj ) ) { return undef; }
 
             return $dateObj;
 
@@ -545,8 +545,8 @@ class cDateStrategyMonthlyFixed extends cDateStrategy {
                 if ( $this->onSaturday )  { $dateObj->SeekWeekday(6, 1); }
             }
 
-            if ( $this->Overflow( $dateObj ) ) { return undef; }
-            if ( $this->Underflow( $dateObj ) ) { return undef; }
+            if ( $this->IsOverflow( $dateObj ) ) { return undef; }
+            if ( $this->IsUnderflow( $dateObj ) ) { return undef; }
 
             return $dateObj;
 
@@ -562,7 +562,7 @@ class cDateStrategyMonthlyFixed extends cDateStrategy {
 
     public function GetFirstDate( ) {
 
-        $dateObj =new cDate($this->startDate);
+        $dateObj =new cDate($this->m_start_date);
 
         if ( ($this->onFirst) || ($this->onSecond) || ($this->onThird) || ($this->onFourth) || ($this->onFifth) ) {
 
@@ -592,8 +592,8 @@ class cDateStrategyMonthlyFixed extends cDateStrategy {
                 if ( $this->onSaturday )  { $dateObj->SeekWeekday(6); }
             }
 
-            if ( $this->Overflow( $dateObj ) ) { return undef; }
-            if ( $this->Underflow( $dateObj ) ) { return undef; }
+            if ( $this->IsOverflow( $dateObj ) ) { return undef; }
+            if ( $this->IsUnderflow( $dateObj ) ) { return undef; }
 
             return $dateObj;
 
@@ -614,8 +614,8 @@ class cDateStrategyMonthlyFixed extends cDateStrategy {
             }
             # echo "<br>dateobj=".$dateObj->AsDMY();
 
-            if ( $this->Overflow( $dateObj ) ) { return undef; }
-            if ( $this->Underflow( $dateObj ) ) { return undef; }
+            if ( $this->IsOverflow( $dateObj ) ) { return undef; }
+            if ( $this->IsUnderflow( $dateObj ) ) { return undef; }
 
             return $dateObj;
 

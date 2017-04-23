@@ -116,8 +116,8 @@ class cDateStrategyNoInterval extends cDateStrategy {
         $this->dates[] = new cDate($dateObj);
         $this->count++;
         $this->qsort( &$this->dates, __cmp_Dates );
-        if ($dateObj->lt($this->startDate)) {
-            $this->startDate = new cDate( $dateObj );
+        if ($dateObj->lt($this->m_start_date)) {
+            $this->m_start_date = new cDate( $dateObj );
         }
         # $this->OutAry();
 
@@ -147,19 +147,19 @@ class cDateStrategyNoInterval extends cDateStrategy {
 
         # echo "<br>" . $str;
 
-        sscanf( $str, "s9-%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-%d-",
-            $this->directionOnSaturday, $this->directionOnSunday, $this->directionOnCelebrity,
+        sscanf( $str, "s9-%d:%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-%d-",
+            $this->m_directionOnSaturday, $this->m_directionOnSunday, $this->m_directionOnCelebrity,$this->m_directionOnHoliday,
             $startday, $startmonth, $startyear,
             $endday, $endmonth, $endyear,
             $this->count
             );
 
-        $this->startDate->SetDate($startmonth, $startday, $startyear );
+        $this->m_start_date->SetDate($startmonth, $startday, $startyear );
 
         if ($endday==0) {
-            $this->endDate = undef;
+            $this->m_end_date = undef;
         } else {
-            $this->endDate = new cDate($endmonth, $endday, $endyear );
+            $this->m_end_date = new cDate($endmonth, $endday, $endyear );
         }
 
         $str2 = $str;
@@ -194,18 +194,18 @@ class cDateStrategyNoInterval extends cDateStrategy {
 
     public function AsString( ) {
 
-        if ( $this->endDate == undef ){
+        if ( $this->m_end_date == undef ){
             $endday = $endmonth = $endyear = 0;
         } else {
-            $endday = $this->endDate->Day();
-            $endmonth = $this->endDate->Month();
-            $endyear = $this->endDate->Year();
+            $endday = $this->m_end_date->Day();
+            $endmonth = $this->m_end_date->Month();
+            $endyear = $this->m_end_date->Year();
         }
 
         $str = sprintf(
-            "s9-%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-%d",
-            $this->directionOnSaturday, $this->directionOnSunday, $this->directionOnCelebrity,
-            $this->startDate->Day(), $this->startDate->Month(), $this->startDate->Year(),
+            "s9-%d:%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-%d",
+            $this->m_directionOnSaturday, $this->m_directionOnSunday, $this->m_directionOnCelebrity,$this->m_directionOnHoliday,
+            $this->m_start_date->Day(), $this->m_start_date->Month(), $this->m_start_date->Year(),
             $endday, $endmonth, $endyear,
             $this->count
             );
@@ -303,8 +303,8 @@ class cDateStrategyNoInterval extends cDateStrategy {
             $this->IsValid();                  # sind die übergebenen Daten auch valide ?
             $this->qsort( &$this->dates, __cmp_Dates );
             # $this->OutAry();
-            if ($this->dates[0]->lt($this->startDate)) {
-                $this->startDate = new cDate( $this->dates[0] );
+            if ($this->dates[0]->lt($this->m_start_date)) {
+                $this->m_start_date = new cDate( $this->dates[0] );
             }
         }
     }   // function FromForm

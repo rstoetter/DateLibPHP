@@ -160,19 +160,19 @@ class cDateStrategyWeekly extends cDateStrategy {
 
     public function FromString( $str ) {
 
-        sscanf( $str, "s2-%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-%d:%d:%d:%d:%d:%d:%d-w%d",
-            $this->directionOnSaturday, $this->directionOnSunday, $this->directionOnCelebrity,
+        sscanf( $str, "s2-%d:%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-%d:%d:%d:%d:%d:%d:%d-w%d",
+            $this->m_directionOnSaturday, $this->m_directionOnSunday, $this->m_directionOnCelebrity,$this->m_directionOnHoliday,
             $startday, $startmonth, $startyear,
             $endday, $endmonth, $endyear,
             $this->onMonday, $this->onTuesday, $this->onWednesday, $this->onThursday, $this->onFriday, $this->onSaturday, $this->onSunday,
             $this->nWeeks );
 
-        $this->startDate->SetDate($startmonth, $startday, $startyear );
+        $this->m_start_date->SetDate($startmonth, $startday, $startyear );
 
         if ($endday==0) {
-            $this->endDate = undef;
+            $this->m_end_date = undef;
         } else {
-            $this->endDate = new cDate($endmonth, $endday, $endyear );
+            $this->m_end_date = new cDate($endmonth, $endday, $endyear );
         }
 
         $this->IsValid();
@@ -181,17 +181,17 @@ class cDateStrategyWeekly extends cDateStrategy {
 
     public function AsString( ) {
 
-        if ( $this->endDate == undef ){
+        if ( $this->m_end_date == undef ){
             $endday = $endmonth = $endyear = 0;
         } else {
-            $endday = $this->endDate->Day();
-            $endmonth = $this->endDate->Month();
-            $endyear = $this->endDate->Year();
+            $endday = $this->m_end_date->Day();
+            $endmonth = $this->m_end_date->Month();
+            $endyear = $this->m_end_date->Year();
         }
 
-        return sprintf( "s2-%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-%d:%d:%d:%d:%d:%d:%d-w%d",
-            $this->directionOnSaturday, $this->directionOnSunday, $this->directionOnCelebrity,
-            $this->startDate->Day(), $this->startDate->Month(), $this->startDate->Year(),
+        return sprintf( "s2-%d:%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-%d:%d:%d:%d:%d:%d:%d-w%d",
+            $this->m_directionOnSaturday, $this->m_directionOnSunday, $this->m_directionOnCelebrity,$this->m_directionOnHoliday,
+            $this->m_start_date->Day(), $this->m_start_date->Month(), $this->m_start_date->Year(),
             $endday, $endmonth, $endyear,
             $this->onMonday, $this->onTuesday, $this->onWednesday, $this->onThursday, $this->onFriday, $this->onSaturday, $this->onSunday, $this->nWeeks );
     }   // function AsString
@@ -372,7 +372,7 @@ class cDateStrategyWeekly extends cDateStrategy {
             if ( ( $dateObj->IsFriday() ) && ( $this->onFriday ) ) { return $dateObj; }
             if ( ( $dateObj->IsSaturday() ) && ( $this->onSaturday ) ) { return $dateObj; }
 
-            $fertig = $this->Overflow( $dateObj );
+            $fertig = $this->IsOverflow( $dateObj );
 
         } while ( !$fertig );
 
@@ -382,7 +382,7 @@ class cDateStrategyWeekly extends cDateStrategy {
 
     public function GetFirstDate( ) {
 
-        $dateObj =new cDate($this->startDate);
+        $dateObj =new cDate($this->m_start_date);
 
         for ( $i = 0; $i<7; $i++ ) {
             if ( $i >0 ) $dateObj->inc();
@@ -394,7 +394,7 @@ class cDateStrategyWeekly extends cDateStrategy {
             if ( $dateObj->IsThursday( ) && ( $this->onThursday ) ) { return $dateObj; }
             if ( $dateObj->IsFriday( ) && ( $this->onFriday) ) { return $dateObj; }
             if ( $dateObj->IsSaturday( ) && ( $this->onSaturday) ) { return $dateObj; }
-            if (  ($this->endDate != undef ) && ( $this->endDate->lt( $dateObj ) ) ) return undef;
+            if (  ($this->m_end_date != undef ) && ( $this->m_end_date->lt( $dateObj ) ) ) return undef;
         }
 
         return undef;

@@ -68,6 +68,27 @@ namespace libdatephp;
 // cDateStrategyDaily
 ////////////////////////////////////////////////////////////////////////////////////
 
+
+/**
+  *
+  * The class cDateStrategyDaily calculates recurring daily events. It is specialized to find events from a specific day on, which occur daily.
+  *
+  *
+  * @author Rainer Stötter
+  * @copyright 2010-2017 Rainer Stötter
+  * @license MIT
+  *
+  * @see cDateStrategyDaily
+  * @see cDateStrategyDailyFixed
+  * @see cDateStrategyMonthly
+  * @see cDateStrategyMonthlyFixed
+  * @see cDateStrategyNoInterval
+  * @see cDateStrategySimpleDate
+  * @see cDateStrategySimpleInterval
+  * @see cDateStrategyWeekly
+  *
+  */
+
 class cDateStrategyDaily extends cDateStrategy {
 
     // täglich ein Termin
@@ -76,39 +97,127 @@ class cDateStrategyDaily extends cDateStrategy {
     # protected $onSunday = false;
     # protected $onCelebrity = false;
 
-    public function __construct( $str = undef ) {
+    /**
+      * The constructor of cDateStrategyDaily
+      *
+      *  Example:
+      *
+      *      $strategy = new \libdatephp\cDateStrategyDaily(
+      *				$dt,
+      *				null,
+      *				'en_en',
+      *				\libdatephp\cDateStrategy::STRATEGY_DIRECTION_LEAVE,
+      *				\libdatephp\cDateStrategy::STRATEGY_DIRECTION_LEAVE,
+      *				\libdatephp\cDateStrategy::STRATEGY_DIRECTION_LEAVE,
+      *				\libdatephp\cDateStrategy::STRATEGY_DIRECTION_LEAVE,
+      *				\libdatephp\cDateStrategy::STRATEGY_DIRECTION_FORWARD
+      *				);
+      *
+      *	    $strategy2 = new \libdatephp\cDateStrategyDaily( $strategy->AsString( ) );
+      *
+      *	    $strategy3 = new \libdatephp\cDateStrategyDaily( );
+      *
+      *	    $strategy4 = new \libdatephp\cDateStrategyDaily( 's8-0:0:0:0:1-(29.3.2017)-(0.0.0)' );
+      *
+      *
+      * @example "./tst/tst-cDateStrategyDaily.php" Full Example:
+      *
+      *
+      *
+      * @param $start_date mixed If it is a string, then the template for the algorithm got by AsString( ). If it is a cDate: the date, from which the calcultions should start. If it is null, then the actual date will be used. $start_date defaults to null
+      * @param $end_date string with language or null when $start_date is a template. Else cDate the date, where the calcultions should stop. If it is null, then there is no ending date for the calculations. $end_date defaults to null
+      * @param $language string the language for messages. ('de_de', 'en_en' or 'fr_fr'). It defaults to 'en_en'.
+      * @param $directionOnSaturday int controls how to proceed, when the algorithm encounters a saturday. It defaults to self::STRATEGY_DIRECTION_LEAVE.
+      * @param $directionOnSunday int controls how to proceed, when the algorithm encounters a sunday. It defaults to self::STRATEGY_DIRECTION_LEAVE.
+      * @param $directionOnCelebrity int controls how to proceed, when the algorithm encounters a celebrity. It defaults to self::STRATEGY_DIRECTION_LEAVE.
+      * @param $m_directionOnHoliday int controls how to proceed, when the algorithm encounters a holiday. It defaults to self::STRATEGY_DIRECTION_LEAVE.
+      * @param $directionOnImpossible int controls how to proceed, when the algorithm encounters an impossible situation. It defaults to self::STRATEGY_DIRECTION_FORWARD.
+      *
+      * @return cDateStrategyDaily
+      *
+      */
 
-           $this->cDateStrategy();      // Konstruktor von abstrakter Klasse aufrufen !
+    public function __construct(
+			$start_date = null,
+			$end_date = null,
+			$language = 'en_en',
+			$directionOnSaturday = self::STRATEGY_DIRECTION_LEAVE,
+			$directionOnSunday = self::STRATEGY_DIRECTION_LEAVE,
+			$directionOnCelebrity = self::STRATEGY_DIRECTION_LEAVE,
+			$directionOnHoliday = self::STRATEGY_DIRECTION_LEAVE,
+			$directionOnImpossible = self::STRATEGY_DIRECTION_FORWARD
+			)  {
 
-           if ( $str == undef ) {
-                $this->Reset();
-            } else {
-                $this->FromString( $str ) ;
-            }
+	  if ( is_string( $start_date ) ) {
+
+	      // read the template
+
+	      $this->FromString( $start_date ) ;
+
+	      $this->m_language = ( is_null( $end_date ) ? 'en_en' : $end_date  );
+
+	      // initialize by parent
+
+	      parent::__construct(
+			    $this->m_start_date,
+			    $this->m_end_date,
+			    $this->m_language,
+			    $this->m_directionOnSaturday,
+			    $this->m_directionOnSunday,
+			    $this->m_directionOnCelebrity,
+			    $this->m_directionOnHoliday,
+			    $this->m_directionOnImpossible
+			    );
+
+	  } else {
+
+	      // parental initialization
+
+	      parent::__construct(
+			    $start_date,
+			    $end_date,
+			    $language,
+			    $directionOnSaturday,
+			    $directionOnSunday,
+			    $directionOnCelebrity,
+			    $directionOnHoliday,
+			    $directionOnImpossible
+			    );
+
+	  }
+
     }   // constructor
 
-    public function Reset( ) {
 
-        parent::Reset();
-
-        // nop
-    }
+    /**
+      * The method FromString( ) reads its specifications from the string $str
+      *
+      * @param string $str the specifications as string
+      *
+      */
 
     public function FromString( $str ) {
         // "s1-05.04.2009"
 
-        sscanf( $str, "s8-%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)",
-            $this->directionOnSaturday, $this->directionOnSunday, $this->directionOnCelebrity,
+        sscanf( $str, "s8-%d:%d:%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)",
+            $this->m_directionOnSaturday, $this->m_directionOnSunday, $this->m_directionOnCelebrity,$this->m_directionOnHoliday,$this->m_directionOnImpossible,
             $startday, $startmonth, $startyear,
             $endday, $endmonth, $endyear
             );
 
-        $this->startDate->SetDate($startmonth, $startday, $startyear );
+//        $this->m_start_date->SetDate($startmonth, $startday, $startyear );
 
-        if ($endday==0) {
-            $this->endDate = undef;
+        if ( $startday == 0 ) {
+            $this->m_start_date = null;
         } else {
-            $this->endDate = new cDate($endmonth, $endday, $endyear );
+            $this->m_start_date = new cDate($startmonth, $startday, $startyear );
+        }
+
+
+        if ( $endday == 0 ) {
+            $this->m_end_date = null;
+        } else {
+            $this->m_end_date = new cDate($endmonth, $endday, $endyear );
         }
 
 
@@ -133,19 +242,37 @@ class cDateStrategyDaily extends cDateStrategy {
 
     }       // function SetOnCelebrity()
 */
+
+    /**
+      * The method AsString( ) returns its specifications as a string
+      *
+      * @return string the specifications as string
+      *
+      *
+      */
+
     public function AsString( ) {
 
-        if ( $this->endDate == undef ){
+        if ( is_null( $this->m_end_date ) ){
             $endday = $endmonth = $endyear = 0;
         } else {
-            $endday = $this->endDate->Day();
-            $endmonth = $this->endDate->Month();
-            $endyear = $this->endDate->Year();
+            $endday = $this->m_end_date->Day( );
+            $endmonth = $this->m_end_date->Month( );
+            $endyear = $this->m_end_date->Year( );
         }
 
-        return sprintf( "s8-%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)",
-            $this->directionOnSaturday, $this->directionOnSunday, $this->directionOnCelebrity,
-            $this->startDate->Day(), $this->startDate->Month(), $this->startDate->Year(),
+        if ( is_null( $this->m_start_date ) ){
+            $startday = $startmonth = $startyear = 0;
+        } else {
+            $startday = $this->m_start_date->Day( );
+            $startmonth = $this->m_start_date->Month( );
+            $startyear = $this->m_start_date->Year( );
+        }
+
+
+        return sprintf( "s8-%d:%d:%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)",
+            $this->m_directionOnSaturday, $this->m_directionOnSunday, $this->m_directionOnCelebrity, $this->m_directionOnHoliday,$this->m_directionOnImpossible,
+            $startday, $startmonth, $startyear,
             $endday, $endmonth, $endyear
                  );
 
@@ -168,7 +295,18 @@ class cDateStrategyDaily extends cDateStrategy {
 
     }   // function FromForm
 
+    /**
+      * The method IsValid( ) returns true, if the properties are okay and the algorithm is ready to start.
+      *
+      * @return bool true, if we can start to calculate dates and events
+      *
+      *
+      */
+
     public function IsValid() {
+
+	if ( ( ! is_null( $this->m_end_date ) ) && ( $this->m_end_date->lt( $this->m_start_date ) ) ) return false;
+
         return true;
     }
 
@@ -189,35 +327,63 @@ class cDateStrategyDaily extends cDateStrategy {
     }   // function FillForm
 
 
-// NOTE : TODO : bei GetFollower Overflow berücksichtigen !
+// NOTE : TODO : bei GetFollower IsOverflow berücksichtigen !
+
+    /**
+      * The method GetFollower( ) returns the next date after $obj_date, which fits to the specifications
+      *
+      * @param cDate a cDate object, which is the starting point for the next calculation
+      *
+      * @return cDate cDate object with the next fitting date or null, if no fitting date could be found ( overflow, IsUnderflow)
+      *
+      */
 
     function GetFollower( $date ) {
-        // $dateObj muß ein gültiges Datum sein, an dem ein Termin stattfindet ! -> protected um dies zu gewährleisten
+        // $obj_datej muß ein gültiges Datum sein, an dem ein Termin stattfindet ! -> protected um dies zu gewährleisten
         // es wird keine Korrektur vorgenommen
 
         # echo "<br>GetFollower(".$date->AsDMY(). ") : GetLatestDayNumber() ergibt " . $this->GetLatestDayNumber();
 
-        $dateObj = new cDate( $date);
+        $obj_datej = new cDate( $date);
         $fertig = false;
 
         do {
-            $dateObj->inc( );
+            $obj_datej->inc( );
 
-            if ( ( $dateObj->IsSaturday() ) && ( !$this->directionOnSaturday == STRATEGY_DIRECTION_LEAVE ) ) { $fertig = false; }
-            elseif ( ( $dateObj->IsSunday() ) && ( !$this->directionOnSunday == STRATEGY_DIRECTION_LEAVE) ) { $fertig = false; }
-            elseif ( ( $this->IsCelebrity($dateObj) ) && ( !$this->directionOnCelebrity == STRATEGY_DIRECTION_LEAVE ) ) { $fertig = false; }
-            else ($fertig = true);
+            if ( ( $obj_datej->IsSaturday() ) && ( !$this->m_directionOnSaturday == cDateStrategy::STRATEGY_DIRECTION_LEAVE ) ) { $fertig = false; }
+            elseif ( ( $obj_datej->IsSunday() ) && ( !$this->m_directionOnSunday == cDateStrategy::STRATEGY_DIRECTION_LEAVE) ) { $fertig = false; }
+            elseif ( ( $this->IsCelebrity($obj_datej) ) && ( !$this->m_directionOnCelebrity == cDateStrategy::STRATEGY_DIRECTION_LEAVE ) ) { $fertig = false; }
+            elseif ( ( $this->IsHoliday($obj_datej) ) && ( !$this->m_directionOnHoliday == cDateStrategy::STRATEGY_DIRECTION_LEAVE ) ) { $fertig = false; }
+            else ( $fertig = true );
 
-        } while (!$fertig);
+        } while ( ! $fertig );
 
-        if ($this->Overflow($dateObj)) return undef;
+        if ($this->IsOverflow($obj_datej)) return null;
 
-        return $dateObj;
+        return $obj_datej;
 
     }       // function GetFollower()
 
+    /**
+      * The method GetFirstDate( ) returns the first valid date of the series to be calculated according to the specifications
+      *
+      * It returns now the start date for the period of time which is examined.
+      *
+      * @param cDate @obj_date the date where the calculation should start
+      *
+      * @return cDate a cDate object with the first fitting date or null, if no fitting date could be found ( overflow, IsUnderflow)
+      *
+      * @see IsValid
+      * @see GetFollower
+      * @see GetFirstDate
+      * @see FromString
+      *
+      *
+      */
+
+
     public function GetFirstDate( ) {
-        return $this->startDate;
+        return $this->m_start_date;
     }   // function GetFirstDate()
 
 }       // of class cDateStrategyDaily

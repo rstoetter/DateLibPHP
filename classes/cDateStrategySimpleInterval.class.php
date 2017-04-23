@@ -102,20 +102,20 @@ class cDateStrategySimpleInterval extends cDateStrategy {
     public function FromString( $str ) {
         // "s1-05.04.2009"
 
-        sscanf( $str, "s6-%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-{%d}",
-            $this->directionOnSaturday, $this->directionOnSunday, $this->directionOnCelebrity,
+        sscanf( $str, "s6-%d:%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-{%d}",
+            $this->m_directionOnSaturday, $this->m_directionOnSunday, $this->m_directionOnCelebrity,$this->m_directionOnHoliday,
             $startday, $startmonth, $startyear,
             $endday, $endmonth, $endyear,
             $days );
 
         $this->daysPeriod = $days;
 
-        $this->startDate->SetDate($startmonth, $startday, $startyear );
+        $this->m_start_date->SetDate($startmonth, $startday, $startyear );
 
         if ($endday==0) {
-            $this->endDate = undef;
+            $this->m_end_date = undef;
         } else {
-            $this->endDate = new cDate($endmonth, $endday, $endyear );
+            $this->m_end_date = new cDate($endmonth, $endday, $endyear );
         }
 
         # $this->IsValid();
@@ -133,17 +133,17 @@ class cDateStrategySimpleInterval extends cDateStrategy {
 
     public function AsString( ) {
 
-        if ( $this->endDate == undef ){
+        if ( $this->m_end_date == undef ){
             $endday = $endmonth = $endyear = 0;
         } else {
-            $endday = $this->endDate->Day();
-            $endmonth = $this->endDate->Month();
-            $endyear = $this->endDate->Year();
+            $endday = $this->m_end_date->Day();
+            $endmonth = $this->m_end_date->Month();
+            $endyear = $this->m_end_date->Year();
         }
 
-        return sprintf( "s6-%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-{%d}",
-            $this->directionOnSaturday, $this->directionOnSunday, $this->directionOnCelebrity,
-            $this->startDate->Day(), $this->startDate->Month(), $this->startDate->Year(),
+        return sprintf( "s6-%d:%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-{%d}",
+            $this->m_directionOnSaturday, $this->m_directionOnSunday, $this->m_directionOnCelebrity,$this->m_directionOnHoliday,
+            $this->m_start_date->Day(), $this->m_start_date->Month(), $this->m_start_date->Year(),
             $endday, $endmonth, $endyear,
 
             $this->daysPeriod );
@@ -204,7 +204,7 @@ class cDateStrategySimpleInterval extends cDateStrategy {
     }       // function GetFollower()
 
     public function GetFirstDate( ) {
-        return $this->startDate;
+        return $this->m_start_date;
     }   // function GetFirstDate()
 
 }       // of class cDateStrategySimpleInterval

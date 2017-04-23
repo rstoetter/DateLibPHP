@@ -55,9 +55,9 @@
 //		public method GetDate()
 //		public method GetFirstDate()
 //		public method GetFollower($dt)
-//		public method GetNextTerminDate($datestart,$dateisfirst=true)
+//		public method GetNextEventDate($datestart,$dateisfirst=true)
 //		public method GetPrevTerminDate($datestart,$dateisfirst=true)
-//		public method IsTerminDate($dateObj)
+//		public method IsEventDate($dateObj)
 //		public method IsValid()
 //		public method Reset()
 //		public method SetDate($dateObj)
@@ -107,8 +107,8 @@ class cDateStrategySimpleDate extends cDateStrategy {
 
     public function FromString( $str ) {
 
-        sscanf( $str, "s1-%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-(%d.%d.%d)",
-            $this->directionOnSaturday, $this->directionOnSunday, $this->directionOnCelebrity,
+        sscanf( $str, "s1-%d:%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-(%d.%d.%d)",
+            $this->m_directionOnSaturday, $this->m_directionOnSunday, $this->m_directionOnCelebrity,$this->m_directionOnHoliday,
             $startday, $startmonth, $startyear,
             $endday, $endmonth, $endyear,
             $day, $month, $year
@@ -116,12 +116,12 @@ class cDateStrategySimpleDate extends cDateStrategy {
 
         $this->dateObj->SetDate($month, $day, $year );
 
-        $this->startDate->SetDate($startmonth, $startday, $startyear );
+        $this->m_start_date->SetDate($startmonth, $startday, $startyear );
 
         if ($endday==0) {
-            $this->endDate = undef;
+            $this->m_end_date = undef;
         } else {
-            $this->endDate = new cDate($endmonth, $endday, $endyear );
+            $this->m_end_date = new cDate($endmonth, $endday, $endyear );
         }
 
 
@@ -138,18 +138,18 @@ class cDateStrategySimpleDate extends cDateStrategy {
 
     public function AsString( ) {
 
-        if ( $this->endDate == undef ){
+        if ( $this->m_end_date == undef ){
             $endday = $endmonth = $endyear = 0;
         } else {
-            $endday = $this->endDate->Day();
-            $endmonth = $this->endDate->Month();
-            $endyear = $this->endDate->Year();
+            $endday = $this->m_end_date->Day();
+            $endmonth = $this->m_end_date->Month();
+            $endyear = $this->m_end_date->Year();
         }
 
         return sprintf(
-            "s1-%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-(%d.%d.%d)",
-            $this->directionOnSaturday, $this->directionOnSunday, $this->directionOnCelebrity,
-            $this->startDate->Day(), $this->startDate->Month(), $this->startDate->Year(),
+            "s1-%d:%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-(%d.%d.%d)",
+            $this->m_directionOnSaturday, $this->m_directionOnSunday, $this->m_directionOnCelebrity,$this->m_directionOnHoliday,
+            $this->m_start_date->Day(), $this->m_start_date->Month(), $this->m_start_date->Year(),
             $endday, $endmonth, $endyear,
             $this->dateObj->Day(), $this->dateObj->Month(), $this->dateObj->Year()
             );
@@ -187,7 +187,7 @@ class cDateStrategySimpleDate extends cDateStrategy {
 
     }   // function FillForm
 
-    public function GetNextTerminDate( $datestart, $dateisfirst = true  ) {
+    public function GetNextEventDate( $datestart, $dateisfirst = true  ) {
 
         if ( $dateisfirst ) {
             if ( $datestart->eq( $this->dateObj ) ) {
@@ -208,7 +208,7 @@ class cDateStrategySimpleDate extends cDateStrategy {
 
         return undef;
 
-    }   // function GetNextTerminDate
+    }   // function GetNextEventDate
 
     public function GetPrevTerminDate( $datestart, $dateisfirst = true  ) {
 
@@ -237,11 +237,11 @@ class cDateStrategySimpleDate extends cDateStrategy {
         return $this->dateObj;
     }   // function GetFirstDate()
 
-    public function IsTerminDate( $dateObj ) {
+    public function IsEventDate( $dateObj ) {
 
         return $this->dateObj->eq( $dateObj );
 
-    }   // function IsTerminDate
+    }   // function IsEventDate
 
 }       // of class cDateStrategySimpleDate
 

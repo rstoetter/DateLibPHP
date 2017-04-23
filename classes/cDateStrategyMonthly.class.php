@@ -97,7 +97,7 @@
 //		public method FromString($str)
 //		public method GetFirstDate()
 //		public method GetFollower($date)
-//		public method GetNextTerminDate($datestart,$dateisfirst=true)
+//		public method GetNextEventDate($datestart,$dateisfirst=true)
 //		public method IsValid()
 //		public method Reset()
 //		public method SetApr($set=undef)
@@ -334,15 +334,15 @@ class cDateStrategyMonthly extends cDateStrategy {
 
 /*
         sscanf( $str, "s3-%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-%d-p%d",
-            $this->directionOnSaturday, $this->directionOnSunday, $this->directionOnCelebrity,
+            $this->m_directionOnSaturday, $this->m_directionOnSunday, $this->m_directionOnCelebrity,
             $startday, $startmonth, $startyear,
             $endday, $endmonth, $endyear,
             $this->dayNumber, $this->typePeriod );
 
 */
 
-        sscanf( $str, "s4-%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-{%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d}-{%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d}",
-            $this->directionOnSaturday, $this->directionOnSunday, $this->directionOnCelebrity,
+        sscanf( $str, "s4-%d:%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-{%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d}-{%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d}",
+            $this->m_directionOnSaturday, $this->m_directionOnSunday, $this->m_directionOnCelebrity,$this->m_directionOnHoliday,
             $startday, $startmonth, $startyear,
             $endday, $endmonth, $endyear,
             $this->d01, $this->d02,$this->d03,$this->d04,$this->d05,$this->d06,$this->d07,$this->d08,$this->d09,$this->d10,$this->d11,
@@ -350,12 +350,12 @@ class cDateStrategyMonthly extends cDateStrategy {
             $this->d22,$this->d23,$this->d24,$this->d25,$this->d26,$this->d27,$this->d28,$this->d29,$this->d30, $this->d31,
             $this->jan, $this->feb, $this->mar, $this->apr, $this->may, $this->jun, $this->jul, $this->aug, $this->sep, $this->oct, $this->nov, $this->dec);
 
-        $this->startDate->SetDate($startmonth, $startday, $startyear );
+        $this->m_start_date->SetDate($startmonth, $startday, $startyear );
 
         if ($endday==0) {
-            $this->endDate = undef;
+            $this->m_end_date = undef;
         } else {
-            $this->endDate = new cDate($endmonth, $endday, $endyear );
+            $this->m_end_date = new cDate($endmonth, $endday, $endyear );
         }
 
         $this->IsValid();
@@ -364,17 +364,17 @@ class cDateStrategyMonthly extends cDateStrategy {
 
     public function AsString( ) {
 
-        if ( $this->endDate == undef ){
+        if ( $this->m_end_date == undef ){
             $endday = $endmonth = $endyear = 0;
         } else {
-            $endday = $this->endDate->Day();
-            $endmonth = $this->endDate->Month();
-            $endyear = $this->endDate->Year();
+            $endday = $this->m_end_date->Day();
+            $endmonth = $this->m_end_date->Month();
+            $endyear = $this->m_end_date->Year();
         }
 
-        return sprintf( "s4-%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-{%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d}-{%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d}",
-            $this->directionOnSaturday, $this->directionOnSunday, $this->directionOnCelebrity,
-            $this->startDate->Day(), $this->startDate->Month(), $this->startDate->Year(),
+        return sprintf( "s4-%d:%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-{%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d}-{%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d}",
+            $this->m_directionOnSaturday, $this->m_directionOnSunday, $this->m_directionOnCelebrity,$this->m_directionOnHoliday,
+            $this->m_start_date->Day(), $this->m_start_date->Month(), $this->m_start_date->Year(),
             $endday, $endmonth, $endyear,
 
         $this->d01, $this->d02,$this->d03,$this->d04,$this->d05,$this->d06,$this->d07,$this->d08,$this->d09,$this->d10,$this->d11,
@@ -1257,14 +1257,14 @@ class cDateStrategyMonthly extends cDateStrategy {
 
     }       // function GetFollower()
 
-    public function GetNextTerminDate( $datestart, $dateisfirst = true  ) {
+    public function GetNextEventDate( $datestart, $dateisfirst = true  ) {
 
-        if ( $this->Underflow( $datestart ) ) { return undef; }
-        if ( $this->Overflow( $datestart ) ) return undef;
+        if ( $this->IsUnderflow( $datestart ) ) { return undef; }
+        if ( $this->IsOverflow( $datestart ) ) return undef;
 
         $dt = $this->GetFirstDate( );
 
-        # echo "<br> GetNextTerminDate() : erster Termin ist am " . $dt->AsDMY();
+        # echo "<br> GetNextEventDate() : erster Termin ist am " . $dt->AsDMY();
 
         if ( ($dateisfirst == true ) && ($datestart->eq($dt)) ) { return $dt; }
 
@@ -1272,19 +1272,19 @@ class cDateStrategyMonthly extends cDateStrategy {
 
         do {
             $dt = $this->GetFollower( $dt );
-            # echo "<br> GetNextTerminDate() : untersuche " . $dt->AsDMY();
+            # echo "<br> GetNextEventDate() : untersuche " . $dt->AsDMY();
             if ( $datestart->eq( $dt ) && ( $dateisfirst ) ) return $dt;
-            if ( $this->Overflow( $dt ) ) {  return undef; }
+            if ( $this->IsOverflow( $dt ) ) {  return undef; }
             if ( $datestart->lt( $dt ) ) return $dt;
         } while ( !$fertig);
 
         return undef;
 
-    }   // function GetNextTerminDate
+    }   // function GetNextEventDate
 
     public function GetFirstDate( ) {
 
-        $dateObj =new cDate($this->startDate);
+        $dateObj =new cDate($this->m_start_date);
         $len = $dateObj->LOY();
 
         for ( $i = 0; $i<$len; $i++ ) {
@@ -1677,7 +1677,7 @@ class cDateStrategyMonthly extends cDateStrategy {
                 if (( $dateObj->Day() == 31 ) && ($this->SetDay31()) ) { return $dateObj; }
             }
 
-            if (  ($this->endDate != undef ) && ( $this->endDate->lt( $dateObj ) ) ) return undef;
+            if (  ($this->m_end_date != undef ) && ( $this->m_end_date->lt( $dateObj ) ) ) return undef;
         }
 
         return undef;
@@ -1694,18 +1694,18 @@ class cDateStrategyMonthly extends cDateStrategy {
         $isLeap = $date->IsLeapyear( );
 
         if ($isLeap) {
-            if (( $this->SetFeb() ) && ( $this->SetDay30())) { $dt = new cDate(3,1,$year ); if (!$this->Overflow( $dt )) {$ary[] = $dt;}  }
-            if (( $this->SetFeb() ) && ( $this->SetDay31())) { $dt = new cDate(3,2,$year ); if (!$this->Overflow( $dt )) {$ary[] = $dt;}  }
+            if (( $this->SetFeb() ) && ( $this->SetDay30())) { $dt = new cDate(3,1,$year ); if (!$this->IsOverflow( $dt )) {$ary[] = $dt;}  }
+            if (( $this->SetFeb() ) && ( $this->SetDay31())) { $dt = new cDate(3,2,$year ); if (!$this->IsOverflow( $dt )) {$ary[] = $dt;}  }
         } else {
-            if (( $this->SetFeb() ) && ( $this->SetDay29())) { $dt = new cDate(3,1,$year ); if (!$this->Overflow( $dt )) {$ary[] = $dt;}  }
-            if (( $this->SetFeb() ) && ( $this->SetDay30())) { $dt = new cDate(3,2,$year ); if (!$this->Overflow( $dt )) {$ary[] = $dt;}  }
-            if (( $this->SetFeb() ) && ( $this->SetDay31())) { $dt = new cDate(3,3,$year ); if (!$this->Overflow( $dt )) {$ary[] = $dt;}  }
+            if (( $this->SetFeb() ) && ( $this->SetDay29())) { $dt = new cDate(3,1,$year ); if (!$this->IsOverflow( $dt )) {$ary[] = $dt;}  }
+            if (( $this->SetFeb() ) && ( $this->SetDay30())) { $dt = new cDate(3,2,$year ); if (!$this->IsOverflow( $dt )) {$ary[] = $dt;}  }
+            if (( $this->SetFeb() ) && ( $this->SetDay31())) { $dt = new cDate(3,3,$year ); if (!$this->IsOverflow( $dt )) {$ary[] = $dt;}  }
         }
 
-        if (( $this->SetApr() ) && ( $this->SetDay31())) { $dt = new cDate( 5,1,$year ); if (!$this->Overflow( $dt ))  {$ary[] = $dt;}  }
-        if (( $this->SetJun() ) && ( $this->SetDay31())) { $dt = new cDate( 7,1,$year ); if (!$this->Overflow( $dt ))  {$ary[] = $dt;}  }
-        if (( $this->SetSep() ) && ( $this->SetDay31())) { $dt = new cDate(10,1,$year ); if (!$this->Overflow( $dt ))  {$ary[] = $dt;}  }
-        if (( $this->SetNov() ) && ( $this->SetDay31())) { $dt = new cDate(12,1,$year ); if (!$this->Overflow( $dt ))  {$ary[] = $dt;}  }
+        if (( $this->SetApr() ) && ( $this->SetDay31())) { $dt = new cDate( 5,1,$year ); if (!$this->IsOverflow( $dt ))  {$ary[] = $dt;}  }
+        if (( $this->SetJun() ) && ( $this->SetDay31())) { $dt = new cDate( 7,1,$year ); if (!$this->IsOverflow( $dt ))  {$ary[] = $dt;}  }
+        if (( $this->SetSep() ) && ( $this->SetDay31())) { $dt = new cDate(10,1,$year ); if (!$this->IsOverflow( $dt ))  {$ary[] = $dt;}  }
+        if (( $this->SetNov() ) && ( $this->SetDay31())) { $dt = new cDate(12,1,$year ); if (!$this->IsOverflow( $dt ))  {$ary[] = $dt;}  }
 
         return $ary;
 

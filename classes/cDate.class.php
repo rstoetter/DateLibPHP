@@ -918,7 +918,7 @@ class cDate {
     const DOW_WEDNESDAY = 3;
     const DOW_THURSDAY = 4;
     const DOW_FRIDAY = 5;
-    const DOW_MONDAY = 6;
+    const DOW_SATURDAY = 6;
 
     /**
       *
@@ -1536,9 +1536,9 @@ class cDate {
 
         $datum = getdate( $this->m_timestamp );
 
-        $this->m_day = $datum["mday"];
-        $this->m_year = $datum["year"];
-        $this->m_month = $datum["mon"];
+        $this->m_day = $datum[ 'mday' ];
+        $this->m_year = $datum[ 'year' ];
+        $this->m_month = $datum[ 'mon' ];
         // echo "<br>" . $this->AsDMY();
         assert( checkdate($this->m_month, $this->m_day, $this->m_year ));
 
@@ -1566,7 +1566,7 @@ class cDate {
         assert( checkdate($this->m_month, $this->m_day, $this->m_year ));
 
         $ary = getdate ( $this->m_timestamp );
-        $this-> m_dow = $ary["wday"];
+        $this-> m_dow = $ary[ 'wday' ];
     }   // function CalculateWeekday ( )
 
 // ===============================================================
@@ -2846,7 +2846,7 @@ class cDate {
       */
 
 
-    public function As_AMPM() {
+    public function AsAMPM() {
         // Gro&szlig;geschrieben: Ante meridiem und Post meridiem  AM oder PM
         return ( date("A", $this->AsTimeStamp() ) );
     }
@@ -3408,10 +3408,19 @@ class cDate {
 
     public function Skip ( $count = 1 )
     {
-        if ($count !=0) {
-            // echo "<br>addiere $count";
-            $this->m_timestamp += ( (60*60*24) * $count );
+        if ($count != 0 ) {
+
+
+            $diff = ( ( 60 * 60 * 24 ) * $count );
+
+            $this->m_timestamp += $diff;
+
+            // echo "\n neuer timestamp = {$this->m_timestamp}";
+
             $this->ts2mdy( );
+
+            // echo "\n timestamp nach t2mdy( ) = {$this->m_timestamp} ->" . $this->AsSQL( );
+
         }
 
     }   // public function Skip ( )
@@ -3546,8 +3555,16 @@ class cDate {
         # echo "cDate : SetDate( $m, $d, $y)";
 
         assert( checkdate( $m, $d, $y ) );
+        if ( is_a( $m, 'libdatephp\cDate' ) ) {
 
-        if (!checkdate($m, $d, $y)) {
+	    $y = $m->Year( );
+	    $m = $m->Month( );
+	    $d = $m->Day( );
+
+
+        }
+
+        if ( ! checkdate($m, $d, $y)) {
             // var_dump( debug_backtrace( ) );
             print_r( debug_backtrace( ) );
             print "<br>Monat=$m Tag = $d Jahr = $y";
@@ -3559,6 +3576,8 @@ class cDate {
 
         $this->mdy2ts ( );
         $this->CalculateWeekday( );
+
+
     }
 
 // ===============================================================
@@ -3595,7 +3614,7 @@ class cDate {
 
         if (is_int( $cmp ) ) {
             return $cmp == $this->m_timestamp;
-        } elseif ( is_a( $cmp, "libdatephp/cDate" ) ) {
+        } elseif ( is_a( $cmp, "libdatephpcdate" ) ) {
             # print "<br>" . $cmp->AsTimeStamp() . "<->" . $this->AsTimeStamp();
             return ($cmp->Month()==$this->Month()) && ($cmp->Year()==$this->Year()) && ($cmp->Day()==$this->Day());
             # funktioniert nicht immer !   return $cmp->AsTimeStamp() == $this->AsTimeStamp();
@@ -3636,15 +3655,16 @@ class cDate {
 
         if (is_int( $cmp ) ) {
             return $cmp < $this->m_timestamp;
-        } elseif ( is_a( $cmp, "libdatephp/cDate" ) ) {
-            return $this->AsTimeStamp() < $cmp->AsTimeStamp();
+        } elseif ( is_a( $cmp, "\libdatephp\cDate" ) ) {
+
+            return $this->AsTimeStamp( ) < $cmp->AsTimeStamp( );
         } else  {
             die;
         }
 
         // NOTE : TODO : Tagesgenaue Berechnung => Minuten sind wurscht
 
-    }   // public function le()
+    }   // public function lt()
 
     /**
       *
@@ -4076,7 +4096,9 @@ class cDate {
 
 
     public function AddWeeks( $diff ) {
-        $this->Skip( $diff*7 );
+
+        $this->Skip( $diff * 7 );
+
     }   // public function AddWeeks( )
 
 

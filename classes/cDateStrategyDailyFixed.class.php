@@ -56,7 +56,7 @@
 //		public method GetDayNumber()
 //		public method GetFirstDate()
 //		public method GetFollower($date)
-//		public method GetNextTerminDate($datestart,$dateisfirst=true)
+//		public method GetNextEventDate($datestart,$dateisfirst=true)
 //		public method GetPeriodType()
 //		public method IsValid()
 //		public method Reset()
@@ -127,26 +127,26 @@ class cDateStrategyDailyFixed extends cDateStrategy {
     public function FromString( $str ) {
 /*
         sscanf( $str, "s1-%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-(%d.%d.%d)",
-            $this->directionOnSaturday, $this->directionOnSunday, $this->directionOnCelebrity,
+            $this->m_directionOnSaturday, $this->m_directionOnSunday, $this->m_directionOnCelebrity,
             $startday, $startmonth, $startyear,
             $endday, $endmonth, $endyear,
             $day, $month, $year
             );
 */
-        sscanf( $str, "s3-%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-%d-p%d",
-            $this->directionOnSaturday, $this->directionOnSunday, $this->directionOnCelebrity,
+        sscanf( $str, "s3-%d:%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-%d-p%d",
+            $this->m_directionOnSaturday, $this->m_directionOnSunday, $this->m_directionOnCelebrity,$this->m_directionOnHoliday,
             $startday, $startmonth, $startyear,
             $endday, $endmonth, $endyear,
             $this->dayNumber, $this->typePeriod );
 
         # echo "<br> FromString : s3-$this->dayNumber-p$this->typePeriod";
 
-        $this->startDate->SetDate($startmonth, $startday, $startyear );
+        $this->m_start_date->SetDate($startmonth, $startday, $startyear );
 
         if ($endday==0) {
-            $this->endDate = undef;
+            $this->m_end_date = undef;
         } else {
-            $this->endDate = new cDate($endmonth, $endday, $endyear );
+            $this->m_end_date = new cDate($endmonth, $endday, $endyear );
         }
 
 
@@ -156,17 +156,17 @@ class cDateStrategyDailyFixed extends cDateStrategy {
 
     public function AsString( ) {
 
-        if ( $this->endDate == undef ){
+        if ( $this->m_end_date == undef ){
             $endday = $endmonth = $endyear = 0;
         } else {
-            $endday = $this->endDate->Day();
-            $endmonth = $this->endDate->Month();
-            $endyear = $this->endDate->Year();
+            $endday = $this->m_end_date->Day();
+            $endmonth = $this->m_end_date->Month();
+            $endyear = $this->m_end_date->Year();
         }
 
-        return sprintf( "s3-%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-%d-p%d",
-            $this->directionOnSaturday, $this->directionOnSunday, $this->directionOnCelebrity,
-            $this->startDate->Day(), $this->startDate->Month(), $this->startDate->Year(),
+        return sprintf( "s3-%d:%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-%d-p%d",
+            $this->m_directionOnSaturday, $this->m_directionOnSunday, $this->m_directionOnCelebrity,$this->m_directionOnHoliday,
+            $this->m_start_date->Day(), $this->m_start_date->Month(), $this->m_start_date->Year(),
             $endday, $endmonth, $endyear,
             $this->dayNumber, $this->typePeriod );
 
@@ -321,14 +321,14 @@ class cDateStrategyDailyFixed extends cDateStrategy {
 
     }       // function GetFollower()
 
-    public function GetNextTerminDate( $datestart, $dateisfirst = true  ) {
+    public function GetNextEventDate( $datestart, $dateisfirst = true  ) {
 
-        if ( $this->Underflow( $datestart ) ) {echo "Underflow"; return undef; }
-        if ( $this->Overflow( $datestart ) ) return undef;
+        if ( $this->IsUnderflow( $datestart ) ) {echo "IsUnderflow"; return undef; }
+        if ( $this->IsOverflow( $datestart ) ) return undef;
 
         $dt = $this->GetFirstDate( );
 
-        # echo "<br> GetNextTerminDate() : erster Termin ist am " . $dt->AsDMY();
+        # echo "<br> GetNextEventDate() : erster Termin ist am " . $dt->AsDMY();
 
         if ( ($dateisfirst == true ) && ($datestart->eq($dt)) ) { return $dt; }
 
@@ -336,34 +336,34 @@ class cDateStrategyDailyFixed extends cDateStrategy {
 
         do {
             $dt = $this->GetFollower( $dt );
-            # echo "<br> GetNextTerminDate() : untersuche " . $dt->AsDMY();
+            # echo "<br> GetNextEventDate() : untersuche " . $dt->AsDMY();
             if ( $datestart->eq( $dt ) && ( $dateisfirst ) ) return $dt;
-            if ( $this->Overflow( $dt ) ) {  return undef; }
+            if ( $this->IsOverflow( $dt ) ) {  return undef; }
             if ( $datestart->lt( $dt ) ) return $dt;
         } while ( !$fertig);
 
         return undef;
 
-    }   // function GetNextTerminDate
+    }   // function GetNextEventDate
 
     public function GetFirstDate( ) {
 
         if ( $this->typePeriod == FIX_DAY_YEAR ) {
-            $dateObj =new cDate($this->startDate);
+            $dateObj =new cDate($this->m_start_date);
             $dateObj->GoBOY();
             $dateObj->dec();
             $dateObj->Skip( $this->dayNumber);
             return $dateObj;
         } elseif  ( $this->typePeriod == FIX_DAY_QUARTER ) {
-            $dateObj =new cDate($this->startDate);
+            $dateObj =new cDate($this->m_start_date);
             $dateObj->GoBOQ();
             $dateObj->Skip( $this->dayNumber);
             $dateObj->dec();
             return $dateObj;
         } elseif  ( $this->typePeriod == FIX_DAY_MONTH ) {
-            $dateObj =new cDate($this->startDate);
+            $dateObj =new cDate($this->m_start_date);
             # echo "<br>dateObj = " . $dateObj->AsDMY();
-            # echo "<br>startdate = " . $this->startDate->AsDMY();
+            # echo "<br>startdate = " . $this->m_start_date->AsDMY();
             $dateObj->GoBOM();
             # echo "<br>GoBOM() liefert " . $dateObj->AsDMY();
             $dateObj->Skip( $this->dayNumber);
