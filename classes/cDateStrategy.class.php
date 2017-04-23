@@ -331,6 +331,38 @@ $_msg_fr_fr = array(
 abstract class cDateStrategy {
 
     /**
+      * The DIRECTION_XXX constants control the behaviour of the algorithm in the method GetFollower( )
+      *
+      * DIRECTION_FORWARD moves forward on the timeline.
+      * DIRECTION_BACKWARD moves backward on the timeline.
+      *
+      * @var DIRECTION_FORWARD int
+      *
+      * @see DIRECTION_BACKWARD
+      * @see DIRECTION_FORWARD
+      *
+      */
+
+
+    const DIRECTION_FORWARD = 0;
+
+    /**
+      * The DIRECTION_XXX constants control the behaviour of the algorithm in the method GetFollower( )
+      *
+      * DIRECTION_FORWARD moves forward on the timeline.
+      * DIRECTION_BACKWARD moves backward on the timeline.
+      *
+      * @var DIRECTION_BACKWARD int
+      *
+      * @see DIRECTION_BACKWARD
+      * @see DIRECTION_FORWARD
+      *
+      */
+
+
+    const DIRECTION_BACKWARD = 1;
+
+    /**
       * The STRATEGY_DIRECTION_XXX constants control the behaviour of the algorithm, when certain situations take place.
       *
       * These circumstances are:
@@ -1088,6 +1120,28 @@ abstract class cDateStrategy {
         return $this->m_directionOnImpossible ;
     }   // function GetStrategyImpossible
 
+
+    /**
+      * The method GetPredecessor( ) returns the previous date before $obj_date, which fits to the specifications
+      *
+      * @param cDate a cDate object, which is the starting point for the next calculation
+      *
+      * @return cDate cDate object with the next fitting date or null, if no fitting date could be found ( overflow, underflow)
+      *
+      * @see GetPredecessor
+      * @see GetFollower
+      *
+      *
+      */
+
+
+    public function GetPredecessor( $obj_date ) {
+
+	return $this->GetFollower( $obj_date, self::DIRECTION_BACKWARD );
+
+    }
+
+
     /**
       * The ABSTRACT method IsValid( ) returns true, if the properties are okay and the algorithm is ready to start.
       * Subclasses have to code this method before the class can be used
@@ -1122,20 +1176,23 @@ abstract class cDateStrategy {
       */
 
 
-    abstract public function GetFollower( $obj_date );
+    abstract public function GetFollower( $obj_date, $direction = self::DIRECTION_FORWARD );
 
     /**
       * The ABSTRACT method GetFirstDate( ) returns the first valid date of the series to be calculated according to the specifications
       * Subclasses have to code this method before the class can be used
       *
-      * @param cDate @obj_date the date where the calculation should start
+      * @param cDate $obj_date the date where the calculation should start
+      * @param int $direction how the time line shoulfd be traversed
       *
-      * @return cDate a cDate object with the first fitting date or null, if no fitting date could be found ( overflow, IsUnderflow)
+      * @return cDate a cDate object with the first fitting date or null, if no fitting date could be found ( overflow, underflow)
       *
       * @see IsValid
       * @see GetFollower
       * @see GetFirstDate
       * @see FromString
+      * @see GetPredecessor
+      * @see GetFollower
       *
       *
       */
@@ -1333,7 +1390,9 @@ abstract class cDateStrategy {
 
         for ( $i = 0; $i < count( cDateStrategy::$m_a_celebrities ); $i++){
 
-            if ($obj_date->eq( cDateStrategy::$m_a_celebrities[$i] ) ) { return true;}
+            if ( $obj_date->eq( cDateStrategy::$m_a_celebrities[ $i ] ) ) {
+		return true;
+	    }
         }
 
         return false;

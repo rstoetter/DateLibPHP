@@ -329,40 +329,106 @@ class cDateStrategyDaily extends cDateStrategy {
 
 // NOTE : TODO : bei GetFollower IsOverflow berücksichtigen !
 
+
+
     /**
       * The method GetFollower( ) returns the next date after $obj_date, which fits to the specifications
       *
-      * @param cDate a cDate object, which is the starting point for the next calculation
+      * @param cDate $date a cDate object, which is the starting point for the next calculation
       *
       * @return cDate cDate object with the next fitting date or null, if no fitting date could be found ( overflow, IsUnderflow)
       *
       */
 
-    function GetFollower( $date ) {
+    function GetFollower( $date, $direction = self::DIRECTION_FORWARD ) {
+
         // $obj_datej muß ein gültiges Datum sein, an dem ein Termin stattfindet ! -> protected um dies zu gewährleisten
         // es wird keine Korrektur vorgenommen
 
         # echo "<br>GetFollower(".$date->AsDMY(). ") : GetLatestDayNumber() ergibt " . $this->GetLatestDayNumber();
 
+        if ( is_null( $date ) ) return null;
+
         $obj_datej = new cDate( $date);
         $fertig = false;
 
+
+        // $direction = self::DIRECTION_FORWARD;
+        $weiter = true;
+
         do {
-            $obj_datej->inc( );
 
-            if ( ( $obj_datej->IsSaturday() ) && ( !$this->m_directionOnSaturday == cDateStrategy::STRATEGY_DIRECTION_LEAVE ) ) { $fertig = false; }
-            elseif ( ( $obj_datej->IsSunday() ) && ( !$this->m_directionOnSunday == cDateStrategy::STRATEGY_DIRECTION_LEAVE) ) { $fertig = false; }
-            elseif ( ( $this->IsCelebrity($obj_datej) ) && ( !$this->m_directionOnCelebrity == cDateStrategy::STRATEGY_DIRECTION_LEAVE ) ) { $fertig = false; }
-            elseif ( ( $this->IsHoliday($obj_datej) ) && ( !$this->m_directionOnHoliday == cDateStrategy::STRATEGY_DIRECTION_LEAVE ) ) { $fertig = false; }
-            else ( $fertig = true );
+	    $weiter = false;
 
-        } while ( ! $fertig );
+	    if ( $direction == self::DIRECTION_FORWARD) {
+		$obj_datej->Inc( );
+	    } elseif ( $direction == self::DIRECTION_BACKWARD) {
+		$obj_datej->Dec( );
+	    }
 
-        if ($this->IsOverflow($obj_datej)) return null;
+
+            if ( $obj_datej->IsSaturday( ) ) {
+		if ( $this->m_directionOnSaturday == cDateStrategy::STRATEGY_DIRECTION_FORWARD ) {
+		    $weiter = true;
+		    $direction = self::DIRECTION_FORWARD;
+		} elseif ( $this->m_directionOnSaturday == cDateStrategy::STRATEGY_DIRECTION_BACKWARD ) {
+		    $weiter = true;
+		    $direction = self::DIRECTION_BACKWARD;
+		} elseif ( $this->m_directionOnSaturday == cDateStrategy::STRATEGY_DIRECTION_ABOLISH ) {
+		    return null;
+		}
+            }
+
+            if ( $obj_datej->IsSunday( ) ) {
+		if ( $this->m_directionOnSunday == cDateStrategy::STRATEGY_DIRECTION_FORWARD ) {
+		    $weiter = true;
+		    $direction = self::DIRECTION_FORWARD;
+		} elseif ( $this->m_directionOnSunday == cDateStrategy::STRATEGY_DIRECTION_BACKWARD ) {
+		    $weiter = true;
+		    $direction = self::DIRECTION_BACKWARD;
+		} elseif ( $this->m_directionOnSunday == cDateStrategy::STRATEGY_DIRECTION_ABOLISH ) {
+		    return null;
+		}
+            }
+
+
+            if ( $this->IsCelebrity($obj_datej) ) {
+		if ( $this->m_directionOnCelebrity == cDateStrategy::STRATEGY_DIRECTION_FORWARD ) {
+		    $weiter = true;
+		    $direction = self::DIRECTION_FORWARD;
+		} elseif ( $this->m_directionOnCelebrity == cDateStrategy::STRATEGY_DIRECTION_BACKWARD ) {
+		    $weiter = true;
+		    $direction = self::DIRECTION_BACKWARD;
+		} elseif ( $this->m_directionOnCelebrity == cDateStrategy::STRATEGY_DIRECTION_ABOLISH ) {
+		    return null;
+		}
+            }
+
+            if ( $this->IsHoliday($obj_datej) ) {
+		if ( $this->m_directionOnHoliday == cDateStrategy::STRATEGY_DIRECTION_FORWARD ) {
+		    $weiter = true;
+		    $direction = self::DIRECTION_FORWARD;
+		} elseif ( $this->m_directionOnHoliday == cDateStrategy::STRATEGY_DIRECTION_BACKWARD ) {
+		    $weiter = true;
+		    $direction = self::DIRECTION_BACKWARD;
+		} elseif ( $this->m_directionOnHoliday == cDateStrategy::STRATEGY_DIRECTION_ABOLISH ) {
+		    return null;
+		}
+            }
+
+
+        } while ( $weiter );
+
+        if ($this->IsUnderflow($obj_datej) && ( $direction == self::DIRECTION_FORWARD )) return new \libdatephp\cDate( $this->m_start_date );
+        if ($this->IsOverflow($obj_datej) && ( $direction == self::DIRECTION_FORWARD)) return null;
+        if ($this->IsUnderflow($obj_datej) && ( $direction == self::DIRECTION_BACKWARD)) return null;
+        if ($this->IsOverflow($obj_datej) && ( $direction == self::DIRECTION_BACKWARD )) return new \libdatephp\cDate( $this->m_end_date );
 
         return $obj_datej;
 
     }       // function GetFollower()
+
+
 
     /**
       * The method GetFirstDate( ) returns the first valid date of the series to be calculated according to the specifications

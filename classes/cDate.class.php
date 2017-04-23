@@ -3614,11 +3614,14 @@ class cDate {
 
         if (is_int( $cmp ) ) {
             return $cmp == $this->m_timestamp;
-        } elseif ( is_a( $cmp, "libdatephpcdate" ) ) {
+        } elseif ( is_a( $cmp, "libdatephp\cdate" ) ) {
             # print "<br>" . $cmp->AsTimeStamp() . "<->" . $this->AsTimeStamp();
             return ($cmp->Month()==$this->Month()) && ($cmp->Year()==$this->Year()) && ($cmp->Day()==$this->Day());
             # funktioniert nicht immer !   return $cmp->AsTimeStamp() == $this->AsTimeStamp();
         }
+
+        die( "\n error in eq " );
+        var_dump( $cmp );
 
         // NOTE : TODO : Tagesgenaue Berechnung => Minuten sind wurscht
 
