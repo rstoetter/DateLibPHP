@@ -1205,6 +1205,9 @@ class cDate {
 
 
     public function C_Weekday_Short_DE( ) {
+
+	global $_ARY_WD_GER_SHORT;
+
         return $_ARY_WD_GER_SHORT[ $this->Weekday() ];
     }
 
@@ -1269,6 +1272,9 @@ class cDate {
 
 
     public function C_Month_Short_DE( ) {
+
+	global $_ARY_MONTH_GER_SHORT;
+
         return $_ARY_MONTH_GER_SHORT[ $this->Month() ];
     }
 
@@ -1300,6 +1306,9 @@ class cDate {
       */
 
     public function C_Month_Long_DE( ) {
+
+	global $_ARY_MONTH_GER_LONG;
+
         return $_ARY_MONTH_GER_LONG[ $this->Month() ];
     }
 
@@ -1335,6 +1344,9 @@ class cDate {
 
 
     public function C_Weekday_Short_EN( ) {
+
+	global $_ARY_WD_EN_SHORT;
+
         return $_ARY_WD_EN_SHORT[ $this->Weekday() ];
     }
 
@@ -1366,7 +1378,11 @@ class cDate {
 
 
     public function C_Weekday_Long_EN( ) {
+
+	global $_ARY_WD_EN_LONG;
+
         return $_ARY_WD_EN_LONG[ $this->Weekday() ];
+
     }
 
     /**
@@ -1398,6 +1414,9 @@ class cDate {
 
 
     public function C_Month_Short_EN( ) {
+
+	global $_ARY_MONTH_EN_SHORT;
+
         return $_ARY_MONTH_EN_SHORT[ $this->Month() ];
     }
 
@@ -1429,10 +1448,59 @@ class cDate {
       */
 
     public function C_Month_Long_EN( ) {
+
+	global $_ARY_MONTH_EN_LONG;
+
         return $_ARY_MONTH_EN_LONG[ $this->Month() ];
     }
 
 
+    /**
+      *
+      * The method FromAnyString( ) sets the internal date according to the string $str. It recognizes the input format
+      * ( MDY, SQL, DMY ) automatically.
+      *
+      * Example:
+      *
+      * use libdatephp;
+      *
+      * $dt = new cDate( 11, 23, 2016 );
+      *
+      * $dt->FromAnyString( '01.01.2017' );
+      * $dt->FromAnyString( '2017-12-31' );
+      *
+      * @param string $str the string with the date
+      *
+      * @see FromSQL
+      * @see FromMDY
+      * @see FromDMY
+      *
+      * @since = 1.0
+      *
+      */
+
+
+    public function FromAnyString( $str ) {
+
+	if ( substr( $str, 2, 1 ) == '.'  ) {
+
+	    $this->FromDMY( $str );
+
+	} elseif ( substr( $str, 4, 1 ) == '-'  ) {
+
+	    $this->FromSQL( $str );
+
+	} elseif ( substr( $str, 2, 1 ) == '/'  ) {
+
+	    $this->FromMDY( $str );
+
+	} else {
+
+	    die( "\n bad formatted template: {$str}" );
+
+	}
+
+    }
 
 // ---------------------------------------
 
@@ -1445,10 +1513,19 @@ class cDate {
       *  $p = new cDate( 11, 22, 2016, 11, 23, 2016 );
       *  from month, day, year
       *
+      *  $p = new cDate( '2017-02-28' );
+      *  from SQL string
+      *
+      *  $p = new cDate( '28.02.2017' );
+      *  from DMY string
+      *
+      *  $p = new cDate( '02-28-2017' );
+      *  from MDY string
+      *
       *  $p = new cDate(  );
       *  a date with today's date
       *
-      *  $dtm = new cPeriod( new cDate( 11, 22, 2016 ) );
+      *  $dtm = new cDate( new cDate( 11, 22, 2016 ) );
       *  a copy constructor
       *
      *
@@ -1466,34 +1543,37 @@ class cDate {
 
     public function __construct( $m = -1, $d = -1, $y = -1) {
 
-        if ( is_string( $m ) ) sscanf( $m, "%d", $m);
-        if ( is_string( $d ) ) sscanf( $d, "%d", $d);
-        if ( is_string( $y ) ) sscanf( $y, "%d", $y);
+        if ( is_string( $m ) ) {
+
+	    $this->FromAnyString( $m );
+
+	} else {
 
         # if (!is_a($m, 'libdatephp\cDate')) { echo "<br>cDate::cDate( $m, $d, $y)";}
 
-        if ( is_a( $m, 'libdatephp\cDate' ) ) {
-            $this->FromDate( $m );
-        }  elseif ( is_int( $y ) && is_int( $m ) && is_int( $d ) ) {
+	    if ( is_a( $m, 'libdatephp\cDate' ) ) {
+		$this->FromDate( $m );
+	    }  elseif ( is_int( $y ) && is_int( $m ) && is_int( $d ) ) {
 
-            if ( ($y==-1) && ($m==-1) && ($d==-1) ) { // cDate()
+		if ( ($y==-1) && ($m==-1) && ($d==-1) ) { // cDate()
 
-                $this->SetToday();
+		    $this->SetToday();
 
-            } elseif (($d == -1) && ($y == -1)) { // cDate( $timestamp)
+		} elseif (($d == -1) && ($y == -1)) { // cDate( $timestamp)
 
-                $this->FromTimestamp( $m );
+		    $this->FromTimestamp( $m );
 
 
-            } else {            // cDate($y, $m, $sd)
-                $this->SetDate($m, $d, $y);
-            }
-        }  else {
-            # echo "<br>->$d.$m.$y ";
-            // echo ">>".( is_int($y) . "-".is_int($m)."-" . is_int($d) ) ." --- ". $y . $m .$d. "d=".$d."y=".$y."m=".$m;
-            // var_dump( debug_backtrace( ) );
-            assert( true == false );
-            die("\n cDate : Fehlerhafte Parameter '$m-$d-$y'");
+		} else {            // cDate($y, $m, $sd)
+		    $this->SetDate($m, $d, $y);
+		}
+	    }  else {
+		# echo "<br>->$d.$m.$y ";
+		// echo ">>".( is_int($y) . "-".is_int($m)."-" . is_int($d) ) ." --- ". $y . $m .$d. "d=".$d."y=".$y."m=".$m;
+		// var_dump( debug_backtrace( ) );
+		assert( true == false );
+		die("\n cDate : Fehlerhafte Parameter '$m-$d-$y'");
+	    }
         }
 
     }   // function cDate( $y, $m, $d)
@@ -1546,6 +1626,26 @@ class cDate {
         $this->CalculateWeekday( );
 
     }   // private function ts2mdy
+
+
+    /**
+      *
+      * The method CheckDateParameter( ) returns true, if the parameters are valid for a new cDate object
+      *
+      *
+      * @param int $month the month part of the date to be checked
+      * @param int $day the day part of the date to be checked
+      * @param int $year the year part of the date to be checked
+      *
+      * @since = 1.0
+      *
+      */
+
+      public function CheckDateParameter( $month, $day, $year ) {
+
+	  return checkdate( $month, $day, $year );
+
+      }
 
 
     /**
@@ -3566,7 +3666,8 @@ class cDate {
 
         if ( ! checkdate($m, $d, $y)) {
             // var_dump( debug_backtrace( ) );
-            print_r( debug_backtrace( ) );
+            // print_r( debug_backtrace( ) );
+            assert( false == true );
             print "<br>Monat=$m Tag = $d Jahr = $y";
         }
 

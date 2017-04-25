@@ -71,7 +71,7 @@ namespace libdatephp;
 
 /**
   *
-  * The class cDateStrategyDaily calculates recurring daily events. It is specialized to find events from a specific day on, which occur daily.
+  * The class cDateStrategyDaily calculates recurring daily events. It is specialized to find events from a specific day on, which occur daily in a certain period of time.
   *
   *
   * @author Rainer Stötter
@@ -91,7 +91,7 @@ namespace libdatephp;
 
 class cDateStrategyDaily extends cDateStrategy {
 
-    // täglich ein Termin
+    // täglich ein Termin in einem bestimmten Zeitraum
 
     # protected $onSaturday = false;
     # protected $onSunday = false;
@@ -103,7 +103,7 @@ class cDateStrategyDaily extends cDateStrategy {
       *  Example:
       *
       *      $strategy = new \libdatephp\cDateStrategyDaily(
-      *				$dt,
+      *				new \libdatephp\cDate( ),,
       *				null,
       *				'en_en',
       *				\libdatephp\cDateStrategy::STRATEGY_DIRECTION_LEAVE,
@@ -137,7 +137,7 @@ class cDateStrategyDaily extends cDateStrategy {
       *
       */
 
-    public function __construct(
+    function __construct(
 			$start_date = null,
 			$end_date = null,
 			$language = 'en_en',
@@ -191,8 +191,8 @@ class cDateStrategyDaily extends cDateStrategy {
 
     /**
       * The method FromString( ) reads its specifications from the string $str
-      *
-      * @param string $str the specifications as string
+      * The template starts with 's8'
+      * @param string $str the specifications as string as we get it via AsString( )
       *
       */
 
@@ -244,7 +244,7 @@ class cDateStrategyDaily extends cDateStrategy {
 */
 
     /**
-      * The method AsString( ) returns its specifications as a string
+      * The method AsString( ) returns its specifications as a string template
       *
       * @return string the specifications as string
       *
@@ -278,6 +278,14 @@ class cDateStrategyDaily extends cDateStrategy {
 
     }   // function AsString
 
+    /**
+      *
+      * @deprecated
+      *
+      *
+      */
+
+
     public function FromForm(  ) {
 
         # $_POST[strategy] = s8_dayly
@@ -310,6 +318,14 @@ class cDateStrategyDaily extends cDateStrategy {
         return true;
     }
 
+    /**
+      *
+      * @deprecated
+      *
+      *
+      */
+
+
     public function FillForm( $checked = false ) {
 
         $msgTaeglich = $this->id2msg( 1053 );
@@ -335,8 +351,15 @@ class cDateStrategyDaily extends cDateStrategy {
       * The method GetFollower( ) returns the next date after $obj_date, which fits to the specifications
       *
       * @param cDate $date a cDate object, which is the starting point for the next calculation
+      * @param int $direction the constant, which indicates the search direction. It defaults to DIRECTION_FORWARD
       *
       * @return cDate cDate object with the next fitting date or null, if no fitting date could be found ( overflow, IsUnderflow)
+      *
+      * @see DIRECTION_BACKWARD
+      * @see DIRECTION_FORWARD
+      * @see GetFollower
+      * @see GetFirstDate
+
       *
       */
 
@@ -435,14 +458,10 @@ class cDateStrategyDaily extends cDateStrategy {
       *
       * It returns now the start date for the period of time which is examined.
       *
-      * @param cDate @obj_date the date where the calculation should start
-      *
       * @return cDate a cDate object with the first fitting date or null, if no fitting date could be found ( overflow, IsUnderflow)
       *
-      * @see IsValid
       * @see GetFollower
       * @see GetFirstDate
-      * @see FromString
       *
       *
       */

@@ -352,7 +352,7 @@ class cPeriod {
       *
       * echo $p->AsString( );
       *
-      * @param $representation how the output string should be formatted - defaults to self::Representation_DMY ( DMY
+      * @param int $representation how the output string should be formatted - defaults to self::Representation_DMY ( DMY
       * notation). Can be set to Representation_MDY or Representation_SQL, too
       *
       * @return string a string with the dates of the period of time
@@ -488,8 +488,8 @@ class cPeriod {
       *
       * $p->Set( new cDate( 11, 23, 2017 ), new cDate( 11, 27, 2017 ) );
       *
-      * @param $oFirst cDate  the starting point of the period of time
-      * @param $oLast cDate the ending date of the period of time
+      * @param cDate $oFirst the starting point of the period of time
+      * @param cDate $oLast the ending date of the period of time
       *
       */
 
@@ -519,7 +519,7 @@ class cPeriod {
       *
       * $p->SetFirst( new cDate( 11, 23, 2017 ) );
       *
-      * @param $oFirst cDate the new starting date of the period of time
+      * @param cDate $oFirst the new starting date of the period of time
       *
       */
 
@@ -540,7 +540,7 @@ class cPeriod {
       *
       * $p->SetLast( new cDate( 12, 23, 2017 ) );
       *
-      * @param $oLaFirst cDate the new ending date of the period of time
+      * @param cDate $oLaFirst the new ending date of the period of time
       *
       */
 
@@ -562,7 +562,7 @@ class cPeriod {
       *
       * $p->SetLen( 14 );
       *
-      * @param $len the new ending date of the period of time
+      * @param int $len the new ending date of the period of time
       *
       */
 
@@ -616,7 +616,7 @@ class cPeriod {
       * echo $p->GetDiff( );
       *
       * @return int the difference of the period of time in days
-      * @see GetLen()
+      * @see GetLen
       *
       */
 
@@ -646,7 +646,7 @@ class cPeriod {
       * echo $p->GetLen( );
       *
       * @return int the length of the period of time in days
-      * @see GetDiff()
+      * @see GetDiff
       *
       */
 
@@ -702,7 +702,7 @@ class cPeriod {
       *
       * if ( $p1->SameStart( $p2 ) ) do_something( );
       *
-      * @param $obj mixed the other period of time or a cDate
+      * @param mixed $obj the other period of time or a cDate
       * @return boolean true if both starting dates are equal
       *
       */
@@ -729,7 +729,7 @@ class cPeriod {
       *
       * if ( $p1->SameEnd( $p2 ) ) do_something( );
       *
-      * @param $obj mixed the other period of time or a cDate
+      * @param mixed $obj the other period of time or a cDate
       * @return boolean true if both ending dates are equal
       *
       */
@@ -755,7 +755,7 @@ class cPeriod {
       *
       * if ( $p1->StartsBefore( $p2 ) ) do_something( );
       *
-      * @param $obj mixed the other period of time or a cDate
+      * @param mixed $obj the other period of time or a cDate
       * @return boolean true if $obj starts after the starting date
       *
       */
@@ -781,7 +781,7 @@ class cPeriod {
       *
       * if ( $p1->StartsAfter( $p2 ) ) do_something( );
       *
-      * @param $obj mixed the other period of time or a cDate
+      * @param mixed $obj the other period of time or a cDate
       * @return boolean true if $obj starts before the starting date
       *
       */
@@ -808,7 +808,7 @@ class cPeriod {
       *
       * if ( $p1->EndsBefore( $p2 ) ) do_something( );
       *
-      * @param $obj mixed the other period of time or a cDate
+      * @param mixed $obj the other period of time or a cDate
       * @return boolean true if $obj ends after the starting date
       *
       */
@@ -835,7 +835,7 @@ class cPeriod {
       *
       * if ( $p1->EndsAfter( $p2 ) ) do_something( );
       *
-      * @param $obj mixed the other period of time or a cDate
+      * @param mixed $obj the other period of time or a cDate
       * @return boolean true if $obj ends before the starting date
       *
       */
@@ -864,7 +864,7 @@ class cPeriod {
       *
       * if ( $p1->Contains( $p2 ) ) do_something( );
       *
-      * @param $obj mixed the other period of time or a cDate
+      * @param mixed $obj the other period of time or a cDate
       * @return boolean true if the managed period of time contains $obj
       *
       */
@@ -896,7 +896,7 @@ class cPeriod {
       *
       * if ( $p1->Overlaps( $p2 ) ) do_something( );
       *
-      * @param $obj mixed the other period of time or a cDate
+      * @param mixed $obj the other period of time or a cDate
       * @return boolean true if the managed period overlaps $obj
       *
       */
@@ -925,7 +925,7 @@ class cPeriod {
       *
       * echo $p1->GetN( 3 );
       *
-      * @param $n int the zero based index of the wanted day
+      * @param int $n the zero based index of the wanted day
       * @return cDate the nth day of the managed period of time
       *
       */
@@ -954,7 +954,7 @@ class cPeriod {
       *
       * echo $p1->Adjust( $p2 );
       *
-      * @param $p mixed the cDate or cPeriod where the new setting should be taken from
+      * @param mixed $p the cDate or cPeriod where the new setting should be taken from
       *
       */
 
@@ -989,7 +989,7 @@ class cPeriod {
       *
       * echo $p1->Skip( -14 );
       *
-      * @param $i how much days the managed period of time should be moved, can be negative. $i defaults to 1 day
+      * @param int $i how much days the managed period of time should be moved, can be negative. $i defaults to 1 day
       *
       */
 
@@ -1050,7 +1050,7 @@ class cPeriod {
       *
       * echo $p1->AddWeeks( 4 );
       *
-      * @param $i how much weeks the managed period of time should be moved, can be negative. $i defaults to 1
+      * @param int $i how much weeks the managed period of time should be moved, can be negative. $i defaults to 1
       */
 
 
@@ -1072,7 +1072,7 @@ class cPeriod {
       *
       * echo $p1->AddMonths( 3 );
       *
-      * @param $i how much months the managed period of time should be moved, can be negative. $i defaults to 1
+      * @param int $i how much months the managed period of time should be moved, can be negative. $i defaults to 1
       */
 
 
@@ -1094,7 +1094,7 @@ class cPeriod {
       *
       * echo $p1->AddYears( 3 );
       *
-      * @param $i how much years the managed period of time should be moved, can be negative. $i defaults to 1
+      * @param int $i how much years the managed period of time should be moved, can be negative. $i defaults to 1
       */
 
 
@@ -1120,7 +1120,9 @@ class cPeriod {
       * $func = "myfunc";
       * $p1->ForEachDate( $func );
       *
-      * @param $func string the function pointer
+      * @param string $func the function pointer
+      * @see ForEachWeekday
+      *
       */
 
 
@@ -1155,7 +1157,8 @@ class cPeriod {
       * $func = "myfunc";
       * $p1->ForEachDate( $func );
       *
-      * @param $func string the function pointer
+      * @param string $func the function pointer
+      * @see ForEachDate
       */
 
 
@@ -1380,8 +1383,8 @@ class cPeriod {
       *
       * $p1->printOn( $fptr );
       *
-      * @param $fptr resource the file handle of the output file
-      * @see ScanFrom( )
+      * @param resource $fptr the file handle of the output file
+      * @see ScanFrom
       */
 
 
@@ -1407,8 +1410,8 @@ class cPeriod {
       *
       * $p1->ScanFrom( $fptr );
       *
-      * @param $fptr resource the file handle of the input file
-      * @see printOn( )
+      * @param resource $fptr the file handle of the input file
+      * @see printOn
       */
 
 
@@ -1435,9 +1438,9 @@ class cPeriod {
       * echo $p1->PassedMonths( );
       *
       * @return int the number of full months
-      * @see PassedQuarters( )
-      * @see PassedWeeks( )
-      * @see PassedYears( )
+      * @see PassedQuarters
+      * @see PassedWeeks
+      * @see PassedYears
       */
 
 
@@ -1472,9 +1475,9 @@ class cPeriod {
       * echo $p1->PassedQuarters( );
       *
       * @return int the number of full quarters
-      * @see PassedMonths( )
-      * @see PassedWeeks( )
-      * @see PassedYears( )
+      * @see PassedMonths
+      * @see PassedWeeks
+      * @see PassedYears
       */
 
 
@@ -1509,9 +1512,9 @@ class cPeriod {
       * echo $p1->PassedWeeks( );
       *
       * @return int the number of full weeks
-      * @see PassedQuarters( )
-      * @see PassedMonths( )
-      * @see PassedYears( )
+      * @see PassedQuarters
+      * @see PassedMonths
+      * @see PassedYears
       */
 
 
@@ -1546,9 +1549,9 @@ class cPeriod {
       * echo $p1->PassedYears( );
       *
       * @return int the number of full years
-      * @see PassedQuarters( )
-      * @see PassedWeeks( )
-      * @see PassedMonths( )
+      * @see PassedQuarters
+      * @see PassedWeeks
+      * @see PassedMonths
       */
 
 
@@ -1586,10 +1589,10 @@ class cPeriod {
       * echo $p1->NthMonth( );
       *
       * @return int the number of full months
-      * @see NthQuarter( )
-      * @see NthWeek( )
-      * @see NthYear( )
-      * @see NthDay( )
+      * @see NthQuarter
+      * @see NthWeek
+      * @see NthYear
+      * @see NthDay
       */
 
 
@@ -1624,10 +1627,10 @@ class cPeriod {
       * echo $p1->NthQuarter( );
       *
       * @return int the number of full quarters
-      * @see NthMonth( )
-      * @see NthWeek( )
-      * @see NthYear( )
-      * @see NthDay( )
+      * @see NthMonth
+      * @see NthWeek
+      * @see NthYear
+      * @see NthDay
       */
 
     public function NthQuarter( ) {
@@ -1661,10 +1664,10 @@ class cPeriod {
       * echo $p1->NthWeek( );
       *
       * @return int the number of full weeks
-      * @see NthQuarter( )
-      * @see NthMonth( )
-      * @see NthYear( )
-      * @see NthDay( )
+      * @see NthQuarter
+      * @see NthMonth
+      * @see NthYear
+      * @see NthDay
       */
 
     public function NthWeek( ) {
@@ -1697,11 +1700,11 @@ class cPeriod {
       *
       * echo $p1->NthYear( );
       *
-      * @return int the number of full years
-      * @see NthQuarter( )
-      * @see NthWeek( )
-      * @see NthMonth( )
-      * @see NthDay( )
+      * @return int $the number of full years
+      * @see NthQuarter
+      * @see NthWeek
+      * @see NthMonth
+      * @see NthDay
       */
 
     public function NthYear( ) {
@@ -1735,9 +1738,9 @@ class cPeriod {
       * echo $p1->NthDay( );
       *
       * @return int the number of full days
-      * @see NthQuarter( )
-      * @see NthWeek( )
-      * @see NthYear( )
+      * @see NthQuarter
+      * @see NthWeek
+      * @see NthYear
       *
       */
 

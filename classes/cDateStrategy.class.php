@@ -336,7 +336,7 @@ abstract class cDateStrategy {
       * DIRECTION_FORWARD moves forward on the timeline.
       * DIRECTION_BACKWARD moves backward on the timeline.
       *
-      * @var DIRECTION_FORWARD int
+      * @var int DIRECTION_FORWARD
       *
       * @see DIRECTION_BACKWARD
       * @see DIRECTION_FORWARD
@@ -352,7 +352,7 @@ abstract class cDateStrategy {
       * DIRECTION_FORWARD moves forward on the timeline.
       * DIRECTION_BACKWARD moves backward on the timeline.
       *
-      * @var DIRECTION_BACKWARD int
+      * @var int DIRECTION_BACKWARD
       *
       * @see DIRECTION_BACKWARD
       * @see DIRECTION_FORWARD
@@ -378,7 +378,7 @@ abstract class cDateStrategy {
       * STRATEGY_DIRECTION_FORWARD defines, that the calculated date should be placed on the next possible place in the future:Search a fitting place after the calculated date
       * STRATEGY_DIRECTION_ABOLISH defines, that the calculated date should be abolished.
       *
-      * @var STRATEGY_DIRECTION_LEAVE int
+      * @var int STRATEGY_DIRECTION_LEAVE
       *
       * @see STRATEGY_DIRECTION_ABOLISH
       * @see STRATEGY_DIRECTION_BACKWARD
@@ -405,7 +405,7 @@ abstract class cDateStrategy {
       * STRATEGY_DIRECTION_FORWARD defines, that the calculated date should be placed on the next possible place in the future:Search a fitting place after the calculated date
       * STRATEGY_DIRECTION_ABOLISH defines, that the calculated date should be abolished.
       *
-      * @var STRATEGY_DIRECTION_FORWARD int
+      * @var int STRATEGY_DIRECTION_FORWARD
       *
       * @see STRATEGY_DIRECTION_ABOLISH
       * @see STRATEGY_DIRECTION_BACKWARD
@@ -433,7 +433,7 @@ abstract class cDateStrategy {
       * STRATEGY_DIRECTION_FORWARD defines, that the calculated date should be placed on the next possible place in the future:Search a fitting place after the calculated date
       * STRATEGY_DIRECTION_ABOLISH defines, that the calculated date should be abolished.
       *
-      * @var STRATEGY_DIRECTION_BACKWARD int
+      * @var int STRATEGY_DIRECTION_BACKWARD
       *
       * @see STRATEGY_DIRECTION_ABOLISH
       * @see STRATEGY_DIRECTION_BACKWARD
@@ -461,7 +461,7 @@ abstract class cDateStrategy {
       * STRATEGY_DIRECTION_FORWARD defines, that the calculated date should be placed on the next possible place in the future:Search a fitting place after the calculated date
       * STRATEGY_DIRECTION_ABOLISH defines, that the calculated date should be abolished.
       *
-      * @var STRATEGY_DIRECTION_ABOLISH int
+      * @var int STRATEGY_DIRECTION_ABOLISH
       *
       * @see STRATEGY_DIRECTION_ABOLISH
       * @see STRATEGY_DIRECTION_BACKWARD
@@ -477,7 +477,7 @@ abstract class cDateStrategy {
     /**
       * The member variable m_directionOnSunday controls the behaviour of the algorithm, when it encounters a sunday
       *
-      * @var $m_directionOnSunday int
+      * @var int $m_directionOnSunday
       *
       * @see $m_directionOnCelebrity
       * @see $m_directionOnHoliday
@@ -497,7 +497,7 @@ abstract class cDateStrategy {
     /**
       * The member variable m_directionOnSaunday controls the behaviour of the algorithm, when it encounters a saturday
       *
-      * @var $m_directionOnSaturday int
+      * @var int $m_directionOnSaturday
       *
       * @see $m_directionOnCelebrity
       * @see $m_directionOnHoliday
@@ -517,7 +517,7 @@ abstract class cDateStrategy {
     /**
       * The member variable m_directionOnCelebrity controls the behaviour of the algorithm, when it encounters a celebrity
       *
-      * @var $m_directionOnCelebrity int
+      * @var int $m_directionOnCelebrity
       *
       * @see $m_directionOnCelebrity
       * @see $m_directionOnHoliday
@@ -538,7 +538,7 @@ abstract class cDateStrategy {
     /**
       * The member variable m_directionOnHoliday controls the behaviour of the algorithm, when it encounters a holiday
       *
-      * @var $m_directionOnHoliday int
+      * @var int $m_directionOnHoliday
       *
       * @see $m_directionOnCelebrity
       * @see $m_directionOnHoliday
@@ -558,7 +558,7 @@ abstract class cDateStrategy {
     /**
       * The member variable m_directionOnImpossible controls the behaviour of the algorithm, when it encounters an impossible situation
       *
-      * @var $m_directionOnImpossible int
+      * @var int $m_directionOnImpossible
       *
       * @see $m_directionOnCelebrity
       * @see $m_directionOnHoliday
@@ -579,7 +579,7 @@ abstract class cDateStrategy {
     /**
       * The member variable m_start_date defines the date, where the algorithm should start to calculate
       *
-      * @var $m_start_date cDate
+      * @var cDate $m_start_date
       *
       * @see $m_start_date
       * @see $m_end_date
@@ -590,9 +590,19 @@ abstract class cDateStrategy {
     protected $m_start_date;
 
     /**
+      * If the STATIC public member variable m_debug is true, then debugging information will be displayed. It defaults to false.
+      *
+      * @var bool $m_debug
+      *
+      */
+
+
+    static public $m_debug = false;
+
+    /**
       * The member variable m_end_date defines the date, where the algorithm should end the calculations
       *
-      * @var $m_end_date cDate
+      * @var cDate $m_end_date
       *
       * @see $m_start_date
       * @see $m_end_date
@@ -605,7 +615,7 @@ abstract class cDateStrategy {
     /**
       * The STATIC member variable m_a_celebrities is an array consisting of cDate variables, which are used to identify celebrities
       *
-      * @var $m_a_celebrities cDate
+      * @var array $m_a_celebrities
       *
       * @see $m_a_celebrities
       * @see IsCelebrity
@@ -618,7 +628,7 @@ abstract class cDateStrategy {
     /**
       * The member variable m_a_holidays is an array consisting of cDate variables, which are used to identify holidays
       *
-      * @var $m_a_holidays cDate
+      * @var array $m_a_holidays
       *
       * @see $m_a_holidays
       * @see IsHoliday
@@ -638,7 +648,7 @@ abstract class cDateStrategy {
       *
       *  $m_language it defaults to 'en_en'
       *
-      * @var $m_language string
+      * @var string $m_language
       *
       *
       */
@@ -677,7 +687,16 @@ abstract class cDateStrategy {
 			$directionOnImpossible = self::STRATEGY_DIRECTION_FORWARD
 			) {
 
-        if ( is_null( $start_date ) ) $this->m_start_date = new cDate( ); else $this->m_start_date = $start_date;
+        if ( is_null( $start_date ) ) {
+	    $this->m_start_date = new cDate( );
+
+	    // echo "\n cDateStrategy: Starting date was null! ";
+
+	} else {
+
+	    $this->m_start_date = $start_date;
+
+	}
 
         assert( is_a( $this->m_start_date, 'libdatephp\cDate' ) );
         // var_dump( $start_date );
@@ -707,6 +726,8 @@ abstract class cDateStrategy {
         // $this->obj_date = new cDate();
         $this->m_start_date = new cDate();
         $this->m_end_date = null;
+        $this->ResetCelebrities( );
+        $this->ResetHolidays( );
     }
 
     /**
@@ -722,6 +743,7 @@ abstract class cDateStrategy {
         $this->m_language = $language;
 
     }
+
 
 
     /**
@@ -1124,20 +1146,23 @@ abstract class cDateStrategy {
     /**
       * The method GetPredecessor( ) returns the previous date before $obj_date, which fits to the specifications
       *
-      * @param cDate a cDate object, which is the starting point for the next calculation
+      * @param cDate $obj_date a cDate object, where the calculation shoudl start
+      * @param cDate $dt_prev a cDate object, which should be the starting point for the next calculation
       *
       * @return cDate cDate object with the next fitting date or null, if no fitting date could be found ( overflow, underflow)
       *
+      * @see GetFirstDate
       * @see GetPredecessor
       * @see GetFollower
+      * @see GetArray
       *
       *
       */
 
 
-    public function GetPredecessor( $obj_date ) {
+    public function GetPredecessor( $obj_date, & $dt_prev ) {
 
-	return $this->GetFollower( $obj_date, self::DIRECTION_BACKWARD );
+	return $this->GetFollower( $obj_date, $dt_prev, self::DIRECTION_BACKWARD );
 
     }
 
@@ -1164,6 +1189,8 @@ abstract class cDateStrategy {
       * Subclasses have to code this method before the class can be used
       *
       * @param cDate a cDate object, which is the starting point for the next calculation
+      * @param cDate $dt_next the date the next call of GetFollower( ) should start with
+      * @param int $direction the constant, which indicates the search direction. It defaults to DIRECTION_FORWARD
       *
       * @return cDate cDate object with the next fitting date or null, if no fitting date could be found ( overflow, IsUnderflow)
       *
@@ -1176,7 +1203,7 @@ abstract class cDateStrategy {
       */
 
 
-    abstract public function GetFollower( $obj_date, $direction = self::DIRECTION_FORWARD );
+    abstract public function GetFollower( $obj_date, & $dt_next, $direction = self::DIRECTION_FORWARD );
 
     /**
       * The ABSTRACT method GetFirstDate( ) returns the first valid date of the series to be calculated according to the specifications
@@ -1193,7 +1220,7 @@ abstract class cDateStrategy {
       * @see FromString
       * @see GetPredecessor
       * @see GetFollower
-      *
+      * @see GetArray
       *
       */
 
@@ -1234,6 +1261,156 @@ abstract class cDateStrategy {
 
     abstract public function AsString( );
 
+
+//     abstract public function IsValid( );
+
+    private function doPrint( $dt, $follower ) {
+
+	echo "\n";
+	echo $dt->AsSQL( ) ;
+	if ( ! is_null( $follower ) ) {
+	    echo ( $dt->IsWeekend( ) ? ' weekend ' :  '         ' );
+	    echo ( $this->IsCelebrity( $dt ) ? ' celebrity ' :  '           ' );
+	    echo ( $this->IsHoliday( $dt ) ? ' holiday ' :  '         ' );
+	    echo ( $dt->IsSaturday( ) ? ' sa ' :  '    ' );
+	    echo ( $dt->IsSunday( ) ? ' su ' :  '    ' );
+	    echo ( $dt->lt( $this->GetStartDate( ) ) ? ' Underflow ' :  '           ' );
+	    echo ( $dt->gt( $this->GetEndDate( ) ) ? ' Overflow ' :  '           ' );
+
+	    echo '->';
+	    echo $follower->AsSQL( );
+	} else {
+	    echo "                                                           ->NULL";
+	}
+
+    }	// function doPrint( )
+
+
+    /**
+      * The method GetArray( ) returns a series of fitting dates between $obj_date_start and $obj_date_end or
+      * a bunch of first occurences in the given direction $direction. The resulting dates are added to the array $ary
+      *
+      * @param array $ary is the resulting array.
+      * @param cDate $obj_date_start is the date, where we start from.
+      * @param mixed $obj_date_end is the date, where we stop to calculate new events. If it is an int then it
+      * defines the number of occurences to calculate from $obj_date_start on in direction $direction.
+      * @param int $direction is the direction on the time line, in which the events are calculated. It defaults to
+      * DIRECTION_FORWARD.
+      * @param bool $debug toggles the debugging mode on, if it is true. By default it is false.
+      *
+      * @return void
+      *
+      * @see GetFirstDate
+      * @see GetPredecessor
+      * @see GetFollower
+      * @see GetArray
+      *
+      *
+      */
+
+
+    public function GetArray( & $ary, $obj_date_start, $obj_date_end, $direction = self::DIRECTION_FORWARD, $debug = false ) {
+
+	$ary = array( );
+
+	$occurences = 0;
+
+	if ( $this->m_debug ) echo "\n GetArray( ) starts with " . $obj_date_start->AsSQL( );
+
+	if ( ( is_a( $obj_date_start, '\libdatephp\cDate' ) ) && ( is_a( $obj_date_end, '\libdatephp\cDate' ) ) ) {
+
+	    if ( $obj_date_start->gt( $obj_date_end ) ) {
+
+		if ( $direction == self::DIRECTION_FORWARD ) return;
+
+		$tnp = $obj_date_start;
+		$obj_date_start = $obj_date_end;
+		$obj_date_end = $tmp;
+
+		$direction == self::DIRECTION_FORWARD;
+
+	    }
+
+	    $obj_date = $obj_date_start;
+
+	    if ( $this->IsEventDate( $obj_date ) ) {
+
+		if ( $debug ) $this->doPrint( $obj_date, $obj_date );
+
+		$ary[] = new cDate( $obj_date_start );
+
+	    }
+
+	    $dt_next = $obj_date;
+	    $dt_tmp = null;
+
+	    do {
+
+		if ( $debug ) $this->doPrint( $obj_date, $this->GetFollower( $dt_next, $dt_tmp ) );
+
+		$obj_date = $this->GetFollower( $dt_next, $dt_next );
+
+		if ( is_null( $obj_date ) ) {
+
+		    break;
+
+		}
+
+		$ary[ ] = $obj_date ;
+
+	    } while( $obj_date->lt( $obj_date_end ) );
+
+	} elseif ( ( is_a( $obj_date_start, '\libdatephp\cDate' ) ) && ( is_int( $obj_date_end ) ) ) {
+
+	    $occurences = $obj_date_end;
+
+	    if ( $this->m_debug ) echo "\n calculating $occurences occurences from  " . $obj_date_start->AsSQL( ) . ' on.';
+
+	    if ( $this->IsEventDate( $obj_date_start ) ) {
+
+		if ( $debug ) $this->doPrint( $obj_date, $obj_date );
+
+		$ary[] = new cDate( $obj_date_start );
+
+		$occurences--;
+
+	    }
+
+	    $obj_date = $obj_date_start;
+	    $dt_next = $obj_date;
+
+	    for( $i = 0; $i < $occurences; $i++ ) {
+
+		if ( $debug ) $this->doPrint( $obj_date, $this->GetFollower( $dt_next, $dt_tmp, $direction ) );
+
+		$obj_date = $this->GetFollower( $dt_next, $dt_next, $direction );
+
+		if ( is_null( $obj_date ) ) {
+
+		    if ( $this->m_debug) echo "\n GetArray( ) - received null value - aborting";
+
+		    break;
+
+		}
+
+		if ( $this->m_debug) echo "\n GetArray( ) - received " . $obj_date->AsSQL( );
+
+		$ary[ ] = $obj_date ;
+
+	    }
+
+	} else {
+
+	    die( "\n GetArray: wrong parameters" );
+
+	}
+
+
+
+    }	// function GetArray( )
+
+
+
     /**
       * The method IsOverflow( ) returns true, if the cDate $dt is greater than the ending date
       *
@@ -1243,15 +1420,20 @@ abstract class cDateStrategy {
       *
       * @see IsUnderflow
       * @see IsOverflow
+      * @see IsBetweenLimits
+      * @see SetStartDate
+      * @see GetStartDate
       * @see SetEndDate
-      * @see GetEndDate
+      * @see GetEndDate      *
       *
       *
       */
 
 
-        protected function IsOverflow( $dt ) {
+    protected function IsOverflow( $dt ) {
+
         if ( ( $this->m_end_date != null ) && ( $dt->gt( $this->m_end_date) ) ) { return true; }
+
         return false;
     }
 
@@ -1265,15 +1447,53 @@ abstract class cDateStrategy {
       *
       * @see IsUnderflow
       * @see IsOverflow
+      * @see IsBetweenLimits
       * @see SetStartDate
       * @see GetStartDate
+      * @see SetEndDate
+      * @see GetEndDate      *
       *
       *
       */
 
     protected function IsUnderflow( $dt ) {
-        if ($dt->lt($this->m_start_date)) return true;
+
+	if ( is_null( $dt ) ) {
+	    assert( false == true);
+	    die( "\n error in IsUnderflow( )" );
+	}
+
+	if ( is_null( $this->m_start_date ) ) return false;
+
+        if ( $dt->lt( $this->m_start_date ) ) return true;
+
         return false;
+
+    }
+
+
+    /**
+      * The method IsBetweenLimits( ) returns true, when the cDate $dt is greater or equal the starting date and $dt is less or equal the ending date
+      *
+      * @param $dt cDate the date, which should be checked, whether it is in the calculated period of time.
+      *
+      * @return bool true, if an underflow or an overflow happemed
+      *
+      *
+      * @see IsUnderflow
+      * @see IsOverflow
+      * @see IsBetweenLimits
+      * @see SetStartDate
+      * @see GetStartDate
+      * @see SetEndDate
+      * @see GetEndDate      *
+      *
+      */
+
+    protected function IsBetweenLimits( $dt ) {
+
+        return ( ! IsUnderflow( $dt ) ) && ( ! IsOverflow( $dt ) );
+
     }
 
     /**
@@ -1312,59 +1532,117 @@ abstract class cDateStrategy {
 
         $obj_date = new cDate( $date );
 
-        if (( $obj_date->IsSunday() ) && ( $this->m_directionOnSunday != self::STRATEGY_DIRECTION_ABOLISH) ) { return null; }
-        if (( $obj_date->IsSaturday() ) && ( $this->m_directionOnSunday != self::STRATEGY_DIRECTION_ABOLISH) ) { return null; }
-            if (( $this->IsCelebrity( $obj_date ) ) && ( $this->m_directionOnCelebrity != self::STRATEGY_DIRECTION_ABOLISH) ) { return null; }
+        if ( $this->m_debug ) echo "\n trying to move date " . $obj_date->AsSQL( );
+
+        if (( $obj_date->IsSunday() ) && ( $this->m_directionOnSunday == self::STRATEGY_DIRECTION_ABOLISH) ) { return null; }
+        if (( $obj_date->IsSaturday() ) && ( $this->m_directionOnSunday == self::STRATEGY_DIRECTION_ABOLISH) ) { return null; }
+        if (( $this->IsCelebrity( $obj_date ) ) && ( $this->m_directionOnCelebrity == self::STRATEGY_DIRECTION_ABOLISH) ) { return null; }
+        if (( $this->IsHoliday( $obj_date ) ) && ( $this->m_directionOnHoliday == self::STRATEGY_DIRECTION_ABOLISH) ) { return null; }
 
         do {
+
             $moved = false;
+
             if (( $obj_date->IsSunday() ) && ( $this->m_directionOnSunday != self::STRATEGY_DIRECTION_LEAVE) ) {
+
+		if ( $this->m_debug ) echo "\n " . $obj_date->AsSQL( ) . " is a sunday";
+
                 if ($this->m_directionOnSunday == self::STRATEGY_DIRECTION_BACKWARD) {
-                    $obj_date->dec();
+                    $obj_date->Dec( );
                     // jetzt verhindern wir eine Endlosschleife :
                     if ( $this->m_directionOnSaturday == self::STRATEGY_DIRECTION_FORWARD ) {
-                        $obj_date->dec();
+                        $obj_date->Dec( );
                     }
                     $moved = true;
+
                 } elseif ($this->m_directionOnSunday == self::STRATEGY_DIRECTION_FORWARD) {
-                    $obj_date->inc();
+                    $obj_date->Inc( );
                     $moved = true;
                 }
             }
 
             if (( $obj_date->IsSaturday() ) && ( $this->m_directionOnSaturday != self::STRATEGY_DIRECTION_LEAVE) ) {
+
+		if ( $this->m_debug ) echo "\n " . $obj_date->AsSQL( ) . " is a saturday";
+
                 if ($this->m_directionOnSaturday == self::STRATEGY_DIRECTION_BACKWARD) {
-                    $obj_date->dec();
+                    $obj_date->Dec( );
                     $moved = true;
                 } elseif ($this->m_directionOnSaturday == self::STRATEGY_DIRECTION_FORWARD) {
-                    $obj_date->inc();
+                    $obj_date->Inc( );
                     $moved = true;
                 }
             }
 
             if (( $this->IsCelebrity( $obj_date ) ) && ( $this->m_directionOnCelebrity != self::STRATEGY_DIRECTION_LEAVE) ) {
+
+		if ( $this->m_debug ) echo "\n " . $obj_date->AsSQL( ) . " is a celebrity";
+
                 if ($this->m_directionOnCelebrity == self::STRATEGY_DIRECTION_BACKWARD) {
-                    $obj_date->dec();
+                    $obj_date->Dec( );
                     // nun verhindern wie eine Endlosschleife :
                     if ( ( $obj_date->IsSunday() ) && ( $this->m_directionOnSunday == self::STRATEGY_DIRECTION_FORWARD ) ) {
-                        $obj_date->dec();
+                        $obj_date->Dec( );
                         if ( $this->m_directionOnSaturday == self::STRATEGY_DIRECTION_FORWARD ) {
-                            $obj_date->dec();
+                            $obj_date->Dec( );
                         }
                     }
                     $moved = true;
                 } elseif ($this->m_directionOnCelebrity == self::STRATEGY_DIRECTION_FORWARD) {
-                    $obj_date->inc();
+                    $obj_date->Inc( );
                     $moved = true;
                 }
             }
 
+            if (( $this->IsHoliday( $obj_date ) ) && ( $this->m_directionOnHoliday != self::STRATEGY_DIRECTION_LEAVE) ) {
+
+		if ( $this->m_debug ) echo "\n " . $obj_date->AsSQL( ) . " is a holiday";
+
+                if ($this->m_directionOnHoliday == self::STRATEGY_DIRECTION_BACKWARD) {
+                    $obj_date->Dec( );
+                    // nun verhindern wie eine Endlosschleife :
+                    if ( ( $obj_date->IsSunday() ) && ( $this->m_directionOnSunday == self::STRATEGY_DIRECTION_FORWARD ) ) {
+                        $obj_date->Dec( );
+                        if ( $this->m_directionOnSaturday == self::STRATEGY_DIRECTION_FORWARD ) {
+                            $obj_date->Dec( );
+                        }
+                    }
+                    $moved = true;
+                } elseif ($this->m_directionOnHoliday == self::STRATEGY_DIRECTION_FORWARD) {
+                    $obj_date->Inc( );
+                    $moved = true;
+                }
+            }
+
+            if ( ( $this->m_debug) && ( $moved ) ) echo "\n trying " . $obj_date->AsSQL( );
+
+
         } while ( $moved );
 
-        if ( $obj_date.lt( $this->m_start_date) ) { $obj_date = null; }
-        if ( $this->m_end_date != null ) {
-            if ( $obj_date.gt( $this->m_end_date) ) { $obj_date = null; }
-        }
+        if ( ! is_null( $this->m_start_date ) ) if ( ! is_null( $obj_date ) ) if ( $obj_date->lt( $this->m_start_date) ) {
+	    if ( $this->m_debug ) echo "\n Underflow";
+	    $obj_date = null;
+	}
+        if ( ! is_null( $this->m_end_date ) ) if ( ! is_null( $obj_date ) ) if ( $obj_date->gt( $this->m_end_date) ) {
+	    if ( $this->m_debug ) echo "\n Overflow";
+	    $obj_date = null;
+	}
+
+        if ( $this->m_debug ) {
+
+	    if ( is_null( $obj_date ) ) {
+
+		echo "\n could not move the event - returning null ";
+
+	    } else {
+
+		echo "\n moved the event on the " . $obj_date->AsSQL( );
+
+	    }
+
+	 }
+
+
 
         return $obj_date;
 
@@ -1558,22 +1836,31 @@ abstract class cDateStrategy {
 
     public function IsEventDate( $obj_date ) {
 
+	if ( $this->m_debug ) echo "\n IsEventDate( ) starts with " . $obj_date->AsSQL( );
+
         if ( $this->IsUnderflow( $obj_date ) ) return false;
         if ( $this->IsOverflow( $obj_date ) ) return false;
 
-        $d = new cDate($this->GetFirstDate( ));
+        if ( is_null( $this->GetFirstDate( ) ) ) {
+	    $d = new cDate( $obj_date );
+	    $d->Skip( - 400 );
+	    if ( $this->m_debug ) echo "\n no first date -> starting with " . $d->AsSQL( );
+	} else {
+	      $d = new cDate( $this->GetFirstDate( ) );
+	 }
 
         $fertig = false;
+        $dt_next = $d;
 
         do {
 
-          if ( $d->eq( $obj_date ) ) { return true; }
+          if ( $dt_next->eq( $obj_date ) ) { return true; }
 
-          if ( $d->gt( $obj_date ) ) { return false; }
+          if ( $dt_next->gt( $obj_date ) ) { return false; }
 
-          if  ( $this->IsOverflow( $d ) ) { return false; }
+          if  ( $this->IsOverflow( $dt_next ) ) { return false; }
 
-          $d = $this->GetFollower( $d );
+          $d = $this->GetFollower( $dt_next, $dt_next );
 
         } while ( ! $fertig );
 
@@ -1607,8 +1894,10 @@ abstract class cDateStrategy {
 
         if ( ($is_first_date == true ) && ($obj_date_start->eq($dt)) ) { return $dt; }
 
+        $dt_next = $dt;
+
         do {
-            $dt = $this->GetFollower( $dt );
+            $dt = $this->GetFollower( $dt_next, $dt_next );
             # echo "<br> GetNextEventDate() : untersuche " . $dt->AsDMY();
             if ( $obj_date_start->eq( $dt ) && ( $is_first_date ) ) return $dt;
             if ( $this->IsOverflow( $dt ) ) { return null; }
@@ -1619,8 +1908,10 @@ abstract class cDateStrategy {
 
     }   // function GetNextEventDate
 
-
-
+    /**
+      * deprecated
+      *
+      */
 
     public function FromForm(  ) {
     /*
@@ -1683,6 +1974,12 @@ abstract class cDateStrategy {
         }*/
 
     }
+
+
+    /**
+      * deprecated
+      *
+      */
 
 
     public function FillForm(  ) {
@@ -1768,7 +2065,10 @@ abstract class cDateStrategy {
 
     }
 
-
+    /**
+      * deprecated
+      *
+      */
 
 
 
@@ -1800,6 +2100,13 @@ abstract class cDateStrategy {
         else die( "unbekannte Auswahl '$selectoncelebrities'");
 
     }   // SetSpecialDaysFromForm()
+
+      /**
+      * deprecated
+      *
+      */
+
+
 
     protected function SetStartEndDatesFromForm() {
 
