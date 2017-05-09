@@ -479,21 +479,267 @@ $_ARY_MONTH_EN_LONG = array(
 
 /**
   *
-  * cDate represents a single date
+  * Objects of the class cDate represent single dates in Gregoria calendar style
   *
   * @author Rainer Stötter
   * @copyright 2010-2017 Rainer Stötter
   * @license MIT
+  * @version =1.0.1
   *
   */
 
 
 class cDate {
 
+/*
+
+TODO Werktage und Arbeitstage je Zeiteinheit
+
+TODO: Feiertage: http://www.kalender-uhrzeit.de/kalenderwochen-2017
+
+TODO: Verschriftlichen:
+
+Der Kalender mit seinen Wochen und Tagen
+
+Schon die Menschen in der Steinzeit beobachteten die wiederkehrenden Ereignisse in der Natur. Sie bemerkten den Wechsel zwischen Tag und Nacht, die sich wiederholenden Mondphasen und die jahreszeitbedingten Klimaveränderungen. Im Laufe der Zeit entwickelten sich die Orientierungen immer weiter. Es wurden religiöse Beobachtungsstätte wie der Turm von Jericho und Stonehenge gebaut, um die Jahreszeiten und Tage besser bestimmen zu können. Die frühen Hochkulturen Ägyptens und Mesopotamiens entwickelten verschiedene Kalendertypen, die eine Grundlage für die noch heute geltenden Kalender bilden. 1582 änderte Papst Gregor XIII. den Julianischen Kalender, der dem Jahreslauf der Sonne elf Tage nachhinkte. Um dies auszugleichen folgte auf den 4. Oktober 1582 direkt der 15. Oktober. Die Schaltjahresregel blieb erhalten. So entstand der Gregorianische Kalender, der noch immer in den meisten Ländern der Welt benutzt wird.
+
+
+
+Das Schaltjahr
+
+Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein normales Jahr mit einem Donnerstag beginnt und auch endet, ist es 53 Wochen lang. Ein Schaltjahr besteht ebenfalls aus 53 Kalenderwochen, fängt entweder mit einem Mittwoch an und endet mit einem Donnerstag oder fängt mit einem Donnerstag an und wird mit einem Freitag beendet. Warum hat ein Schaltjahr einen Tag mehr, als ein normales Jahr? Die Erde dreht sich in 365 Tage und 6 Stunden um die Sonne, also mehr als der Kalender mit ganzen Tagen aufweist. Dies würde mit der Zeit nicht unbemerkt bleiben. Weihnachten würde irgendwann im Sommer stattfinden. Um diese Ungenauigkeit auszugleichen, wurde alle vier Jahre ein zusätzlicher Tag, der 29. Februar eingeführt. Zusätzlich entfällt das Schaltjahr bei Jahren die durch 100 teilbar sind, aber nicht durch 400 teilbar sind, wie in den Jahren 1700, 1800 und 1900.
+*/
+
+    /**
+      * The version of the class
+      *
+      * @var string $version
+      *
+      *
+      */
+
+      public $version = '1.0.1';
+
+
+    /**
+      * The number of the day of week of sunday in Gregorian notation.
+      *
+      * Gregorian days are zero-based ( start with 0 ) and start with the sunday
+      *
+      * @var int
+      *
+      * @see DOW_SUNDAY
+      * @see DOW_MONDAY
+      * @see DOW_TUESDAY
+      * @see DOW_FRIDAY
+      * @see DOW_SATURDAY
+      *
+      */
+
+    const DOW_SUNDAY = 0;
+
+    /**
+      * The number of the day of week of monday in Gregorian notation.
+      *
+      * Gregorian days are zero-based ( start with 0 ) and start with the sunday
+      *
+      * @var int
+      *
+      * @see DOW_SUNDAY
+      * @see DOW_MONDAY
+      * @see DOW_TUESDAY
+      * @see DOW_FRIDAY
+      * @see DOW_SATURDAY
+      *
+      */
+
+    const DOW_MONDAY = 1;
+
+    /**
+      * The number of the day of week of tuesday in Gregorian notation.
+      *
+      * Gregorian days are zero-based ( start with 0 ) and start with the sunday
+      *
+      * @var int
+      *
+      * @see DOW_SUNDAY
+      * @see DOW_MONDAY
+      * @see DOW_TUESDAY
+      * @see DOW_FRIDAY
+      * @see DOW_SATURDAY
+      *
+      */
+
+    const DOW_TUESDAY = 2;
+
+    /**
+      * The number of the day of week of wednesday in Gregorian notation.
+      *
+      * Gregorian days are zero-based ( start with 0 ) and start with the sunday
+      *
+      * @var int
+      *
+      * @see DOW_SUNDAY
+      * @see DOW_MONDAY
+      * @see DOW_TUESDAY
+      * @see DOW_FRIDAY
+      * @see DOW_SATURDAY
+      *
+      */
+
+    const DOW_WEDNESDAY = 3;
+
+    /**
+      * The number of the day of week of thursday in Gregorian notation.
+      *
+      * Gregorian days are zero-based ( start with 0 ) and start with the sunday
+      *
+      * @var int
+      *
+      * @see DOW_SUNDAY
+      * @see DOW_MONDAY
+      * @see DOW_TUESDAY
+      * @see DOW_FRIDAY
+      * @see DOW_SATURDAY
+      *
+      */
+
+    const DOW_THURSDAY = 4;
+
+    /**
+      * The number of the day of week of friday in Gregorian notation.
+      *
+      * Gregorian days are zero-based ( start with 0 ) and start with the sunday
+      *
+      * @var int
+      *
+      * @see DOW_SUNDAY
+      * @see DOW_MONDAY
+      * @see DOW_TUESDAY
+      * @see DOW_FRIDAY
+      * @see DOW_SATURDAY
+      *
+      */
+
+    const DOW_FRIDAY = 5;
+
+    /**
+      * The number of the day of week of saturday in Gregorian notation.
+      *
+      * Gregorian days are zero-based ( start with 0 ) and start with the sunday
+      *
+      * @var int
+      *
+      * @see DOW_SUNDAY
+      * @see DOW_MONDAY
+      * @see DOW_TUESDAY
+      * @see DOW_FRIDAY
+      * @see DOW_SATURDAY
+      *
+      */
+
+    const DOW_SATURDAY = 6;
+
+
+    /**
+      * The one-based year part of the date
+      *
+      * @var int $m_year the year part of the date
+      *
+      * @see $m_year
+      * @see Year
+      * @see $m_month
+      * @see Month
+      * @see $m_day
+      * @see Day
+      * @see $m_timestamp
+      * @see TimeStamp
+      * @see $m_dow
+      * @see DOW
+      *
+      */
+
     protected $m_year = -1;
+
+    /**
+      * The one-based month part of the date
+      *
+      * @var int $m_month the month part of the date
+      *
+      * @see $m_year
+      * @see Year
+      * @see $m_month
+      * @see Month
+      * @see $m_day
+      * @see Day
+      * @see $m_timestamp
+      * @see TimeStamp
+      * @see $m_dow
+      * @see DOW
+      *
+      */
+
     protected $m_month = -1;
+
+    /**
+      * The one-based day part of the date
+      *
+      * @var int $m_day the day part of the date
+      *
+      * @see $m_year
+      * @see Year
+      * @see $m_month
+      * @see Month
+      * @see $m_day
+      * @see Day
+      * @see $m_timestamp
+      * @see TimeStamp
+      * @see $m_dow
+      * @see DOW
+      *
+      */
+
     protected $m_day = -1;
+
+    /**
+      * The timestamp of the date
+      *
+      * @var int $m_timestamp the timestamp of the date
+      *
+      * @see $m_year
+      * @see Year
+      * @see $m_month
+      * @see Month
+      * @see $m_day
+      * @see Day
+      * @see $m_timestamp
+      * @see TimeStamp
+      * @see $m_dow
+      * @see DOW
+      * @see mdy2ts
+      *
+      */
+
     protected $m_timestamp = -1;
+
+    /**
+      * The day of week of the date
+      *
+      * @var int $m_dow the day of week of the date
+      *
+      * @see $m_year
+      * @see Year
+      * @see $m_month
+      * @see Month
+      * @see $m_day
+      * @see Day
+      * @see $m_timestamp
+      * @see TimeStamp
+      * @see $m_dow
+      * @see DOW
+      *
+      */
+
     protected $m_dow = -1;      // zwischen 0 (f&uuml;r Sonntag) und 6 (f&uuml;r Samstag)
 
     /**
@@ -509,18 +755,18 @@ class cDate {
       * if ( $dt->InJanuary( ) ) do_someting( ) ;
       *
       * @return bool true, if the date is a day in January
-      * @see InJanuary( )
-      * @see InFebruary( )
-      * @see InMarch( )
-      * @see InApril( )
-      * @see InMay( )
-      * @see InJune( )
-      * @see InJuly( )
-      * @see InAugust( )
-      * @see InSeptember( )
-      * @see InOctober( )
-      * @see InNovember( )
-      * @see InDecember( )
+      * @see InJanuary
+      * @see InFebruary
+      * @see InMarch
+      * @see InApril
+      * @see InMay
+      * @see InJune
+      * @see InJuly
+      * @see InAugust
+      * @see InSeptember
+      * @see InOctober
+      * @see InNovember
+      * @see InDecember
       */
 
 
@@ -542,18 +788,18 @@ class cDate {
       *
       * @return bool true, if the date is a day in February
       *
-      * @see InJanuary( )
-      * @see InFebruary( )
-      * @see InMarch( )
-      * @see InApril( )
-      * @see InMay( )
-      * @see InJune( )
-      * @see InJuly( )
-      * @see InAugust( )
-      * @see InSeptember( )
-      * @see InOctober( )
-      * @see InNovember( )
-      * @see InDecember( )
+      * @see InJanuary
+      * @see InFebruary
+      * @see InMarch
+      * @see InApril
+      * @see InMay
+      * @see InJune
+      * @see InJuly
+      * @see InAugust
+      * @see InSeptember
+      * @see InOctober
+      * @see InNovember
+      * @see InDecember
       */
 
     public function InFebruary() {
@@ -573,18 +819,18 @@ class cDate {
       * if ( $dt->InJanuary( ) ) do_someting( ) ;
       *
       * @return bool true, if the date is a day in March
-      * @see InJanuary( )
-      * @see InFebruary( )
-      * @see InMarch( )
-      * @see InApril( )
-      * @see InMay( )
-      * @see InJune( )
-      * @see InJuly( )
-      * @see InAugust( )
-      * @see InSeptember( )
-      * @see InOctober( )
-      * @see InNovember( )
-      * @see InDecember( )
+      * @see InJanuary
+      * @see InFebruary
+      * @see InMarch
+      * @see InApril
+      * @see InMay
+      * @see InJune
+      * @see InJuly
+      * @see InAugust
+      * @see InSeptember
+      * @see InOctober
+      * @see InNovember
+      * @see InDecember
       */
 
     public function InMarch() {
@@ -605,18 +851,18 @@ class cDate {
       *
       * @return bool true, if the date is a day in April
       *
-      * @see InJanuary( )
-      * @see InFebruary( )
-      * @see InMarch( )
-      * @see InApril( )
-      * @see InMay( )
-      * @see InJune( )
-      * @see InJuly( )
-      * @see InAugust( )
-      * @see InSeptember( )
-      * @see InOctober( )
-      * @see InNovember( )
-      * @see InDecember( )
+      * @see InJanuary
+      * @see InFebruary
+      * @see InMarch
+      * @see InApril
+      * @see InMay
+      * @see InJune
+      * @see InJuly
+      * @see InAugust
+      * @see InSeptember
+      * @see InOctober
+      * @see InNovember
+      * @see InDecember
       */
 
     public function InApril() {
@@ -636,18 +882,18 @@ class cDate {
       * if ( $dt->InMay( ) ) do_someting( ) ;
       *
       * @return bool true, if the date is a day in May
-      * @see InJanuary( )
-      * @see InFebruary( )
-      * @see InMarch( )
-      * @see InApril( )
-      * @see InMay( )
-      * @see InJune( )
-      * @see InJuly( )
-      * @see InAugust( )
-      * @see InSeptember( )
-      * @see InOctober( )
-      * @see InNovember( )
-      * @see InDecember( )
+      * @see InJanuary
+      * @see InFebruary
+      * @see InMarch
+      * @see InApril
+      * @see InMay
+      * @see InJune
+      * @see InJuly
+      * @see InAugust
+      * @see InSeptember
+      * @see InOctober
+      * @see InNovember
+      * @see InDecember
       */
 
     public function InMay() {
@@ -668,18 +914,18 @@ class cDate {
       *
       * @return bool true, if the date is a day in June
       *
-      * @see InJanuary( )
-      * @see InFebruary( )
-      * @see InMarch( )
-      * @see InApril( )
-      * @see InMay( )
-      * @see InJune( )
-      * @see InJuly( )
-      * @see InAugust( )
-      * @see InSeptember( )
-      * @see InOctober( )
-      * @see InNovember( )
-      * @see InDecember( )
+      * @see InJanuary
+      * @see InFebruary
+      * @see InMarch
+      * @see InApril
+      * @see InMay
+      * @see InJune
+      * @see InJuly
+      * @see InAugust
+      * @see InSeptember
+      * @see InOctober
+      * @see InNovember
+      * @see InDecember
       */
 
     public function InJune() {
@@ -700,18 +946,18 @@ class cDate {
       *
       * @return bool true, if the date is a day in July
 
-      * @see InJanuary( )
-      * @see InFebruary( )
-      * @see InMarch( )
-      * @see InApril( )
-      * @see InMay( )
-      * @see InJune( )
-      * @see InJuly( )
-      * @see InAugust( )
-      * @see InSeptember( )
-      * @see InOctober( )
-      * @see InNovember( )
-      * @see InDecember( )
+      * @see InJanuary
+      * @see InFebruary
+      * @see InMarch
+      * @see InApril
+      * @see InMay
+      * @see InJune
+      * @see InJuly
+      * @see InAugust
+      * @see InSeptember
+      * @see InOctober
+      * @see InNovember
+      * @see InDecember
       */
 
     public function InJuly() {
@@ -732,18 +978,18 @@ class cDate {
       *
       * @return bool true, if the date is a day in August
       *
-      * @see InJanuary( )
-      * @see InFebruary( )
-      * @see InMarch( )
-      * @see InApril( )
-      * @see InMay( )
-      * @see InJune( )
-      * @see InJuly( )
-      * @see InAugust( )
-      * @see InSeptember( )
-      * @see InOctober( )
-      * @see InNovember( )
-      * @see InDecember( )
+      * @see InJanuary
+      * @see InFebruary
+      * @see InMarch
+      * @see InApril
+      * @see InMay
+      * @see InJune
+      * @see InJuly
+      * @see InAugust
+      * @see InSeptember
+      * @see InOctober
+      * @see InNovember
+      * @see InDecember
       */
 
     public function InAugust() {
@@ -764,18 +1010,18 @@ class cDate {
       *
       * @return bool true, if the date is a day in September
       *
-      * @see InJanuary( )
-      * @see InFebruary( )
-      * @see InMarch( )
-      * @see InApril( )
-      * @see InMay( )
-      * @see InJune( )
-      * @see InJuly( )
-      * @see InAugust( )
-      * @see InSeptember( )
-      * @see InOctober( )
-      * @see InNovember( )
-      * @see InDecember( )
+      * @see InJanuary
+      * @see InFebruary
+      * @see InMarch
+      * @see InApril
+      * @see InMay
+      * @see InJune
+      * @see InJuly
+      * @see InAugust
+      * @see InSeptember
+      * @see InOctober
+      * @see InNovember
+      * @see InDecember
       */
 
     public function InSeptember() {
@@ -796,18 +1042,18 @@ class cDate {
       *
       * @return bool true, if the date is a day in October
       *
-      * @see InJanuary( )
-      * @see InFebruary( )
-      * @see InMarch( )
-      * @see InApril( )
-      * @see InMay( )
-      * @see InJune( )
-      * @see InJuly( )
-      * @see InAugust( )
-      * @see InSeptember( )
-      * @see InOctober( )
-      * @see InNovember( )
-      * @see InDecember( )
+      * @see InJanuary
+      * @see InFebruary
+      * @see InMarch
+      * @see InApril
+      * @see InMay
+      * @see InJune
+      * @see InJuly
+      * @see InAugust
+      * @see InSeptember
+      * @see InOctober
+      * @see InNovember
+      * @see InDecember
       */
 
     public function InOctober() {
@@ -828,18 +1074,18 @@ class cDate {
       *
       * @return bool true, if the date is a day in November
       *
-      * @see InJanuary( )
-      * @see InFebruary( )
-      * @see InMarch( )
-      * @see InApril( )
-      * @see InMay( )
-      * @see InJune( )
-      * @see InJuly( )
-      * @see InAugust( )
-      * @see InSeptember( )
-      * @see InOctober( )
-      * @see InNovember( )
-      * @see InDecember( )
+      * @see InJanuary
+      * @see InFebruary
+      * @see InMarch
+      * @see InApril
+      * @see InMay
+      * @see InJune
+      * @see InJuly
+      * @see InAugust
+      * @see InSeptember
+      * @see InOctober
+      * @see InNovember
+      * @see InDecember
       */
 
     public function InNovember() {
@@ -860,18 +1106,18 @@ class cDate {
       *
       * @return bool true, if the date is a day in December
       *
-      * @see InJanuary( )
-      * @see InFebruary( )
-      * @see InMarch( )
-      * @see InApril( )
-      * @see InMay( )
-      * @see InJune( )
-      * @see InJuly( )
-      * @see InAugust( )
-      * @see InSeptember( )
-      * @see InOctober( )
-      * @see InNovember( )
-      * @see InDecember( )
+      * @see InJanuary
+      * @see InFebruary
+      * @see InMarch
+      * @see InApril
+      * @see InMay
+      * @see InJune
+      * @see InJuly
+      * @see InAugust
+      * @see InSeptember
+      * @see InOctober
+      * @see InNovember
+      * @see InDecember
       */
 
     public function InDecember() {
@@ -879,11 +1125,11 @@ class cDate {
     }
 
     const SEEK_FORWARD = 0;
-    const SEEK_BACKWARD = 1;
+    const SEEK_BACKWARDS = 1;
 
     /**
       *
-      * SeekWeekday() seeks for the next searched weekday bidirectionally
+      * SeekWeekday() seeks for the next searched weekday bidirectionally. If the date is the weekday $weekday, then no the date will not move
       *
       * Example:
       *
@@ -894,31 +1140,56 @@ class cDate {
       * $dt->SeekWeekday( cDate::DOW_WEDNESDAY, cDate::SEEK_BACKWARDS ) ;
       *
       * @param int $weekday the weekday we are searching for const DOW_SUNDAY .. DOW_SATURDAY
-      * @param int $direction constant SEEK_FORWARD or SEEK_BACKWARDS
+      * @param int $direction constant SEEK_FORWARD or SEEK_BACKWARDS. It defualts to SEEK_FORWARD
+      * @param bool $skipper if true, then the date will move 7 days in the wanted direction on the time line, when the weekday is the weekday on the first position. Defaults to false.
       *
-      * @see DOW( )
+      * @see DOW
+      * @see Weekday
       *
       */
 
-    public function SeekWeekday( $weekday, $direction = 0 ) {
+    public function SeekWeekday( $weekday, $direction = self::SEEK_FORWARD, $skipper = false ) {
 
-    // suche beginnend mit dem aktuellen Datum den übergebenen Wochentag
-        while ($this->DOW() != $weekday) {
-            if ( $direction== 0 ) {
-                $this->inc();
-            } else {
-                $this->dec();
-            }
-        }
+    assert( $weekday >= self::DOW_SUNDAY && $weekday <= self::DOW_SATURDAY );
+    if( $weekday < self::DOW_SUNDAY || $weekday > self::DOW_SATURDAY ) {
+	die( "\n SeekWeekday: error: wrong weekday = $weekday" );
     }
 
-    const DOW_SUNDAY = 0;
-    const DOW_MONDAY = 1;
-    const DOW_TUESDAY = 2;
-    const DOW_WEDNESDAY = 3;
-    const DOW_THURSDAY = 4;
-    const DOW_FRIDAY = 5;
-    const DOW_SATURDAY = 6;
+    // suche beginnend mit dem aktuellen Datum den übergebenen Wochentag
+
+	if ( $weekday < self::DOW_SUNDAY || $weekday > self::DOW_SATURDAY ) {
+	    assert( false == true );
+	    die( "\n SeekWeekday() : error:  wrong weekday $weekday" );
+	}
+
+	if ( ( $this->m_dow == $weekday ) && ( $skipper ) ) {
+	    $this->Skip( $direction == self::SEEK_FORWARD ? 7 : - 7 );
+
+	} else {
+
+	    $count = 0;
+	    while ( $this->m_dow != $weekday ) {
+
+		if ( $direction == self::SEEK_FORWARD ) {
+		    $this->Inc( );
+		} else {
+		    $this->Dec( );
+		}
+
+		$count++;
+
+		if ( $count > 7 ) {
+		    die( "\n SeekWeekday : error: wrong week day $weekday" );
+		}
+
+	    }
+
+
+	}
+
+    }  // function SeekWeekday( )
+
+
 
     /**
       *
@@ -934,14 +1205,14 @@ class cDate {
       *
       * @return bool true, if the date is a sunday
       *
-      * @see IsSunday( )
-      * @see IsMonday( )
-      * @see IsTuesday( )
-      * @see IsWednesday( )
-      * @see IsThursday( )
-      * @see IsFriday( )
-      * @see IsSaturday( )
-      * @see DOW( )
+      * @see IsSunday
+      * @see IsMonday
+      * @see IsTuesday
+      * @see IsWednesday
+      * @see IsThursday
+      * @see IsFriday
+      * @see IsSaturday
+      * @see DOW
       *
       * @since = 1.0
       *
@@ -965,14 +1236,14 @@ class cDate {
       *
       * @return bool true, if the date is a monday
       *
-      * @see IsSunday( )
-      * @see IsMonday( )
-      * @see IsTuesday( )
-      * @see IsWednesday( )
-      * @see IsThursday( )
-      * @see IsFriday( )
-      * @see IsSaturday( )
-      * @see DOW( )
+      * @see IsSunday
+      * @see IsMonday
+      * @see IsTuesday
+      * @see IsWednesday
+      * @see IsThursday
+      * @see IsFriday
+      * @see IsSaturday
+      * @see DOW
       *
       * @since = 1.0
       *
@@ -996,14 +1267,14 @@ class cDate {
       *
       * @return bool true, if the date is a tuesday
       *
-      * @see IsSunday( )
-      * @see IsMonday( )
-      * @see IsTuesday( )
-      * @see IsWednesday( )
-      * @see IsThursday( )
-      * @see IsFriday( )
-      * @see IsSaturday( )
-      * @see DOW( )
+      * @see IsSunday
+      * @see IsMonday
+      * @see IsTuesday
+      * @see IsWednesday
+      * @see IsThursday
+      * @see IsFriday
+      * @see IsSaturday
+      * @see DOW
       *
       * @since = 1.0
       *
@@ -1027,14 +1298,14 @@ class cDate {
       *
       * @return bool true, if the date is a wednesday
       *
-      * @see IsSunday( )
-      * @see IsMonday( )
-      * @see IsTuesday( )
-      * @see IsWednesday( )
-      * @see IsThursday( )
-      * @see IsFriday( )
-      * @see IsSaturday( )
-      * @see DOW( )
+      * @see IsSunday
+      * @see IsMonday
+      * @see IsTuesday
+      * @see IsWednesday
+      * @see IsThursday
+      * @see IsFriday
+      * @see IsSaturday
+      * @see DOW
       *
       * @since = 1.0
       *
@@ -1049,24 +1320,32 @@ class cDate {
       *
       * IsThursday() returns true, if the date is a thursday
       *
+      *
       * Example:
       *
-      * use libdatephp;
+      * ```
+      * $dt = new \libdatephp\cDate( 1, 1, 2017 );
+      * assert( $dt->WOM( ) == 1 );
+      * echo "\n wom = " . $dt->WOM();
+      * $dt->GoWOM( 5 );
+      * assert( $dt->WOM( ) == 5 );
+      * $dt = new \libdatephp\cDate( 1, 1, 2017 );
+      * $dt->GoWOM( 5, \libdatephp\cDate::DOW_THURSDAY );
+      * assert( $dt->IsThursday( ) );
+      * assert( $dt->eq( new \libdatephp\cDate( 2,2,2017) ) );
+      * ```
       *
-      * $dt = new cDate( 11, 23, 2016 );
-      *
-      * if ( $dt->IsThursday( ) ) do_someting( ) ;
       *
       * @return bool true, if the date is a thursday
       *
-      * @see IsSunday( )
-      * @see IsMonday( )
-      * @see IsTuesday( )
-      * @see IsWednesday( )
-      * @see IsThursday( )
-      * @see IsFriday( )
-      * @see IsSaturday( )
-      * @see DOW( )
+      * @see IsSunday
+      * @see IsMonday
+      * @see IsTuesday
+      * @see IsWednesday
+      * @see IsThursday
+      * @see IsFriday
+      * @see IsSaturday
+      * @see DOW
       *
       * @since = 1.0
       *
@@ -1090,14 +1369,14 @@ class cDate {
       *
       * @return bool true, if the date is a friday
       *
-      * @see IsSunday( )
-      * @see IsMonday( )
-      * @see IsTuesday( )
-      * @see IsWednesday( )
-      * @see IsThursday( )
-      * @see IsFriday( )
-      * @see IsSaturday( )
-      * @see DOW( )
+      * @see IsSunday
+      * @see IsMonday
+      * @see IsTuesday
+      * @see IsWednesday
+      * @see IsThursday
+      * @see IsFriday
+      * @see IsSaturday
+      * @see DOW
       *
       * @since = 1.0
       *
@@ -1122,14 +1401,14 @@ class cDate {
       *
       * @return bool true, if the date is a saturday
       *
-      * @see IsSunday( )
-      * @see IsMonday( )
-      * @see IsTuesday( )
-      * @see IsWednesday( )
-      * @see IsThursday( )
-      * @see IsFriday( )
-      * @see IsSaturday( )
-      * @see DOW( )
+      * @see IsSunday
+      * @see IsMonday
+      * @see IsTuesday
+      * @see IsWednesday
+      * @see IsThursday
+      * @see IsFriday
+      * @see IsSaturday
+      * @see DOW
       *
       * @since = 1.0
       *
@@ -1154,10 +1433,10 @@ class cDate {
       *
       * @return int the number of he day in the quarter
       *
-      * @see DOQ( )
-      * @see DOW( )
-      * @see DOM( )
-      * @see DOY( )
+      * @see DOQ
+      * @see DOW
+      * @see DOM
+      * @see DOY
       *
       * @since = 1.0
       *
@@ -1189,14 +1468,14 @@ class cDate {
       *
       * @return string the German short representation of the weekday of the date
       *
-      * @see C_Weekday_Short_DE( )
-      * @see C_Weekday_Long_DE( )
-      * @see C_Month_Long_DE( )
-      * @see C_Month_Short_DE( )
-      * @see C_Weekday_Short_EN( )
-      * @see C_Weekday_Long_EN( )
-      * @see C_Month_Long_EN( )
-      * @see C_Month_Short_EN( )
+      * @see C_Weekday_Short_DE
+      * @see C_Weekday_Long_DE
+      * @see C_Month_Long_DE
+      * @see C_Month_Short_DE
+      * @see C_Weekday_Short_EN
+      * @see C_Weekday_Long_EN
+      * @see C_Month_Long_EN
+      * @see C_Month_Short_EN
 
       *
       * @since = 1.0
@@ -1225,14 +1504,14 @@ class cDate {
       *
       * @return string the German long representation of the weekday of the date
       *
-      * @see C_Weekday_Short_DE( )
-      * @see C_Weekday_Long_DE( )
-      * @see C_Month_Long_DE( )
-      * @see C_Month_Short_DE( )
-      * @see C_Weekday_Short_EN( )
-      * @see C_Weekday_Long_EN( )
-      * @see C_Month_Long_EN( )
-      * @see C_Month_Short_EN( )
+      * @see C_Weekday_Short_DE
+      * @see C_Weekday_Long_DE
+      * @see C_Month_Long_DE
+      * @see C_Month_Short_DE
+      * @see C_Weekday_Short_EN
+      * @see C_Weekday_Long_EN
+      * @see C_Month_Long_EN
+      * @see C_Month_Short_EN
       *
       * @since = 1.0
       *
@@ -1257,14 +1536,14 @@ class cDate {
       *
       * @return string the German short representation of the month of the date
       *
-      * @see C_Weekday_Short_DE( )
-      * @see C_Weekday_Long_DE( )
-      * @see C_Month_Long_DE( )
-      * @see C_Month_Short_DE( )
-      * @see C_Weekday_Short_EN( )
-      * @see C_Weekday_Long_EN( )
-      * @see C_Month_Long_EN( )
-      * @see C_Month_Short_EN( )
+      * @see C_Weekday_Short_DE
+      * @see C_Weekday_Long_DE
+      * @see C_Month_Long_DE
+      * @see C_Month_Short_DE
+      * @see C_Weekday_Short_EN
+      * @see C_Weekday_Long_EN
+      * @see C_Month_Long_EN
+      * @see C_Month_Short_EN
       *
       * @since = 1.0
       *
@@ -1283,23 +1562,23 @@ class cDate {
       * C_Month_Long_DE() returns the German long string representation of the name of the month
       *
       * Example:
-      *
-      * use libdatephp;
-      *
-      * $dt = new cDate( 11, 23, 2016 );
-      *
-      * echo $dt->C_Month_Long_DE( );
-      *
+      *```
+      * $dt = new \libdatephp\cDate( 1, 1, 2017 );
+      * for ( $i = 0; $i < 12; $i++ ) {
+      *      echo "\n the month " . $dt->C_Month_Short_DE( ) . ' of the year ' . $dt->Year( ) . ' has ' . $dt->WeeksOfMonth( ) . ' weeks';
+      *      $dt->AddMonths( );
+      * }
+      *```
       * @return string the German long representation of the month of the date
       *
-      * @see C_Weekday_Short_DE( )
-      * @see C_Weekday_Long_DE( )
-      * @see C_Month_Long_DE( )
-      * @see C_Month_Short_DE( )
-      * @see C_Weekday_Short_EN( )
-      * @see C_Weekday_Long_EN( )
-      * @see C_Month_Long_EN( )
-      * @see C_Month_Short_EN( )
+      * @see C_Weekday_Short_DE
+      * @see C_Weekday_Long_DE
+      * @see C_Month_Long_DE
+      * @see C_Month_Short_DE
+      * @see C_Weekday_Short_EN
+      * @see C_Weekday_Long_EN
+      * @see C_Month_Long_EN
+      * @see C_Month_Short_EN
       *
       * @since = 1.0
       *
@@ -1321,22 +1600,19 @@ class cDate {
       *
       * Example:
       *
-      * use libdatephp;
-      *
-      * $dt = new cDate( 11, 23, 2016 );
-      *
-      * echo $dt->C_Weekday_Short_EN( );
+      *```
+      *```
       *
       * @return string the English short representation of the weekday of the date
       *
-      * @see C_Weekday_Short_DE( )
-      * @see C_Weekday_Long_DE( )
-      * @see C_Month_Long_DE( )
-      * @see C_Month_Short_DE( )
-      * @see C_Weekday_Short_EN( )
-      * @see C_Weekday_Long_EN( )
-      * @see C_Month_Long_EN( )
-      * @see C_Month_Short_EN( )
+      * @see C_Weekday_Short_DE
+      * @see C_Weekday_Long_DE
+      * @see C_Month_Long_DE
+      * @see C_Month_Short_DE
+      * @see C_Weekday_Short_EN
+      * @see C_Weekday_Long_EN
+      * @see C_Month_Long_EN
+      * @see C_Month_Short_EN
       *
       * @since = 1.0
       *
@@ -1364,14 +1640,14 @@ class cDate {
       *
       * @return string the English long representation of the weekday of the date
       *
-      * @see C_Weekday_Short_DE( )
-      * @see C_Weekday_Long_DE( )
-      * @see C_Month_Long_DE( )
-      * @see C_Month_Short_DE( )
-      * @see C_Weekday_Short_EN( )
-      * @see C_Weekday_Long_EN( )
-      * @see C_Month_Long_EN( )
-      * @see C_Month_Short_EN( )        *
+      * @see C_Weekday_Short_DE
+      * @see C_Weekday_Long_DE
+      * @see C_Month_Long_DE
+      * @see C_Month_Short_DE
+      * @see C_Weekday_Short_EN
+      * @see C_Weekday_Long_EN
+      * @see C_Month_Long_EN
+      * @see C_Month_Short_EN        *
       * @since = 1.0
       *
       */
@@ -1391,22 +1667,23 @@ class cDate {
       *
       * Example:
       *
-      * use libdatephp;
-      *
-      * $dt = new cDate( 11, 23, 2016 );
-      *
-      * echo $dt->C_Month_Short_EN( );
-      *
+      *```
+      * $dt = new \libdatephp\cDate( 1, 1, 2017 );
+      * for ( $i = 0; $i < 12; $i++ ) {
+      *      echo "\n the month " . $dt->C_Month_Short_EN( ) . ' of the year ' . $dt->Year( ) . ' has ' . $dt->WeeksOfMonth( ) . ' weeks';
+      *      $dt->AddMonths( );
+      * }
+      *```      *
       * @return string the English short representation of the month of the date
       *
-      * @see C_Weekday_Short_DE( )
-      * @see C_Weekday_Long_DE( )
-      * @see C_Month_Long_DE( )
-      * @see C_Month_Short_DE( )
-      * @see C_Weekday_Short_EN( )
-      * @see C_Weekday_Long_EN( )
-      * @see C_Month_Long_EN( )
-      * @see C_Month_Short_EN( )
+      * @see C_Weekday_Short_DE
+      * @see C_Weekday_Long_DE
+      * @see C_Month_Long_DE
+      * @see C_Month_Short_DE
+      * @see C_Weekday_Short_EN
+      * @see C_Weekday_Long_EN
+      * @see C_Month_Long_EN
+      * @see C_Month_Short_EN
       *
       * @since = 1.0
       *
@@ -1434,14 +1711,14 @@ class cDate {
       *
       * @return string the English long representation of the month of the date
       *
-      * @see C_Weekday_Short_DE( )
-      * @see C_Weekday_Long_DE( )
-      * @see C_Month_Long_DE( )
-      * @see C_Month_Short_DE( )
-      * @see C_Weekday_Short_EN( )
-      * @see C_Weekday_Long_EN( )
-      * @see C_Month_Long_EN( )
-      * @see C_Month_Short_EN( )
+      * @see C_Weekday_Short_DE
+      * @see C_Weekday_Long_DE
+      * @see C_Month_Long_DE
+      * @see C_Month_Short_DE
+      * @see C_Weekday_Short_EN
+      * @see C_Weekday_Long_EN
+      * @see C_Month_Long_EN
+      * @see C_Month_Short_EN
       *
       * @since = 1.0
       *
@@ -1462,12 +1739,13 @@ class cDate {
       *
       * Example:
       *
-      * use libdatephp;
-      *
-      * $dt = new cDate( 11, 23, 2016 );
-      *
-      * $dt->FromAnyString( '01.01.2017' );
-      * $dt->FromAnyString( '2017-12-31' );
+      *```
+      * $dt = new \libdatephp\cDate( 1, 1, 2017 );
+      * for ( $i = 0; $i < 12; $i++ ) {
+      *      echo "\n the month " . $dt->C_Month_Long_EN( ) . ' of the year ' . $dt->Year( ) . ' has ' . $dt->WeeksOfMonth( ) . ' weeks';
+      *      $dt->AddMonths( );
+      * }
+      *```
       *
       * @param string $str the string with the date
       *
@@ -1583,18 +1861,18 @@ class cDate {
       * mdy2ts() calculates the timestamp out of the mdy notation
       *
       *
-      * @see mdy2ts( )
-      * @see ts2mdy( )
+      * @see mdy2ts
+      * @see ts2mdy
       *
       * @since = 1.0
       *
       */
 
 
-    private function mdy2ts ( )
+    protected function mdy2ts ( )
     {
 
-        $this->m_timestamp =mktime(0, 0, 0, $this->m_month, $this->m_day, $this->m_year);
+        $this->m_timestamp = mktime(0, 0, 0, $this->m_month, $this->m_day, $this->m_year);
         $this->CalculateWeekday (  );
 
     }   //  function mdy2ts ( void )
@@ -1604,15 +1882,15 @@ class cDate {
       * ts2mdy() calculates out of the timestamp out the mdy notation
       *
       *
-      * @see mdy2ts( )
-      * @see ts2mdy( )
+      * @see mdy2ts
+      * @see ts2mdy
       *
       * @since = 1.0
       *
       */
 
 
-    private function ts2mdy( ) {
+    protected function ts2mdy( ) {
 
         $datum = getdate( $this->m_timestamp );
 
@@ -1630,7 +1908,7 @@ class cDate {
 
     /**
       *
-      * The method CheckDateParameter( ) returns true, if the parameters are valid for a new cDate object
+      * The method CheckDate( ) returns true, if the parameters are valid for a new cDate object
       *
       *
       * @param int $month the month part of the date to be checked
@@ -1641,11 +1919,78 @@ class cDate {
       *
       */
 
-      public function CheckDateParameter( $month, $day, $year ) {
+      public function CheckDate( $month, $day, $year ) {
 
 	  return checkdate( $month, $day, $year );
 
-      }
+      }	// function CheckDate( )
+
+
+    /**
+      *
+      * _weekday( ) calculates the actual weekday for a given month, day and year
+      *
+      *
+      * @param int $m the month
+      * @param int $d the day
+      * @param int $m the year
+      *
+      * @return int the weekday - 0 = sunday, 1 = monday .. 6 = saturday
+      *
+      * @see mdy2ts
+      * @see ts2mdy
+      *
+      * @since = 1.0
+      *
+      */
+
+    protected function _weekday ( $month, $day, $year )    {
+
+	// TODO: Tag = (((Unix / 86400UL + 4) % 7UL) + 1);	//Wochentag Berechnung 1 ist Sonntag
+
+	// berechnet die numerische Repräsentation des Wochentags und liegt zwischen 0 (für Sonntag) und 6 (für Sonnabend)
+
+	// https://en.wikipedia.org/wiki/Determination_of_the_day_of_the_week
+
+        assert( checkdate($this->m_month, $this->m_day, $this->m_year ));
+        if ( ! checkdate($this->m_month, $this->m_day, $this->m_year )) {
+	    assert( false == true );
+	    die(  "\n CalculateWeekday: month = $this->m_month day = $this->m_day year = $this->m_year");
+        }
+
+	// m is month (1 = March, ..., 10 = December, 11 = Jan, 12 = Feb) Treat Jan & Feb as months of the preceding year
+
+        static $shifted_months = array( 11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 );
+
+        /*
+
+    Y is the year minus 1 for January or February, and the year for any other month
+    y is the last 2 digits of Y
+    c is the first 2 digits of Y - century
+    d is the day of the month (1 to 31)
+    m is the shifted month (March=1,...,February=12)
+    w is the day of week (0=Sunday,...,6=Saturday)
+
+        */
+
+        // $year = $year;
+
+        if ( ( $month== 1 ) || ( $month== 2 ) ) $year--;
+        $y = ( $year % 100 );	// letzte zwei Ziffern vom Jahr
+
+	// $c = ( ( $year - $year % 1000 ) / 100  );  // erste zwei Ziffern vom Jahr
+	$c = floor( $year / 100 );
+	$d = $day;
+	$m = $shifted_months[ $month- 1 ];
+
+	$w = ( $d + floor( 2.6 * $m - 0.2 )  + $y + floor( $y / 4 ) + floor( $c / 4 ) -  2 * $c  ) % 7;
+
+	if ( $w < 0 ) $w += 7;
+
+	return $w;
+
+    }   // function _weekday ( )
+
 
 
     /**
@@ -1653,21 +1998,116 @@ class cDate {
       * CalculateWeekday() calculates out of the timestamp the actual weekday
       *
       *
-      * @see mdy2ts( )
-      * @see ts2mdy( )
+      * @see mdy2ts
+      * @see ts2mdy
       *
       * @since = 1.0
       *
       */
 
 
-    private function CalculateWeekday ( )
-    {
+    protected function CalculateWeekday ( )    {
+
+	// TODO: Tag = (((Unix / 86400UL + 4) % 7UL) + 1);	//Wochentag Berechnung 1 ist Sonntag
+
+	// berechnet die numerische Repräsentation des Wochentags und liegt zwischen 0 (für Sonntag) und 6 (für Sonnabend)
+
+	// https://en.wikipedia.org/wiki/Determination_of_the_day_of_the_week
+
         assert( checkdate($this->m_month, $this->m_day, $this->m_year ));
+        if ( ! checkdate($this->m_month, $this->m_day, $this->m_year )) {
+	    assert( false == true );
+	    die(  "\n CalculateWeekday: month = $this->m_month day = $this->m_day year = $this->m_year");
+        }
+
+
+
+        $ary = getdate ( $this->m_timestamp );
+        $this-> m_dow = $ary[ 'wday' ];		// TODO: checks rausnehmen
+
+assert( $ary['mday'] == $this->m_day );
+assert( $ary['mon'] == $this->m_month );
+assert( $ary['year'] == $this->m_year );
+
+	$w = $this->_weekday( $this->m_month, $this->m_day, $this->m_year );
+
+        assert( $w == $this->m_dow );		// TODO ganz auf eigene Berechnung umstellen
+
+        if ( $w != $this->m_dow ) die(  "\n CalculateWeekday: dow = $w errechnet, ist aber " . $this->m_dow . " für month = $this->m_month day = $this->m_day year = $this->m_year");
+
+
+    }   // function CalculateWeekday ( )
+
+
+/*
+
+    protected function CalculateWeekday ( )    {
+
+	// TODO: Tag = (((Unix / 86400UL + 4) % 7UL) + 1);	//Wochentag Berechnung 1 ist Sonntag
+
+	// berechnet die numerische Repräsentation des Wochentags und liegt zwischen 0 (für Sonntag) und 6 (für Sonnabend)
+
+	// https://en.wikipedia.org/wiki/Determination_of_the_day_of_the_week
+
+        assert( checkdate($this->m_month, $this->m_day, $this->m_year ));
+        if ( ! checkdate($this->m_month, $this->m_day, $this->m_year )) {
+	    assert( false == true );
+	    die(  "\n CalculateWeekday: month = $this->m_month day = $this->m_day year = $this->m_year");
+        }
+
+
 
         $ary = getdate ( $this->m_timestamp );
         $this-> m_dow = $ary[ 'wday' ];
+
+assert( $ary['mday'] == $this->m_day );
+assert( $ary['mon'] == $this->m_month );
+assert( $ary['year'] == $this->m_year );
+
+	// m is month (1 = March, ..., 10 = December, 11 = Jan, 12 = Feb) Treat Jan & Feb as months of the preceding year
+
+        static $shifted_months = array( 11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 );
+
+
+
+//     Y is the year minus 1 for January or February, and the year for any other month
+//     y is the last 2 digits of Y
+//     c is the first 2 digits of Y - century
+//     d is the day of the month (1 to 31)
+//     m is the shifted month (March=1,...,February=12)
+//     w is the day of week (0=Sunday,...,6=Saturday)
+
+
+
+        $year = $this->m_year;
+        if ( ( $this->m_month == 1 ) || ( $this->m_month == 2 ) ) $year--;
+        $y = ( $year % 100 );	// letzte zwei Ziffern vom Jahr
+
+	// $c = ( ( $year - $year % 1000 ) / 100  );  // erste zwei Ziffern vom Jahr
+	$c = floor( $year / 100 );
+	$d = $this->m_day;
+	$m = $shifted_months[ $this->m_month - 1 ];
+
+
+  // w = (d + [2,6 m – 0,2] + y + [y/4] + [c/4] – 2c) mod 7
+	$w = ( $d + floor( 2.6 * $m - 0.2 )  + $y + floor( $y / 4 ) + floor( $c / 4 ) -  2 * $c  ) % 7;
+
+	if ( $w < 0 ) $w += 7;
+
+	// $w = ( $d + abs(floor( 2.6 * $m - 0.2 ))  + $y + abs(floor( $y / 4 )) + abs(floor( $c / 4 )) - abs(floor( 2 * $c)) ) % 7;
+
+	// echo "\n y = $y c = $c d = $d m= $m w = $w  year = $year for " . $this->AsSQL( );
+
+        assert( $w == $this->m_dow );		// TODO ganz auf eigene Berechnung umstellen
+
+        if ( $w != $this->m_dow ) die(  "\n CalculateWeekday: dow = $w errechnet, ist aber " . $this->m_dow . " für month = $this->m_month day = $this->m_day year = $this->m_year");
+
+
     }   // function CalculateWeekday ( )
+
+
+*/
+
 
 // ===============================================================
 
@@ -1685,11 +2125,11 @@ class cDate {
       *
       * @param $str string the SQL string
       *
-      * @see FromSQL( )
-      * @see FromDate( )
-      * @see FromDMY( )
-      * @see FromMDY( )
-      * @see FromTimeStamp( )
+      * @see FromSQL
+      * @see FromDate
+      * @see FromDMY
+      * @see FromMDY
+      * @see FromTimeStamp
       *
       * @since = 1.0
       *
@@ -1745,11 +2185,11 @@ class cDate {
       *
       * @param $str string the MDY string
       *
-      * @see FromSQL( )
-      * @see FromDate( )
-      * @see FromDMY( )
-      * @see FromMDY( )
-      * @see FromTimeStamp( )
+      * @see FromSQL
+      * @see FromDate
+      * @see FromDMY
+      * @see FromMDY
+      * @see FromTimeStamp
       *
       * @since = 1.0
       *
@@ -1802,11 +2242,11 @@ class cDate {
       *
       * $dt->FromDMY( '22.12.2016' );
       *
-      * @see FromSQL( )
-      * @see FromDate( )
-      * @see FromDMY( )
-      * @see FromMDY( )
-      * @see FromTimeStamp( )
+      * @see FromSQL
+      * @see FromDate
+      * @see FromDMY
+      * @see FromMDY
+      * @see FromTimeStamp
       *
       * @param $str string the DMY string
       *
@@ -1865,11 +2305,11 @@ class cDate {
       *
       * @param $obj cDate the cDate to copy from
       *
-      * @see FromSQL( )
-      * @see FromDate( )
-      * @see FromDMY( )
-      * @see FromMDY( )
-      * @see FromTimeStamp( )
+      * @see FromSQL
+      * @see FromDate
+      * @see FromDMY
+      * @see FromMDY
+      * @see FromTimeStamp
       *
       * @since = 1.0
       *
@@ -1897,11 +2337,11 @@ class cDate {
       *
       * @param $ts int the timestamp to copy from
       *
-      * @see FromSQL( )
-      * @see FromDate( )
-      * @see FromDMY( )
-      * @see FromMDY( )
-      * @see FromTimeStamp( )
+      * @see FromSQL
+      * @see FromDate
+      * @see FromDMY
+      * @see FromMDY
+      * @see FromTimeStamp
       *
       * @since = 1.0
       *
@@ -1937,20 +2377,19 @@ class cDate {
       *
       * Example:
       *
-      * use libdatephp;
+      * ```
+      * $dt = new \libdatephp\cDate( 1, 1, 2017 );
       *
-      * $dt = new cDate( 11, 23, 2016 );
-      *
-      * echo $dt->Month0(  );
+      * ```
       *
       * @return string the month part with leading zeroes
       *
-      * @see Month0( )
-      * @see Month( )
-      * @see Day0( )
-      * @see Day( )
-      * @see Year( )
-      * @see TimeStamp( )
+      * @see Month0
+      * @see Month
+      * @see Day0
+      * @see Day
+      * @see Year
+      * @see TimeStamp
       *
       * @since = 1.0
       *
@@ -1961,6 +2400,7 @@ class cDate {
     //
     // Monat als Zahl, mit f&uuml;hrenden Nullen  01 bis 12
     //
+
         return ( date("m", $this->AsTimeStamp() ) );
     }
 
@@ -1979,12 +2419,12 @@ class cDate {
       *
       * @return string the day part with leading zeroes
       *
-      * @see Month0( )
-      * @see Month( )
-      * @see Day0( )
-      * @see Day( )
-      * @see Year( )
-      * @see TimeStamp( )
+      * @see Month0
+      * @see Month
+      * @see Day0
+      * @see Day
+      * @see Year
+      * @see TimeStamp
       *
       * @since = 1.0
       *
@@ -2004,20 +2444,25 @@ class cDate {
       *
       * Example:
       *
-      * use libdatephp;
+      * ```
+      * $dt = new \libdatephp\cDate( 1, 1, 2017 );
       *
-      * $dt = new cDate( 11, 23, 2016 );
-      *
-      * echo $dt->Year(  );
+      *      for ( $i = 0; $i < 12; $i++ ) {
+      * 	$dt->GoFirstWeekOfMonthISO( );
+      * 	echo "\n The first week of the month " . $dt->Month( ) . ' in ' . $dt->Year( ) . ' starts on the ' . $dt->AsSQL( );
+      * 	echo '. The month has ' . $dt->WeeksOfMonth( ) . ' calendar weeks ';
+      * 	$dt->AddMonths( );
+      *      }
+      * ```
       *
       * @return int the year part
       *
-      * @see Month0( )
-      * @see Month( )
-      * @see Day0( )
-      * @see Day( )
-      * @see Year( )
-      * @see TimeStamp( )
+      * @see Month0
+      * @see Month
+      * @see Day0
+      * @see Day
+      * @see Year
+      * @see TimeStamp
       *
       * @since = 1.0
       *
@@ -2036,18 +2481,23 @@ class cDate {
       *
       * Example:
       *
-      * use libdatephp;
-      *
-      * $dt = new cDate( 11, 23, 2016 );
-      *
-      * $dt->SetYear( 1996 );
+      * ```
+      *      $dt = new \libdatephp\cDate( 1, 1, 2014 );
+      *      for ( $i = 2013; $i < 2021; $i++ ) {
+      * 	$dt->SetYear( $i );
+      * 	$woy = $dt->WeeksOfYear( );
+      * 	$dt = $dt->FirstWeekOfYearISO( );
+      * 	echo "\n The first week of the ISO year " . $i . ' starts on the ' . $dt->AsSQL( );
+      * 	echo '. The year has ' . $woy . ' calendar weeks ';
+      * }
+      * ```
       *
       * @param int $y the year part
       *
-      * @see SetYear( )
-      * @see SetMonth( )
-      * @see SetDay( )
-      * @see SetTimeStamp( )
+      * @see SetYear
+      * @see SetMonth
+      * @see SetDay
+      * @see SetTimeStamp
       *
       * @since = 1.0
       *
@@ -2064,6 +2514,197 @@ class cDate {
         $this->CalculateWeekday( );
     }  //  function SetYear ( )
 
+
+    /**
+      *
+      * SetWOY() sets the date to the monday of the $w-th week in the year and searches then the first day of week $wd
+      *
+      * week numbers are one-based and start with 1. The first week in the year has the number 1
+      *
+      * Example:
+      *
+      * use libdatephp;
+      *
+      * $dt = new cDate( 11, 23, 2016 );
+      *
+      * $dt->SetWOY( 24 );
+      *
+      * Example:
+      * ```
+      * $dt = new \libdatephp\cDate( 4, 28, 2017 );
+      * $dt->SetWOY( 1 );
+      * assert( $dt->WOY( ) == 1 );
+      * assert( $dt -> eq( new \libdatephp\cDate( 1,2,2017) ) );
+      * $dt->SetWOY( 18 );
+      * assert( $dt->WOY( ) == 18 );
+      * assert( $dt -> eq( new \libdatephp\cDate( 5,1,2017) ) );
+      * $dt->SetWOY( 19, \libdatephp\cDate::DOW_THURSDAY );
+      * assert( $dt->IsThursday( ) );
+      * assert( $dt->eq( new \libdatephp\cDate( 5,11,2017) ) );
+      * ```
+      *
+      * @param int $w the week number to set
+      * @param int $wd the day of week to search. Defaults to DOW_MONDAY
+      *
+      * @see SetYear
+      * @see SetMonth
+      * @see SetDay
+      * @see SetTimeStamp
+      * @see SetWOY
+      * @see GoWOM
+      * @see SetWOQ
+      *
+      * @since = 1.0.1
+      *
+      * @Deprecated
+      *
+      */
+
+
+    public function SetWOY ( $w, $wd = self::DOW_MONDAY )
+    {
+
+	$this->GoBOY( );
+
+	$d = ( 7 * ( $w - 1 ) ) + 1;
+
+	$secs = $d * 60 * 60 * 24;
+
+	$this->m_timestamp += $secs;
+
+	// echo "\n w = $w -> d = $d";
+
+        // assert( checkdate($this->m_month, $d, $this->m_year ));
+
+        $this->ts2mdy ( );
+        $this->CalculateWeekday( );
+
+        $this->SeekWeekday( $wd, self::SEEK_FORWARD );
+
+
+    }  //  function SetWOY ( )
+
+
+    /**
+      *
+      * MaxWeekday() returns the last possible weekday ( monday .. sunday ) for the actual week
+      *
+      * weekday numbers range from sunday (0) to saturday (6)
+      *
+      * Normally a week ranges from monday to sunday. But the first and last week of months and years do differ.
+      *
+      * Example:
+      *
+      * ```
+      * ```
+      *
+      * @return int the last possible weekday of this week. 0 if the full week is available. 1 if up to monday, 2 upto tuesday ...
+      *
+      * @see GoWOM
+      * @see SetWOY
+      * @see MaxWeekday
+      *
+      * @since = 1.0.1
+      *
+      */
+
+
+    public function MaxWeekday( ) {
+
+	$dt = new cDate( $this );
+
+	$month = $this->Month( );
+
+	$dt->GoBOW( );
+
+	// am Monatsende stehen oft nict alle Wohentage zur Verfügung
+	for( $i = 0; $i < 7; $i++ ) {
+
+	    if ( $this->Month( ) != $month ) {
+		// echo "\n MaxWeekday liefert " . $i . " nach " . $dt->AsSQL( ) ;
+		return $i;
+	    }
+
+	}
+
+	return 0;
+
+    }	// function MaxWeekday( )
+
+
+
+
+
+
+
+
+
+
+
+    /**
+      *
+      * SetWOQ() sets the date to the monday of the $w-th week in the actual quarter and searches then the first day of week $wd
+      *
+      * week numbers are one-based and start with 1. The first week in the year has the number 1
+      *
+      * Example:
+      *
+      * ```
+      * $dt = new \libdatephp\cDate( 1, 1, 2017 );
+      * assert( $dt->WOM( ) == 1 );
+      * echo "\n wom = " . $dt->WOM();
+      * $dt->GoWOM( 5 );
+      * assert( $dt->WOM( ) == 5 );
+      * $dt = new \libdatephp\cDate( 1, 1, 2017 );
+      * $dt->GoWOM( 5, \libdatephp\cDate::DOW_THURSDAY );
+      * assert( $dt->IsThursday( ) );
+      * assert( $dt->eq( new \libdatephp\cDate( 2,2,2017) ) );
+      * ```
+      *
+      * @param int $w the week number to set in the actual quarter
+      * @param int $wd the day of week to search. Defaults to DOW_MONDAY
+      *
+      * @see SetYear
+      * @see SetMonth
+      * @see SetDay
+      * @see SetTimeStamp
+      * @see GoWOM
+      * @see SetWOY
+      * @see SetWOQ
+      *
+      * @since = 1.0.1
+      *
+      */
+
+
+    public function SetWOQ ( $w, $wd = self::DOW_MONDAY )
+    {
+
+
+	assert( $w <= $this->WeeksInQuarter( ) );
+
+	$this->GoBOQ( );
+
+	$d = ( 7 * ( $w - 1 ) ) + 1;
+
+	$secs = $d * 60 * 60 * 24;
+
+	$this->m_timestamp += $secs;
+
+	// echo "\n w = $w -> d = $d";
+
+        // assert( checkdate($this->m_month, $d, $this->m_year ));
+
+        $this->ts2mdy ( );
+        $this->CalculateWeekday( );
+
+        $this->SeekWeekday( $wd, self::SEEK_FORWARD );
+
+
+    }  //  function SetWOQ ( )
+
+
+
     /**
       *
       * Month() returns the month part of the date without leading zeroes
@@ -2078,12 +2719,12 @@ class cDate {
       *
       * @return int the month without leading zeroes
       *
-      * @see Month0( )
-      * @see Month( )
-      * @see Day0( )
-      * @see Day( )
-      * @see Year( )
-      * @see TimeStamp( )
+      * @see Month0
+      * @see Month
+      * @see Day0
+      * @see Day
+      * @see Year
+      * @see TimeStamp
       *
       * @since = 1.0
       *
@@ -2109,10 +2750,10 @@ class cDate {
       *
       * @param int $m the month part
       *
-      * @see SetYear( )
-      * @see SetMonth( )
-      * @see SetDay( )
-      * @see SetTimeStamp( )
+      * @see SetYear
+      * @see SetMonth
+      * @see SetDay
+      * @see SetTimeStamp
       *
       * @since = 1.0
       *
@@ -2121,6 +2762,12 @@ class cDate {
 
     public function SetMonth ( $m )
     {
+
+	if ( $m < 1 || $m > 12 ) {
+	    assert( true == false );
+	    die( "\n SetMonth( $m )" );
+	}
+
         assert( checkdate($m, $this->m_day, $this->m_year ));
 
         $this-> m_month = $m;
@@ -2143,12 +2790,12 @@ class cDate {
       *
       * @return int the day part without leading zeroes
       *
-      * @see Month0( )
-      * @see Month( )
-      * @see Day0( )
-      * @see Day( )
-      * @see Year( )
-      * @see TimeStamp( )
+      * @see Month0
+      * @see Month
+      * @see Day0
+      * @see Day
+      * @see Year
+      * @see TimeStamp
       *
       * @since = 1.0
       *
@@ -2175,10 +2822,10 @@ class cDate {
       *
       * @param int $d the day part
       *
-      * @see SetYear( )
-      * @see SetMonth( )
-      * @see SetDay( )
-      * @see SetTimeStamp( )
+      * @see SetYear
+      * @see SetMonth
+      * @see SetDay
+      * @see SetTimeStamp
       *
       * @since = 1.0
       *
@@ -2187,6 +2834,11 @@ class cDate {
 
     public function SetDay ( $d )
     {
+
+	if ( $d < 1 || $d > 31 ) {
+	    assert( true == false );
+	    die( "\n SetDay( $d )" );
+	}
 
         assert( checkdate($this->m_month, $d, $this->m_year ));
 
@@ -2210,12 +2862,12 @@ class cDate {
       *
       * @return int the timestamp
       *
-      * @see Month0( )
-      * @see Month( )
-      * @see Day0( )
-      * @see Day( )
-      * @see Year( )
-      * @see TimeStamp( )
+      * @see Month0
+      * @see Month
+      * @see Day0
+      * @see Day
+      * @see Year
+      * @see TimeStamp
       *
       * @since = 1.0
       *
@@ -2242,12 +2894,12 @@ class cDate {
       *
       * @return int the timestamp
       *
-      * @see Month0( )
-      * @see Month( )
-      * @see Day0( )
-      * @see Day( )
-      * @see Year( )
-      * @see TimeStamp( )
+      * @see Month0
+      * @see Month
+      * @see Day0
+      * @see Day
+      * @see Year
+      * @see TimeStamp
       *
       * @since = 1.0
       *
@@ -2273,10 +2925,10 @@ class cDate {
       *
       * @param int $j the timestamp
       *
-      * @see SetYear( )
-      * @see SetMonth( )
-      * @see SetDay( )
-      * @see SetTimeStamp( )
+      * @see SetYear
+      * @see SetMonth
+      * @see SetDay
+      * @see SetTimeStamp
       *
       * @since = 1.0
       *
@@ -2301,6 +2953,8 @@ class cDate {
       *
       * Weekday() returns the weekday of the date Is the same eas DOW( )
       *
+      * The zero-based representation of the weekday will be returned (DOW_SUNDAY = 0 .. DOW_SATURDAY = 6).
+      *
       * Example:
       *
       * use libdatephp;
@@ -2311,8 +2965,8 @@ class cDate {
       *
       * @return int the weekday
       *
-      * @see Weekday( )
-      * @see DOW( )
+      * @see Weekday
+      * @see DOW
       *
       * @since = 1.0
       *
@@ -2322,8 +2976,12 @@ class cDate {
     public function Weekday ( )
     // zwischen 0 (f&uuml;r Sonntag) und 6 (f&uuml;r Samstag)
     {
+
+	// static $ary_iso_weekday = array( 7, 1, 2, 3, 4, 5, 6 );
+
         return $this->m_dow;
-    }  //  function TimeStamp ( )
+
+    }  //  function Weekday ( )
 
     /**
       *
@@ -2337,12 +2995,13 @@ class cDate {
       *
       * echo $dt->DOW( );
       *
+      *
       * @return int the number of he day in the week
       *
-      * @see DOQ( )
-      * @see DOW( )
-      * @see DOM( )
-      * @see DOY( )
+      * @see DOQ
+      * @see DOW
+      * @see DOM
+      * @see DOY
       *
       * @since = 1.0
       *
@@ -2351,15 +3010,16 @@ class cDate {
 
 
 
-    public function DOW ( )
+    public function DOW (  )
     // zwischen 0 (f&uuml;r Sonntag) und 6 (f&uuml;r Samstag)
     {
+
         return $this->Weekday( );
-    }  //  function TimeStamp ( )
+    }  //  function DOW ( )
 
     /**
       *
-      * DOM() aka "Day Of Month" returns the day number of the date in the month
+      * DOM() aka "Day Of Month" returns the one-based day number of the date in the month
       *
       * Example:
       *
@@ -2371,24 +3031,24 @@ class cDate {
       *
       * @return int the number of he day in the month
       *
-      * @see DOQ( )
-      * @see DOW( )
-      * @see DOM( )
-      * @see DOY( )
+      * @see DOQ
+      * @see DOW
+      * @see DOM
+      * @see DOY
       *
       * @since = 1.0
       *
       */
 
     public function DOM ( )
-    // zwischen 0 und 31
+    // zwischen 1 und 31
     {
         return $this->m_day;
     }  //  function TimeStamp ( )
 
     /**
       *
-      * DOY() aka "Day Of Year" returns the day number of the date in the year
+      * DOY() aka "Day Of Year" returns the one-based day number of the date in the year
       *
       * Example:
       *
@@ -2400,10 +3060,10 @@ class cDate {
       *
       * @return int the number of he day in the year
       *
-      * @see DOQ( )
-      * @see DOW( )
-      * @see DOM( )
-      * @see DOY( )
+      * @see DOQ
+      * @see DOW
+      * @see DOM
+      * @see DOY
       *
       * @since = 1.0
       *
@@ -2444,9 +3104,9 @@ class cDate {
       *
       * @return int the number of he quarter
       *
-      * @see Quarter( )
-      * @see NOQ( )
-      * @see NOW( )
+      * @see Quarter
+      * @see NOQ
+      * @see NOW
       *
       * @since = 1.0
       *
@@ -2478,59 +3138,105 @@ class cDate {
       *
       * @return int the number of he quarter
       *
-      * @see Quarter( )
-      * @see NOQ( )
-      * @see NOW( )
+      * @see Quarter
+      * @see NOQ
+      * @see NOW
       *
       * @since = 1.0
       *
       */
 
 
-    public function NOQ() {
+    public function NOQ( ) {
         //
         // Number of Quarter
         //
         return $this->Quarter();
-    }
+
+    }  // function NOQ( )
+
 
     /**
       *
-      * NOW() returns the Nuber of the week in the year the date belongs to. Same as WOY()
+      * WeeksOfMonth2() returns the number of weeks in the actual year the date belongs to. Split weeks are calculated as full weeks.
       *
       * Example:
+      * ```
+      * $dt = new \libdatephp\cDate( 1, 1, 2017 );
+      * echo "\n weeks of month = " . $dt->WeeksOfMonth( );
+      * assert( $dt->WeeksOfMonth( ) == 5 );
+      * ```
       *
-      * use libdatephp;
+      * @return int the week count of the actual month
       *
-      * $dt = new cDate( 11, 23, 2016 );
+      * @see WeeksOfYear
+      * @see WeeksOfMonth
+      * @see WeeksInQuarter
+      * @see NOW
+      * @see WOY
+      * @see WOM
       *
-      * echo $dt->NOW( );
+      * @since = 1.0
       *
-      * @return int the number of he week
+      */
+
+/*
+    public function WeeksOfMonth2( ) {
+    //
+    // Number of Weeks in the actual month - one-based and starting NOT on first monday in the month
+    //
+    //  NOTE : ISO-8601 Wochennummer des Jahres, die Woche beginnt am Montag
+    // TODO: WeeksInQuarter( )
+
+	$dt = new cDate( $this );
+
+	$dt->GoBOM();
+	$week0 = $dt->NOW( true );
+
+	$dt->GoEOM();
+	$week1 = $dt->NOW( true );
+
+	return ( $week1 - $week0 + 1 );
+
+    }   // public function WeeksOfMonth2()
+
+*/
+
+    /**
       *
-      * @see Quarter( )
-      * @see NOQ( )
-      * @see NOW( )
-      * @see WOY( )
-      * @see WOM( )
+      * WeeksOfMonth() returns the number of calendar weeks in the actual year the date belongs to. The first week starts on the first monday
+      *
+      * Example:
+      * ```
+      * $dt = new \libdatephp\cDate( 1, 1, 2017 );
+      *
+      *      for ( $i = 0; $i < 12; $i++ ) {
+      * 	$dt->GoFirstWeekOfMonthISO( );
+      * 	echo "\n The first week of the month " . $dt->Month( ) . ' in ' . $dt->Year( ) . ' starts on the ' . $dt->AsSQL( );
+      * 	echo '. The month has ' . $dt->WeeksOfMonth( ) . ' calendar weeks ';
+      * 	$dt->AddMonths( );
+      *      }
+      * ```
+      *
+      * @return int the week count of the actual month
+      *
+      * @see WeeksOfYear
+      * @see WeeksOfMonth
+      * @see WeeksInQuarter
+      * @see NOW
+      * @see WOY
+      * @see WOM
       *
       * @since = 1.0
       *
       */
 
 
-    public function NOW() {
-    //
-    // Number of Week
-    //
-    //  NOTE : ISO-8601 Wochennummer des Jahres, die Woche beginnt am Montag
-    //
-        return ( date("W", $this->AsTimeStamp() ) );
-    }   // public function NOW()
+
 
     /**
       *
-      * WOY() returns the Nuber of the week in the year the date belongs to. Same as NOW()
+      * WOY() returns the ISO number of the week in the year the date belongs to. Same as NOW()
       *
       * Example:
       *
@@ -2542,45 +3248,49 @@ class cDate {
       *
       * @return int the number of he week
       *
-      * @see Quarter( )
-      * @see NOQ( )
-      * @see NOW( )
-      * @see WOY( )
-      * @see WOM( )
+      * @see Quarter
+      * @see NOQ
+      * @see NOW
+      * @see WOY
+      * @see WOM
       *
       * @since = 1.0
       *
       */
 
 
-    public function WOY() {
+    public function WOY( ) {
     //
     // Number of Week of year
     //
     //  NOTE : ISO-8601 Wochennummer des Jahres, die Woche beginnt am Montag
     //
-        return ( $this->NOW() );
+        return ( $this->NOW( ) );
+
     }   // public function WOY()
 
     /**
       *
-      * WOM() returns the Nuber of the week in the month the date belongs to.
+      * WOM() returns the one-based number of the week in the month the date belongs to.
       *
       * Example:
       *
-      * use libdatephp;
-      *
-      * $dt = new cDate( 11, 23, 2016 );
-      *
-      * echo $dt->WOM( );
+      * ```
+      * $dt = new \libdatephp\cDate( 1, 1, 2017 );
+      * assert( $dt->WOM( ) == 1 );
+      * echo "\n wom = " . $dt->WOM();
+      * $dt->GoWOM( 5 );
+      * assert( $dt->WOM( ) == 5 );
+      * ```
       *
       * @return int the number of he week in the month
       *
-      * @see Quarter( )
-      * @see NOQ( )
-      * @see NOW( )
-      * @see WOY( )
-      * @see WOM( )
+      * @see Quarter
+      * @see NOQ
+      * @see NOW
+      * @see WOY
+      * @see WOM
+      * @see WOQ
       *
       * @since = 1.0
       *
@@ -2599,6 +3309,58 @@ class cDate {
     }   // public function WOM()
 
 
+
+
+
+    /**
+      *
+      * WOQ( ) returns the one-based number of the week in the quarter the date belongs to.
+      *
+      * Example:
+      *
+      * ```
+      * $dt = new \libdatephp\cDate( 1, 1, 2017 );
+      * assert( $dt->WOQ( ) == 1 );
+      * echo "\n woq = " . $dt->WOQ();
+      * $dt->GoWOM( 5 );
+      * assert( $dt->WOQ( ) == 5 );
+      * $dt->SetDate( 4, 28, 2017 );
+      * echo "\n woq = " . $dt->WOQ();
+      * assert( $dt->WOQ( ) == 5 );
+      * ```
+      *
+      * @return int the number of he week in the month
+      *
+      * @see Quarter
+      * @see NOQ
+      * @see NOW
+      * @see WOY
+      * @see WOM
+      * @see WOQ
+      *
+      * @since = 1.0
+      *
+      */
+
+
+    public function WOQ( ) {
+    //
+    // Number of Week of month
+    //
+
+        $week0 = $this->BOQ( )->NOW( true );
+        $week1 = $this->NOW( true );
+
+        if ( $week0 > $week1 ) $week0 = 1;	// erste Woche des Jahres kann die Wochennummer vom letzten Jahr liefern
+
+
+        // echo "\n WOM: $week1 - $week0 + 1 = " . ( ( $week1 - $week0 ) + 1 );
+
+        return ( $week1 - $week0 ) + 1;
+
+    }   // public function WOQ( )
+
+
     /**
       *
       * IsSommerzeit() returns true, if the date is in DST  Same as IsDST( ).
@@ -2613,8 +3375,8 @@ class cDate {
       *
       * @return bool true if the date is in DST
       *
-      * @see IsSommerzeit( )
-      * @see IsDST( )
+      * @see IsSommerzeit
+      * @see IsDST
       *
       * @since = 1.0
       *
@@ -2640,8 +3402,8 @@ class cDate {
       *
       * @return bool true if the date is in DST
       *
-      * @see IsSommerzeit( )
-      * @see IsDST( )
+      * @see IsSommerzeit
+      * @see IsDST
       *
       * @since = 1.0
       *
@@ -2654,15 +3416,57 @@ class cDate {
 
     /**
       *
+      * _leapyear() returns true, if the year $year is a leap year.
+      *
+      * Example:
+      * ```
+      * ```
+      *
+      * @param int $year the year to check
+      *
+      * @return bool true if $year is a leap year
+      *
+      * @since = 1.0
+      *
+      */
+
+
+    protected function _leapyear( $year ) {
+
+	/*
+	Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein normales Jahr mit einem Donnerstag beginnt und auch endet, ist es 53 Wochen lang. Ein Schaltjahr besteht ebenfalls aus 53 Kalenderwochen, fängt entweder mit einem Mittwoch an und endet mit einem Donnerstag oder fängt mit einem Donnerstag an und wird mit einem Freitag beendet. Warum hat ein Schaltjahr einen Tag mehr, als ein normales Jahr? Die Erde dreht sich in 365 Tage und 6 Stunden um die Sonne, also mehr als der Kalender mit ganzen Tagen aufweist. Dies würde mit der Zeit nicht unbemerkt bleiben. Weihnachten würde irgendwann im Sommer stattfinden. Um diese Ungenauigkeit auszugleichen, wurde alle vier Jahre ein zusätzlicher Tag, der 29. Februar eingeführt. Zusätzlich entfällt das Schaltjahr bei Jahren die durch 100 teilbar sind, aber nicht durch 400 teilbar sind, wie in den Jahren 1700, 1800 und 1900.
+	*/
+
+        // return ( date("L", $this->AsTimeStamp( ) ) );
+
+        $isleap = false;
+
+	if( !( $year % 4 ) )
+	{
+	    if( $year % 100 ) $isleap = true;
+	    else if( !( $year % 400 ) ) $isleap = true;
+	}
+
+	return $isleap;
+
+    }    // function _leapyear( )
+
+
+    /**
+      *
       * IsLeapYear() returns true, if the date is a leap year.
       *
       * Example:
+      * ```
+      * $dt = new \libdatephp\cDate( 1, 1, 2014 );
+      *      for ( $i = 0; $i < 50; $i++ ) {
+      * 	if ( $dt->IsLeapYear( ) ) {
+      * 	    echo "\n " . $dt->Year( ) . ' is a leapyear';
+      * 	}
+      * 	$dt->AddYears( );
       *
-      * use libdatephp;
-      *
-      * $dt = new cDate( 11, 23, 2016 );
-      *
-      * if ( $dt->IsLeapYear( ) ) do_someting( );
+      *      }
+      * ```
       *
       * @return bool true if the date is a leap year
       *
@@ -2672,7 +3476,17 @@ class cDate {
 
 
     public function IsLeapYear( ) {
-        return ( date("L", $this->AsTimeStamp( ) ) );
+
+	/*
+	Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein normales Jahr mit einem Donnerstag beginnt und auch endet, ist es 53 Wochen lang. Ein Schaltjahr besteht ebenfalls aus 53 Kalenderwochen, fängt entweder mit einem Mittwoch an und endet mit einem Donnerstag oder fängt mit einem Donnerstag an und wird mit einem Freitag beendet. Warum hat ein Schaltjahr einen Tag mehr, als ein normales Jahr? Die Erde dreht sich in 365 Tage und 6 Stunden um die Sonne, also mehr als der Kalender mit ganzen Tagen aufweist. Dies würde mit der Zeit nicht unbemerkt bleiben. Weihnachten würde irgendwann im Sommer stattfinden. Um diese Ungenauigkeit auszugleichen, wurde alle vier Jahre ein zusätzlicher Tag, der 29. Februar eingeführt. Zusätzlich entfällt das Schaltjahr bei Jahren die durch 100 teilbar sind, aber nicht durch 400 teilbar sind, wie in den Jahren 1700, 1800 und 1900.
+	*/
+
+	$is_leap = $this->_leapyear( $this->m_year );
+
+	assert( ( date("L", $this->AsTimeStamp( ) ) ) == $is_leap );	// TODO Überprüfung rausnehmen
+
+	return $is_leap;
+
     }
 
 // ===============================================================
@@ -2683,25 +3497,30 @@ class cDate {
       *
       * Example:
       *
-      * use libdatephp;
+      * ```
+      * $dt = new \libdatephp\cDate( 1, 1, 2017 );
       *
-      * $dt = new cDate( 11, 23, 2016 );
-      *
-      * echo $dt->AsSQL( );
+      *      for ( $i = 0; $i < 12; $i++ ) {
+      * 	$dt->GoFirstWeekOfMonthISO( );
+      * 	echo "\n The first week of the month " . $dt->Month( ) . ' in ' . $dt->Year( ) . ' starts on the ' . $dt->AsSQL( );
+      * 	echo '. The month has ' . $dt->WeeksOfMonth( ) . ' calendar weeks ';
+      * 	$dt->AddMonths( );
+      *      }
+      * ```
       *
       * @return string the SQL string
       *
-      * @see AsSQL( )
-      * @see AsMDY( )
-      * @see AsDMY( )
-      * @see AsMDY0( )
-      * @see AsDMY0( )
-      * @see AsUTC( )
-      * @see AsAMPM( )
-      * @see As_ampm( )
-      * @see AsSwatch( )
-      * @see AsISO8601( )
-      * @see AsRFC2822( )
+      * @see AsSQL
+      * @see AsMDY
+      * @see AsDMY
+      * @see AsMDY0
+      * @see AsDMY0
+      * @see AsUTC
+      * @see AsAMPM
+      * @see As_ampm
+      * @see AsSwatch
+      * @see AsISO8601
+      * @see AsRFC2822
       *
       * @since = 1.0
       *
@@ -2729,17 +3548,17 @@ class cDate {
       *
       * @return string the MDY string
       *
-      * @see AsSQL( )
-      * @see AsMDY( )
-      * @see AsDMY( )
-      * @see AsMDY0( )
-      * @see AsDMY0( )
-      * @see AsUTC( )
-      * @see AsAMPM( )
-      * @see As_ampm( )
-      * @see AsSwatch( )
-      * @see AsISO8601( )
-      * @see AsRFC2822( )
+      * @see AsSQL
+      * @see AsMDY
+      * @see AsDMY
+      * @see AsMDY0
+      * @see AsDMY0
+      * @see AsUTC
+      * @see AsAMPM
+      * @see As_ampm
+      * @see AsSwatch
+      * @see AsISO8601
+      * @see AsRFC2822
       *
       * @since = 1.0
       *
@@ -2767,17 +3586,17 @@ class cDate {
       *
       * @return string the DMY string
       *
-      * @see AsSQL( )
-      * @see AsMDY( )
-      * @see AsDMY( )
-      * @see AsMDY0( )
-      * @see AsDMY0( )
-      * @see AsUTC( )
-      * @see AsAMPM( )
-      * @see As_ampm( )
-      * @see AsSwatch( )
-      * @see AsISO8601( )
-      * @see AsRFC2822( )
+      * @see AsSQL
+      * @see AsMDY
+      * @see AsDMY
+      * @see AsMDY0
+      * @see AsDMY0
+      * @see AsUTC
+      * @see AsAMPM
+      * @see As_ampm
+      * @see AsSwatch
+      * @see AsISO8601
+      * @see AsRFC2822
       *
       * @since = 1.0
       *
@@ -2807,17 +3626,17 @@ class cDate {
       *
       * @return string the DMY string
       *
-      * @see AsSQL( )
-      * @see AsMDY( )
-      * @see AsDMY( )
-      * @see AsMDY0( )
-      * @see AsDMY0( )
-      * @see AsUTC( )
-      * @see AsAMPM( )
-      * @see As_ampm( )
-      * @see AsSwatch( )
-      * @see AsISO8601( )
-      * @see AsRFC2822( )
+      * @see AsSQL
+      * @see AsMDY
+      * @see AsDMY
+      * @see AsMDY0
+      * @see AsDMY0
+      * @see AsUTC
+      * @see AsAMPM
+      * @see As_ampm
+      * @see AsSwatch
+      * @see AsISO8601
+      * @see AsRFC2822
       *
       * @since = 1.0
       *
@@ -2848,17 +3667,17 @@ class cDate {
       *
       * @return string the MDY string
       *
-      * @see AsSQL( )
-      * @see AsMDY( )
-      * @see AsDMY( )
-      * @see AsMDY0( )
-      * @see AsDMY0( )
-      * @see AsUTC( )
-      * @see AsAMPM( )
-      * @see As_ampm( )
-      * @see AsSwatch( )
-      * @see AsISO8601( )
-      * @see AsRFC2822( )
+      * @see AsSQL
+      * @see AsMDY
+      * @see AsDMY
+      * @see AsMDY0
+      * @see AsDMY0
+      * @see AsUTC
+      * @see AsAMPM
+      * @see As_ampm
+      * @see AsSwatch
+      * @see AsISO8601
+      * @see AsRFC2822
       *
       * @since = 1.0
       *
@@ -2888,17 +3707,17 @@ class cDate {
       *
       * @return string the date string with the UTC
       *
-      * @see AsSQL( )
-      * @see AsMDY( )
-      * @see AsDMY( )
-      * @see AsMDY0( )
-      * @see AsDMY0( )
-      * @see AsUTC( )
-      * @see AsAMPM( )
-      * @see As_ampm( )
-      * @see AsSwatch( )
-      * @see AsISO8601( )
-      * @see AsRFC2822( )
+      * @see AsSQL
+      * @see AsMDY
+      * @see AsDMY
+      * @see AsMDY0
+      * @see AsDMY0
+      * @see AsUTC
+      * @see AsAMPM
+      * @see As_ampm
+      * @see AsSwatch
+      * @see AsISO8601
+      * @see AsRFC2822
       *
       * @since = 1.0
       *
@@ -2929,17 +3748,17 @@ class cDate {
       *
       * @return string the date string with AM/PM
       *
-      * @see AsSQL( )
-      * @see AsMDY( )
-      * @see AsDMY( )
-      * @see AsMDY0( )
-      * @see AsDMY0( )
-      * @see AsUTC( )
-      * @see AsAMPM( )
-      * @see As_ampm( )
-      * @see AsSwatch( )
-      * @see AsISO8601( )
-      * @see AsRFC2822( )
+      * @see AsSQL
+      * @see AsMDY
+      * @see AsDMY
+      * @see AsMDY0
+      * @see AsDMY0
+      * @see AsUTC
+      * @see AsAMPM
+      * @see As_ampm
+      * @see AsSwatch
+      * @see AsISO8601
+      * @see AsRFC2822
       *
       * @since = 1.0
       *
@@ -2965,17 +3784,17 @@ class cDate {
       *
       * @return string the date string with am/pm
       *
-      * @see AsSQL( )
-      * @see AsMDY( )
-      * @see AsDMY( )
-      * @see AsMDY0( )
-      * @see AsDMY0( )
-      * @see AsUTC( )
-      * @see AsAMPM( )
-      * @see As_ampm( )
-      * @see AsSwatch( )
-      * @see AsISO8601( )
-      * @see AsRFC2822( )
+      * @see AsSQL
+      * @see AsMDY
+      * @see AsDMY
+      * @see AsMDY0
+      * @see AsDMY0
+      * @see AsUTC
+      * @see AsAMPM
+      * @see As_ampm
+      * @see AsSwatch
+      * @see AsISO8601
+      * @see AsRFC2822
       *
       * @since = 1.0
       *
@@ -3002,17 +3821,17 @@ class cDate {
       *
       * @return string the date as swatch
       *
-      * @see AsSQL( )
-      * @see AsMDY( )
-      * @see AsDMY( )
-      * @see AsMDY0( )
-      * @see AsDMY0( )
-      * @see AsUTC( )
-      * @see AsAMPM( )
-      * @see As_ampm( )
-      * @see AsSwatch( )
-      * @see AsISO8601( )
-      * @see AsRFC2822( )
+      * @see AsSQL
+      * @see AsMDY
+      * @see AsDMY
+      * @see AsMDY0
+      * @see AsDMY0
+      * @see AsUTC
+      * @see AsAMPM
+      * @see As_ampm
+      * @see AsSwatch
+      * @see AsISO8601
+      * @see AsRFC2822
       *
       * @since = 1.0
       *
@@ -3039,17 +3858,17 @@ class cDate {
       *
       * @return string the date string in ISO format
       *
-      * @see AsSQL( )
-      * @see AsMDY( )
-      * @see AsDMY( )
-      * @see AsMDY0( )
-      * @see AsDMY0( )
-      * @see AsUTC( )
-      * @see AsAMPM( )
-      * @see As_ampm( )
-      * @see AsSwatch( )
-      * @see AsISO8601( )
-      * @see AsRFC2822( )
+      * @see AsSQL
+      * @see AsMDY
+      * @see AsDMY
+      * @see AsMDY0
+      * @see AsDMY0
+      * @see AsUTC
+      * @see AsAMPM
+      * @see As_ampm
+      * @see AsSwatch
+      * @see AsISO8601
+      * @see AsRFC2822
       *
       * @since = 1.0
       *
@@ -3076,17 +3895,17 @@ class cDate {
       *
       * @return string the date string with am/pm
       *
-      * @see AsSQL( )
-      * @see AsMDY( )
-      * @see AsDMY( )
-      * @see AsMDY0( )
-      * @see AsDMY0( )
-      * @see AsUTC( )
-      * @see AsAMPM( )
-      * @see As_ampm( )
-      * @see AsSwatch( )
-      * @see AsISO8601( )
-      * @see AsRFC2822( )
+      * @see AsSQL
+      * @see AsMDY
+      * @see AsDMY
+      * @see AsMDY0
+      * @see AsDMY0
+      * @see AsUTC
+      * @see AsAMPM
+      * @see As_ampm
+      * @see AsSwatch
+      * @see AsISO8601
+      * @see AsRFC2822
       *
       * @since = 1.0
       *
@@ -3114,14 +3933,14 @@ class cDate {
       *
       * $dt->GoBOY( );
       *
-      * @see GoBOM( )
-      * @see GoBOQ( )
-      * @see GoBOW( )
-      * @see GoBOY( )
-      * @see GoEOM( )
-      * @see GoEOQ( )
-      * @see GoEOW( )
-      * @see GoEOY( )
+      * @see GoBOM
+      * @see GoBOQ
+      * @see GoBOW
+      * @see GoBOY
+      * @see GoEOM
+      * @see GoEOQ
+      * @see GoEOW
+      * @see GoEOY
       *
       * @since = 1.0
       *
@@ -3149,14 +3968,14 @@ class cDate {
       *
       * $dt->GoBOM( );
       *
-      * @see GoBOM( )
-      * @see GoBOQ( )
-      * @see GoBOW( )
-      * @see GoBOY( )
-      * @see GoEOM( )
-      * @see GoEOQ( )
-      * @see GoEOW( )
-      * @see GoEOY( )
+      * @see GoBOM
+      * @see GoBOQ
+      * @see GoBOW
+      * @see GoBOY
+      * @see GoEOM
+      * @see GoEOQ
+      * @see GoEOW
+      * @see GoEOY
       *
       * @since = 1.0
       *
@@ -3182,14 +4001,14 @@ class cDate {
       *
       * $dt->GoBOQ( );
       *
-      * @see GoBOM( )
-      * @see GoBOQ( )
-      * @see GoBOW( )
-      * @see GoBOY( )
-      * @see GoEOM( )
-      * @see GoEOQ( )
-      * @see GoEOW( )
-      * @see GoEOY( )
+      * @see GoBOM
+      * @see GoBOQ
+      * @see GoBOW
+      * @see GoBOY
+      * @see GoEOM
+      * @see GoEOQ
+      * @see GoEOW
+      * @see GoEOY
       *
       * @since = 1.0
       *
@@ -3236,14 +4055,14 @@ class cDate {
       *
       * $dt->GoBOW( );
       *
-      * @see GoBOM( )
-      * @see GoBOQ( )
-      * @see GoBOW( )
-      * @see GoBOY( )
-      * @see GoEOM( )
-      * @see GoEOQ( )
-      * @see GoEOW( )
-      * @see GoEOY( )
+      * @see GoBOM
+      * @see GoBOQ
+      * @see GoBOW
+      * @see GoBOY
+      * @see GoEOM
+      * @see GoEOQ
+      * @see GoEOW
+      * @see GoEOY
       *
       * @since = 1.0
       *
@@ -3271,14 +4090,14 @@ class cDate {
       *
       * $dt->GoEOY( );
       *
-      * @see GoBOM( )
-      * @see GoBOQ( )
-      * @see GoBOW( )
-      * @see GoBOY( )
-      * @see GoEOM( )
-      * @see GoEOQ( )
-      * @see GoEOW( )
-      * @see GoEOY( )
+      * @see GoBOM
+      * @see GoBOQ
+      * @see GoBOW
+      * @see GoBOY
+      * @see GoEOM
+      * @see GoEOQ
+      * @see GoEOW
+      * @see GoEOY
       *
       * @since = 1.0
       *
@@ -3304,14 +4123,14 @@ class cDate {
       *
       * $dt->GoEOM( );
       *
-      * @see GoBOM( )
-      * @see GoBOQ( )
-      * @see GoBOW( )
-      * @see GoBOY( )
-      * @see GoEOM( )
-      * @see GoEOQ( )
-      * @see GoEOW( )
-      * @see GoEOY( )
+      * @see GoBOM
+      * @see GoBOQ
+      * @see GoBOW
+      * @see GoBOY
+      * @see GoEOM
+      * @see GoEOQ
+      * @see GoEOW
+      * @see GoEOY
       *
       * @since = 1.0
       *
@@ -3325,14 +4144,15 @@ class cDate {
     $month = $this->m_month;
 
     $month++;
-    if ($month>12)
-    {
+    if ( $month > 12 ) {
         $year++;
         $month = 1;
     }
+
     $this->SetDate( $month, 1, $year );  // n&auml;chster Monatserster
 
-    $this->Dec( );                                  // 1 Tag zur&uuml;ck
+     $this->Dec( );                                  // 1 Tag zur&uuml;ck
+
     }   // public function GoEOM ( )
 
 
@@ -3348,14 +4168,14 @@ class cDate {
       *
       * $dt->GoEOQ( );
       *
-      * @see GoBOM( )
-      * @see GoBOQ( )
-      * @see GoBOW( )
-      * @see GoBOY( )
-      * @see GoEOM( )
-      * @see GoEOQ( )
-      * @see GoEOW( )
-      * @see GoEOY( )
+      * @see GoBOM
+      * @see GoBOQ
+      * @see GoBOW
+      * @see GoBOY
+      * @see GoEOM
+      * @see GoEOQ
+      * @see GoEOW
+      * @see GoEOY
       *
       * @since = 1.0
       *
@@ -3403,14 +4223,14 @@ class cDate {
       *
       * $dt->GoEOW( );
       *
-      * @see GoBOM( )
-      * @see GoBOQ( )
-      * @see GoBOW( )
-      * @see GoBOY( )
-      * @see GoEOM( )
-      * @see GoEOQ( )
-      * @see GoEOW( )
-      * @see GoEOY( )
+      * @see GoBOM
+      * @see GoBOQ
+      * @see GoBOW
+      * @see GoBOY
+      * @see GoEOM
+      * @see GoEOQ
+      * @see GoEOW
+      * @see GoEOY
       *
       * @since = 1.0
       *
@@ -3438,9 +4258,9 @@ class cDate {
       *
       * $dt->Inc( );
       *
-      * @see Inc( )
-      * @see Dec( )
-      * @see Skip( )
+      * @see Inc
+      * @see Dec
+      * @see Skip
       *
       * @since = 1.0
       *
@@ -3466,9 +4286,9 @@ class cDate {
       *
       * $dt->Dec( );
       *
-      * @see Inc( )
-      * @see Dec( )
-      * @see Skip( )
+      * @see Inc
+      * @see Dec
+      * @see Skip
       *
       * @since = 1.0
       *
@@ -3497,9 +4317,9 @@ class cDate {
       *
       * @param int $count the number  of days to add / subtract from the date
       *
-      * @see Inc( )
-      * @see Dec( )
-      * @see Skip( )
+      * @see Inc
+      * @see Dec
+      * @see Skip
       *
       * @since = 1.0
       *
@@ -3549,8 +4369,8 @@ class cDate {
       *
       * @return bool true, if the date is a weekday
       *
-      * @see IsWeekday( )
-      * @see IsWeekend( )
+      * @see IsWeekday
+      * @see IsWeekend
       *
       * @since = 1.0
       *
@@ -3575,8 +4395,8 @@ class cDate {
       *
       * @return bool true, if the date is weekend
       *
-      * @see IsWeekday( )
-      * @see IsWeekend( )
+      * @see IsWeekday
+      * @see IsWeekend
       *
       * @since = 1.0
       *
@@ -3602,8 +4422,8 @@ class cDate {
       *
       * $dt->SetToday( );
       *
-      * @see SetToday( )
-      * @see SetDate( )
+      * @see SetToday
+      * @see SetDate
       *
       * @since = 1.0
       *
@@ -3639,49 +4459,373 @@ class cDate {
       *
       * $dt->SetDate( 4, 21, 2012 );
       *
-      * @param int $m the month [1..12]
+      * @param mixed $m the month [1..12] or a cDate variable
       * @param int $d the day [1..31]
       * @param int $y the year
       *
-      * @see SetToday( )
-      * @see SetDate( )
+      * @see SetToday
+      * @see SetDate
       *
       * @since = 1.0
       *
       */
 
-    public function SetDate($m, $d, $y ) {
+    public function SetDate($m, $d = null, $y = null ) {
 
         # echo "cDate : SetDate( $m, $d, $y)";
 
-        assert( checkdate( $m, $d, $y ) );
-        if ( is_a( $m, 'libdatephp\cDate' ) ) {
+        if ( is_a( $m, '\libdatephp\cDate' ) ) {
+	    $this->m_year = $m->Year( );
+	    $this->m_month = $m->Month( );
+	    $this->m_day = $m->Day( );
 
-	    $y = $m->Year( );
-	    $m = $m->Month( );
-	    $d = $m->Day( );
+        } else {
+
+	    assert( checkdate( $m, $d, $y ) );
+	    if ( is_a( $m, 'libdatephp\cDate' ) ) {
+
+		$y = $m->Year( );
+		$m = $m->Month( );
+		$d = $m->Day( );
 
 
-        }
+	    }
 
-        if ( ! checkdate($m, $d, $y)) {
-            // var_dump( debug_backtrace( ) );
-            // print_r( debug_backtrace( ) );
-            assert( false == true );
-            print "<br>Monat=$m Tag = $d Jahr = $y";
-        }
+	    if ( ! checkdate($m, $d, $y)) {
+		// var_dump( debug_backtrace( ) );
+		// print_r( debug_backtrace( ) );
+		assert( false == true );
+		print "<br>Monat=$m Tag = $d Jahr = $y";
+	    }
 
-        $this->m_year = $y;
-        $this->m_month = $m;
-        $this->m_day = $d;
+
+	    $this->m_year = $y;
+	    $this->m_month = $m;
+	    $this->m_day = $d;
+	}
 
         $this->mdy2ts ( );
         $this->CalculateWeekday( );
 
+        if ( is_a( $m, '\libdatephp\cDate' ) ) assert( $this->AsSQL( )  == $m->AsSQL( ));
 
-    }
+    }  // function SetDate( )
 
 // ===============================================================
+
+
+
+
+    /**
+      *
+      * IsPast() returns true, if the managed date is in the future
+      *
+      * Example:
+      *
+      *
+      * @return boolean returns true, if the managed date is in the future
+      *
+      * @see IsYesterday
+      * @see IsToday
+      * @see IsTomorrow
+      * @see IsFuture
+      * @see IsPast
+      * @see IsCurrentMonth
+      * @see IsCurrentYear
+      *
+      * @since = 1.0
+      *
+      */
+
+
+
+    public function IsPast( ) {
+
+            $dt = new cDate( ) ;
+
+            return $dt->gt( $this ) ;
+
+    }   // public function IsPast( )
+
+
+    /**
+      *
+      * IsFuture() returns true, if the managed date is in the future
+      *
+      * Example:
+      *
+      *
+      * @return boolean returns true, if the managed date is in the future
+      *
+      * @see IsYesterday
+      * @see IsToday
+      * @see IsTomorrow
+      * @see IsFuture
+      * @see IsPast
+      * @see IsCurrentMonth
+      * @see IsCurrentYear
+      *
+      * @since = 1.0
+      *
+      */
+
+
+
+    public function IsFuture( ) {
+
+            $dt = new cDate( ) ;
+
+            return $dt->le( $this ) ;
+
+    }   // public function IsFuture( )
+
+
+    /**
+      *
+      * IsToday( ) returns true, if the managed date is tomorrow
+      *
+      * Example:
+      *
+      *
+      * @return boolean returns true, if $cmp is today
+      *
+      * @see IsYesterday
+      * @see IsToday
+      * @see IsTomorrow
+      * @see IsFuture
+      * @see IsPast
+      * @see IsCurrentMonth
+      * @see IsCurrentYear
+      *
+      * @since = 1.0
+      *
+      */
+
+
+
+    public function IsToday( ) {
+
+            $dt = new cDate( ) ;
+
+            return $dt->eq( $this ) ;
+
+    }   // public function IsToday( )
+
+
+    /**
+      *
+      * IsTomorrow( ) returns true, if the managed date is tomorrow
+      *
+      * Example:
+      *
+      *
+      * @return boolean returns true, if the managed date is tomorrow
+      *
+      * @see IsYesterday
+      * @see IsToday
+      * @see IsTomorrow
+      * @see IsFuture
+      * @see IsPast
+      * @see IsCurrentMonth
+      * @see IsCurrentYear
+      *
+      * @since = 1.0
+      *
+      */
+
+
+
+    public function IsTomorrow( ) {
+
+            $dt = new cDate( ) ;
+            $dt->Inc( );
+
+            return $dt->eq( $this ) ;
+
+    }   // public function IsTomorrow( )
+
+    /**
+      *
+      * IsYesterday() returns true, if the managed date is yesterday
+      *
+      * Example:
+      *
+      *
+      * @return boolean returns true, if the managed date is yesterday
+      *
+      * @see IsYesterday
+      * @see IsToday
+      * @see IsTomorrow
+      * @see IsFuture
+      * @see IsPast
+      * @see IsCurrentMonth
+      * @see IsCurrentYear
+      *
+      * @since = 1.0
+      *
+      */
+
+
+
+    public function IsYesterday( ) {
+
+            $dt = new cDate( ) ;
+            $dt->Dec( );
+
+            return $dt->eq( $this ) ;
+
+    }   // public function IsYesterday( )
+
+    /**
+      *
+      * IsCurrentYear() returns true, if the managed date is in the current year
+      *
+      * Example:
+      *
+      *
+      * @return boolean returns true, if the managed date is in the current year
+      *
+      * @see IsYesterday
+      * @see IsToday
+      * @see IsTomorrow
+      * @see IsFuture
+      * @see IsPast
+      * @see IsCurrentMonth
+      * @see IsCurrentYear
+      *
+      * @since = 1.0
+      *
+      */
+
+
+
+    public function IsCurrentYear( ) {
+
+            $dt = new cDate( ) ;
+
+            return $dt->Year( ) == $this->Year( ) ;
+
+    }   // public function IsCurrentYear( )
+
+
+    /**
+      *
+      * IsCurrentYear() returns true, if the managed date is in the current year
+      *
+      * Example:
+      *
+      *
+      * @return boolean returns true, if the managed date is in the current year
+      *
+      * @see IsYesterday
+      * @see IsToday
+      * @see IsTomorrow
+      * @see IsFuture
+      * @see IsPast
+      * @see IsCurrentMonth
+      * @see IsCurrentYear
+      *
+      * @since = 1.0
+      *
+      */
+
+
+
+    public function IsCurrentMonth( ) {
+
+            $dt = new cDate( ) ;
+
+            return ( $dt->Year( ) == $this->Year( ) ) && ( $dt->Month( ) == $this->Month( ) );
+
+    }   // public function IsCurrentMonth( )
+
+
+    /**
+      *
+      * Min() returns the minimum value between $cmp and the the managed date
+      *
+      * Example:
+      *
+      *
+      * @param mixed $cmp timestamp or cDate
+      *
+      * @return cDate returns the minimum value
+      *
+      * @see min
+      * @see max
+      *
+      * @since = 1.0
+      *
+      */
+
+
+
+    public function Min( $cmp ) {
+
+        if ( is_int( $cmp ) ) {
+
+
+            return new cDate( min( $cmp, $this->m_timestamp ) );
+
+        } elseif ( is_a( $cmp, "libdatephp\cdate" ) ) {
+            # print "<br>" . $cmp->AsTimeStamp() . "<->" . $this->AsTimeStamp();
+
+            if ( $cmp->lt( $this ) ) return new cDate( $cmp );
+
+            return new cDate( $this );
+
+        }
+
+        var_dump( $cmp );
+        die( "\n error in cDate::Min( ) " );
+
+        // NOTE : TODO : Tagesgenaue Berechnung => Minuten sind wurscht
+
+    }   // public function Min()
+
+    /**
+      *
+      * Max() returns the maximum value between $cmp and the the managed date
+      *
+      * Example:
+      *
+      *
+      * @param mixed $cmp timestamp or cDate
+      *
+      * @return cDate returns the maximum value
+      *
+      * @see min
+      * @see max
+      *
+      * @since = 1.0
+      *
+      */
+
+
+
+    public function Max( $cmp ) {
+
+        if ( is_int( $cmp ) ) {
+
+
+            return new cDate( max( $cmp, $this->m_timestamp ) );
+
+        } elseif ( is_a( $cmp, "libdatephp\cdate" ) ) {
+            # print "<br>" . $cmp->AsTimeStamp() . "<->" . $this->AsTimeStamp();
+
+            if ( $cmp->gt( $this ) ) return new cDate( $cmp );
+
+            return new cDate( $this );
+
+        }
+
+        var_dump( $cmp );
+        die( "\n error in cDate::Max( ) " );
+        var_dump( $cmp );
+
+        // NOTE : TODO : Tagesgenaue Berechnung => Minuten sind wurscht
+
+    }   // public function Max()
 
     /**
       *
@@ -3699,11 +4843,11 @@ class cDate {
       *
       * @return bool returns true, if both dates are equal
       *
-      * @see eq( )
-      * @see le( )
-      * @see ge( )
-      * @see lt( )
-      * @see gt( )
+      * @see eq
+      * @see le
+      * @see ge
+      * @see lt
+      * @see gt
       *
       * @since = 1.0
       *
@@ -3721,7 +4865,8 @@ class cDate {
             # funktioniert nicht immer !   return $cmp->AsTimeStamp() == $this->AsTimeStamp();
         }
 
-        die( "\n error in eq " );
+        var_dump( $cmp );
+        die( "\n cDate: error in eq " );
         var_dump( $cmp );
 
         // NOTE : TODO : Tagesgenaue Berechnung => Minuten sind wurscht
@@ -3744,11 +4889,11 @@ class cDate {
       *
       * @return bool returns true, if the managed date comes before $cmp
       *
-      * @see eq( )
-      * @see le( )
-      * @see ge( )
-      * @see lt( )
-      * @see gt( )
+      * @see eq
+      * @see le
+      * @see ge
+      * @see lt
+      * @see gt
       *
       * @since = 1.0
       *
@@ -3786,11 +4931,11 @@ class cDate {
       *
       * @return bool returns true, if the managed date comes after $cmp
       *
-      * @see eq( )
-      * @see le( )
-      * @see ge( )
-      * @see lt( )
-      * @see gt( )
+      * @see eq
+      * @see le
+      * @see ge
+      * @see lt
+      * @see gt
       *
       * @since = 1.0
       *
@@ -3802,6 +4947,8 @@ class cDate {
         if (is_int( $cmp ) ) {
             return $cmp > $this->m_timestamp;
         } elseif ( is_a( $cmp, 'libdatephp\cDate' ) ) {
+
+
             return  $this->AsTimeStamp() > $cmp->AsTimeStamp();
         }
 
@@ -3825,11 +4972,11 @@ class cDate {
       *
       * @return bool returns true, if the managed date is the same as $cmp or comes after $cmp
       *
-      * @see eq( )
-      * @see le( )
-      * @see ge( )
-      * @see lt( )
-      * @see gt( )
+      * @see eq
+      * @see le
+      * @see ge
+      * @see lt
+      * @see gt
       *
       * @since = 1.0
       *
@@ -3855,11 +5002,11 @@ class cDate {
       *
       * @return bool returns true, if the managed date is the same as $cmp or comes before $cmp
       *
-      * @see eq( )
-      * @see le( )
-      * @see ge( )
-      * @see lt( )
-      * @see gt( )
+      * @see eq
+      * @see le
+      * @see ge
+      * @see lt
+      * @see gt
       *
       * @since = 1.0
       *
@@ -3886,14 +5033,14 @@ class cDate {
       *
       * @return cDate the first day of the week of the managed date
       *
-      * @see BOW( )
-      * @see EOW( )
-      * @see BOM )
-      * @see EOM( )
-      * @see BOQ( )
-      * @see EOQ( )
-      * @see BOY( )
-      * @see EOY( )
+      * @see BOW
+      * @see EOW
+      * @see BOM
+      * @see EOM
+      * @see BOQ
+      * @see EOQ
+      * @see BOY
+      * @see EOY
       *
       * @since = 1.0
       *
@@ -3920,14 +5067,14 @@ class cDate {
       *
       * @return cDate the last day of the week of the managed date
       *
-      * @see BOW( )
-      * @see EOW( )
-      * @see BOM )
-      * @see EOM( )
-      * @see BOQ( )
-      * @see EOQ( )
-      * @see BOY( )
-      * @see EOY( )
+      * @see BOW
+      * @see EOW
+      * @see BOM
+      * @see EOM
+      * @see BOQ
+      * @see EOQ
+      * @see BOY
+      * @see EOY
       *
       * @since = 1.0
       *
@@ -3954,14 +5101,14 @@ class cDate {
       *
       * @return cDate the first day of the month of the managed date
       *
-      * @see BOW( )
-      * @see EOW( )
-      * @see BOM )
-      * @see EOM( )
-      * @see BOQ( )
-      * @see EOQ( )
-      * @see BOY( )
-      * @see EOY( )
+      * @see BOW
+      * @see EOW
+      * @see BOM
+      * @see EOM
+      * @see BOQ
+      * @see EOQ
+      * @see BOY
+      * @see EOY
       *
       * @since = 1.0
       *
@@ -3988,14 +5135,14 @@ class cDate {
       *
       * @return cDate the last day of the month of the managed date
       *
-      * @see BOW( )
-      * @see EOW( )
-      * @see BOM )
-      * @see EOM( )
-      * @see BOQ( )
-      * @see EOQ( )
-      * @see BOY( )
-      * @see EOY( )
+      * @see BOW
+      * @see EOW
+      * @see BOM
+      * @see EOM
+      * @see BOQ
+      * @see EOQ
+      * @see BOY
+      * @see EOY
       *
       * @since = 1.0
       *
@@ -4022,14 +5169,14 @@ class cDate {
       *
       * @return cDate the first day of the quarter of the managed date
       *
-      * @see BOW( )
-      * @see EOW( )
-      * @see BOM )
-      * @see EOM( )
-      * @see BOQ( )
-      * @see EOQ( )
-      * @see BOY( )
-      * @see EOY( )
+      * @see BOW
+      * @see EOW
+      * @see BOM
+      * @see EOM
+      * @see BOQ
+      * @see EOQ
+      * @see BOY
+      * @see EOY
       *
       * @since = 1.0
       *
@@ -4056,14 +5203,14 @@ class cDate {
       *
       * @return cDate the first day of the quarter of the managed date
       *
-      * @see BOW( )
-      * @see EOW( )
-      * @see BOM )
-      * @see EOM( )
-      * @see BOQ( )
-      * @see EOQ( )
-      * @see BOY( )
-      * @see EOY( )
+      * @see BOW
+      * @see EOW
+      * @see BOM
+      * @see EOM
+      * @see BOQ
+      * @see EOQ
+      * @see BOY
+      * @see EOY
       *
       * @since = 1.0
       *
@@ -4090,14 +5237,14 @@ class cDate {
       *
       * @return cDate the first day of the year of the managed date
       *
-      * @see BOW( )
-      * @see EOW( )
-      * @see BOM )
-      * @see EOM( )
-      * @see BOQ( )
-      * @see EOQ( )
-      * @see BOY( )
-      * @see EOY( )
+      * @see BOW
+      * @see EOW
+      * @see BOM
+      * @see EOM
+      * @see BOQ
+      * @see EOQ
+      * @see BOY
+      * @see EOY
       *
       * @since = 1.0
       *
@@ -4124,14 +5271,14 @@ class cDate {
       *
       * @return cDate the last day of the year of the managed date
       *
-      * @see BOW( )
-      * @see EOW( )
-      * @see BOM )
-      * @see EOM( )
-      * @see BOQ( )
-      * @see EOQ( )
-      * @see BOY( )
-      * @see EOY( )
+      * @see BOW
+      * @see EOW
+      * @see BOM
+      * @see EOM
+      * @see BOQ
+      * @see EOQ
+      * @see BOY
+      * @see EOY
       *
       * @since = 1.0
       *
@@ -4157,20 +5304,20 @@ class cDate {
       *
       * $dt->AddDays( 12 )->AsSQL( );
       *
-      * @param int $diff the number of days to add / subtract
+      * @param int $diff the number of days to add / subtract. It defaults to 1
       *
-      * @see AddDays( )
-      * @see AddMonths( )
-      * @see AddWeekdays(  )
-      * @see AddWeeks( )
-      * @see AddYears( )
+      * @see AddDays
+      * @see AddMonths
+      * @see AddWeekdays
+      * @see AddWeeks
+      * @see AddYears
       *
       * @since = 1.0
       *
       */
 
 
-    public function AddDays( $diff ) {
+    public function AddDays( $diff = 1) {
         $this->Skip( $diff );
     }   // public function AddDays
 
@@ -4186,52 +5333,53 @@ class cDate {
       *
       * $dt->AddWeeks( 7 )->AsSQL( );
       *
-      * @param int $diff the number of weeks to add / subtract
+      * @param int $diff the number of weeks to add / subtract. It defaults to 1
       *
-      * @see AddDays( )
-      * @see AddMonths( )
+      * @see AddDays
+      * @see AddMonths
       * @see AddWeekdays(  )
-      * @see AddWeeks( )
-      * @see AddYears( )
+      * @see AddWeeks
+      * @see AddYears
       *
       * @since = 1.0
       *
       */
 
 
-    public function AddWeeks( $diff ) {
+    public function AddWeeks( $diff = 1 ) {
 
         $this->Skip( $diff * 7 );
 
     }   // public function AddWeeks( )
 
 
+
+
+
     /**
       *
-      * AddMonths() adds / subtracts $diff months to / from the managed date
+      * AddMonths() adds / subtracts $diff months to / from the managed date. If the target month has too less days
+      * then the target date will be set on the next fitting date in the next month: If the start date has the 31th and
+      * is in January, then the target day will be the 3rd March, if the february has 28 days.
       *
       * Example:
+      * ```
+      * ```
       *
-      * use libdatephp;
+      * @param int $diff the number of months to add / subtract. It defaults to 1
       *
-      * $dt = new cDate( 11, 23, 2016 );
-      *
-      * $dt->AddMonths( 3 )->AsSQL( );
-      *
-      * @param int $diff the number of months to add / subtract
-      *
-      * @see AddDays( )
-      * @see AddMonths( )
+      * @see AddDays
+      * @see AddMonths
       * @see AddWeekdays(  )
-      * @see AddWeeks( )
-      * @see AddYears( )
+      * @see AddWeeks
+      * @see AddYears
       *
       * @since = 1.0
       *
       */
 
 
-    public function AddMonths( $diff ) {
+    public function AddMonths( $diff = 1 ) {
 
     // NOTE : Das Datum wird &uuml;ber mktime berechnet
     // NOTE : (&uuml;bersch&uuml;ssige Tage fallen in den Folgemonat)
@@ -4269,11 +5417,11 @@ class cDate {
       *
       * @param int $diff the number of years to add / subtract
       *
-      * @see AddDays( )
-      * @see AddMonths( )
+      * @see AddDays
+      * @see AddMonths
       * @see AddWeekdays(  )
-      * @see AddWeeks( )
-      * @see AddYears( )
+      * @see AddWeeks
+      * @see AddYears
       *
       * @since = 1.0
       *
@@ -4289,6 +5437,7 @@ class cDate {
 
 // ===============================================================
 
+
     /**
       *
       * LOW( ) aka "Length of week" returns the number of adys in a week ( seven days )
@@ -4303,10 +5452,10 @@ class cDate {
       *
       * @return int the number of days in a week
       *
-      * @see LOW( )
-      * @see LOM( )
+      * @see LOW
+      * @see LOM
       * @see LOQ(  )
-      * @see LOY( )
+      * @see LOY
       *
       * @since = 1.0
       *
@@ -4320,6 +5469,12 @@ class cDate {
     }   // public function LOW
 
 // return ( EOM (  ).AsJulian (  ) - BOM (  ).AsJulian (  ) ) + 1;
+
+
+static $m_month_days_leap = array( 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 );
+static $m_month_days = array( 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 );
+
+
 
     /**
       *
@@ -4335,10 +5490,10 @@ class cDate {
       *
       * @return int the number of days in the month of the managed date
       *
-      * @see LOW( )
-      * @see LOM( )
+      * @see LOW
+      * @see LOM
       * @see LOQ(  )
-      * @see LOY( )
+      * @see LOY
       *
       * @since = 1.0
       *
@@ -4348,12 +5503,26 @@ class cDate {
     public function LOM( ) {
         // L&auml;nge des Monats
 
+
+        if ( $this->IsLeapYear( ) ) {
+
+	    return self::$m_month_days_leap[ $this->m_month - 1 ];
+
+        } else {
+
+	    return self::$m_month_days[ $this->m_month - 1 ];
+
+        }
+/*
         $start = new cDate($this->BOM());
         $end = new cDate($this->EOM());
         // echo "<br>".$start->AsDMY()."-".$end->AsDMY();
         $diff = $end->AsTimeStamp() - $start->AsTimeStamp();
 
         return ceil( $diff / (60*60*24) )+1;
+
+*/
+
     }   // public function LOM
 
     /**
@@ -4370,10 +5539,10 @@ class cDate {
       *
       * @return int the number of days in the quarter of the managed date
       *
-      * @see LOW( )
-      * @see LOM( )
+      * @see LOW
+      * @see LOM
       * @see LOQ(  )
-      * @see LOY( )
+      * @see LOY
       *
       * @since = 1.0
       *
@@ -4405,10 +5574,10 @@ class cDate {
       *
       * @return int the number of days in the year of the managed date
       *
-      * @see LOW( )
-      * @see LOM( )
+      * @see LOW
+      * @see LOM
       * @see LOQ(  )
-      * @see LOY( )
+      * @see LOY
       *
       * @since = 1.0
       *
@@ -4443,8 +5612,8 @@ class cDate {
       *
       * @param resource $fptr the file handle of the file to write to
       *
-      * @see PrintOn( )
-      * @see ScanFrom( )
+      * @see PrintOn
+      * @see ScanFrom
       *
       * @since = 1.0
       *
@@ -4476,8 +5645,8 @@ class cDate {
       *
       * @param resource $fptr the file handle of the file to read from
       *
-      * @see PrintOn( )
-      * @see ScanFrom( )
+      * @see PrintOn
+      * @see ScanFrom
       *
       * @since = 1.0
       *
@@ -4495,7 +5664,10 @@ class cDate {
 
         assert( checkdate($this->m_month, $this->m_day, $this->m_year ));
 
-    }
+    }	// function ScanFrom( )
+
+
+
 
 
 // ===============================================================
@@ -4512,6 +5684,50 @@ class cDate {
 */
 
 
+
+
+    /**
+      *
+      * NOW() returns the ISO number of the week in the year the date belongs to. Same as WOY()
+      *
+      * Example:
+      *
+      * use libdatephp;
+      *
+      * $dt = new cDate( 11, 23, 2016 );
+      *
+      * echo $dt->NOW( );
+      *
+      * @param bool $year_overlaps if true, then in the first week of the year the function can retunr the last week of the last year if necessary. In order to get always the first week of the year set this parameter false. No default value
+      * @return int the number of he week in the year
+      *
+      * @see Quarter
+      * @see NOQ
+      * @see NOW
+      * @see WOY
+      * @see WOM
+      *
+      * @since = 1.0
+      *
+      */
+
+
+
+    public function NOW( ) {
+    //
+    // Number of Week in the year - one-based and starting on monday
+    //
+    //  NOTE : ISO-8601 Wochennummer des Jahres, die Woche beginnt am Montag
+    // TODO: non-iso-Berechnung
+
+
+	return (int) date("W", $this->AsTimeStamp( ) );
+
+    }   // public function NOW( )
+
+
 }   // class cDate
+
+
 
 ?>

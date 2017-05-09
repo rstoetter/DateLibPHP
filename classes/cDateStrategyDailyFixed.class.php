@@ -334,9 +334,14 @@ class cDateStrategyDailyFixed extends cDateStrategy {
 
     /**
       * The method FromString( ) reads its specifications from the string $str
-      * The template starts with 's3'
+      * The template starts with 's3' and is normally made by AsString( )
+      *
+      * The calendars for celebrities and holidays remain untouched.
+      *
       * @param string $str the specifications as string as we get it via AsString( )
       *
+      * @see FromString
+      * @see AsString
       */
 
 
@@ -349,6 +354,7 @@ class cDateStrategyDailyFixed extends cDateStrategy {
             $day, $month, $year
             );
 */
+
         sscanf( $str, "s3-%d:%d:%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-%d-p%d",
             $this->m_directionOnSaturday, $this->m_directionOnSunday, $this->m_directionOnCelebrity,$this->m_directionOnHoliday,$this->m_directionOnImpossible,
             $startday, $startmonth, $startyear,
@@ -357,7 +363,7 @@ class cDateStrategyDailyFixed extends cDateStrategy {
 
         # echo "\n FromString : s3-$this->m_day_number-p$this->m_type_period";
 
-        $this->m_start_date->SetDate($startmonth, $startday, $startyear );
+        // $this->m_start_date->SetDate($startmonth, $startday, $startyear );
 
         if ($endday==0) {
             $this->m_end_date = undef;
@@ -365,16 +371,25 @@ class cDateStrategyDailyFixed extends cDateStrategy {
             $this->m_end_date = new cDate($endmonth, $endday, $endyear );
         }
 
+        if ($startday==0) {
+            $this->m_start_date = null;
+        } else {
+            $this->m_start_date = new cDate($startmonth, $startday, $startyear );
+        }
 
         $this->IsValid();
 
     }   // function FromString
 
     /**
-      * The method AsString( ) returns its specifications as a string template
+      * The method AsString( ) returns the specifications of the strategy as a string template. It normally is used
+      * by the constructor or by FromString for serialization.
       *
       * @return string the specifications as string template
       *
+      *
+      * @see FromString
+      * @see AsString
       *
       */
 
@@ -389,9 +404,17 @@ class cDateStrategyDailyFixed extends cDateStrategy {
             $endyear = $this->m_end_date->Year();
         }
 
+        if ( $this->m_start_date == null ){
+            $startday = $startmonth = $startyear = 0;
+        } else {
+            $startday = $this->m_start_date->Day();
+            $startmonth = $this->m_start_date->Month();
+            $startyear = $this->m_start_date->Year();
+        }
+
         return sprintf( "s3-%d:%d:%d:%d:%d-(%d.%d.%d)-(%d.%d.%d)-%d-p%d",
             $this->m_directionOnSaturday, $this->m_directionOnSunday, $this->m_directionOnCelebrity,$this->m_directionOnHoliday,$this->m_directionOnImpossible,
-            $this->m_start_date->Day(), $this->m_start_date->Month(), $this->m_start_date->Year(),
+            $startday, $startmonth, $startyear,
             $endday, $endmonth, $endyear,
             $this->m_day_number, $this->m_type_period );
 
@@ -542,6 +565,32 @@ class cDateStrategyDailyFixed extends cDateStrategy {
         return $this->m_type_period;
     }
 
+
+    /**
+      * The method GetNextEventSlot(  ) returns the next date AFTER $obj_date, WITHOUT checking for special situations or
+      * whether the date fits into the strategies' boundaries.
+      *
+      * @param cDate $obj_date a cDate object, which is the starting point for the next calculation
+      * @param int $direction the constant, which indicates the search direction. It defaults to DIRECTION_FORWARD
+      *
+      * @return cDate cDate object with the next fitting date
+      *
+      * @see GetFollower
+      * @see GetFirstDate
+      * @see DIRECTION_BACKWARD
+      * @see DIRECTION_FORWARD
+      *
+      *
+      */
+
+    function GetNextEventSlot( $date, $direction = self::DIRECTION_FORWARD ) {
+
+	$this->ScheduleLazy( $date, $date, $direction  );
+
+	return $date;
+
+    }    // function GetNextEventSlot( )
+
     /**
       * The private method ScheduleLazy( ) returns an event without caring for special situations
       *
@@ -554,6 +603,10 @@ class cDateStrategyDailyFixed extends cDateStrategy {
       */
 
     private function ScheduleLazy( & $date_test, $date_start, $direction  ) {
+
+	assert( is_int( $direction ) );
+	assert( is_a( $date_test, '\\libdatephp\\cDate' ) );
+	assert( is_a( $date_start, '\\libdatephp\\cDate' ) );
 
 	$date_test = new \libdatephp\cDate( $date_start );
 
@@ -779,11 +832,11 @@ class cDateStrategyDailyFixed extends cDateStrategy {
     }	// function ScheduleLazy( )
 
 
-    /**
-      * The method GetFollower( ) returns the next date after $obj_date, which fits to the specifications
+    /*   *
+      * The method GetFollower( ) returns the next date AFTER $date, which fits to the specifications. $date itself will not be taken into consideration.
       *
       * @param cDate $date a cDate object, which is the starting point for the next calculation
-      * @param cDate $dt_next the date the next call of GetFollower( ) should start with
+      * @param cDate $dt_next GetFollower returns a cDate object, which is the starting point for the next calculation. ie If we are moving backwards and scheduling forward, then a correction is necessary
       * @param int $direction the constant, which indicates the search direction. It defaults to DIRECTION_FORWARD
       *
       * @return cDate cDate object with the next fitting date or null, if no fitting date could be found ( overflow, IsUnderflow)
@@ -795,13 +848,15 @@ class cDateStrategyDailyFixed extends cDateStrategy {
       *
       */
 
-
+/*
     function GetFollower( $date, & $dt_next, $direction = self::DIRECTION_FORWARD ) {
 
         // $date_test muß ein gültiges Datum sein, an dem ein Termin stattfindet ! -> protected um dies zu gewährleisten
         // es wird keine Korrektur vorgenommen
 
         # echo "\nGetFollower(".$date->AsDMY(). ") : GetLatestDayNumber() ergibt " . $this->GetLatestDayNumber();
+
+        if ( ! $this->IsValid( ) ) die( "\n cDateStrategyDailyFixed::GetFollower() : no valid data to calculate anything" );
 
         assert( is_a( $date, '\\libdatephp\\cDate' ) );
 
@@ -819,42 +874,15 @@ class cDateStrategyDailyFixed extends cDateStrategy {
 
         //
 
-	    if ( $this->IsUnderflow( $date_test ) ) {
+        if ( $this->AdjustedUnderOverflow( $date_test, $direction ) ) {
 
-		if ( $direction == self::DIRECTION_FORWARD ) {
+	    if ( is_null( $date_test ) ) {
+		// not adjustable
 
-		    $date_test = $this->m_start_date;
-
-		    if ( $this->m_debug ) echo "\n underflow adjusted to " . $date_test->AsSQL( );
-
-		} else {
-
-		    if ( $this->m_debug ) echo "\n underflow!";
-
-		    return null;
-
-		}
-
+		return null;
 	    }
 
-	    if ( $this->IsOverflow( $date_test ) ) {
-
-		if ( $direction == self::DIRECTION_BACKWARD ) {
-
-		    $date_test = $this->m_end_date;
-
-		    if ( $this->m_debug ) echo "\n overflow adjusted to " . $date_test->AsSQL( );
-
-		} else {
-
-		    if ( $this->m_debug ) echo "\n overflow!";
-
-		    return null;
-
-		}
-
-	    }
-
+        }
 
         //
 
@@ -878,41 +906,16 @@ class cDateStrategyDailyFixed extends cDateStrategy {
 
 // 	    $weiter = false;
 
-	    if ( $this->IsUnderflow( $date_test ) ) {
+	    if ( $this->AdjustedUnderOverflow( $date_test, $direction ) ) {
 
-		if ( $direction == self::DIRECTION_FORWARD ) {
-
-		    $date_test = $this->m_start_date;
-
-		    if ( $this->m_debug ) echo "\n underflow adjusted to " . $date_test->AsSQL( );
-
-		} else {
-
-		    if ( $this->m_debug ) echo "\n underflow!";
+		if ( is_null( $date_test ) ) {
+		    // not adjustable
 
 		    return null;
-
 		}
 
 	    }
 
-	    if ( $this->IsOverflow( $date_test ) ) {
-
-		if ( $direction == self::DIRECTION_BACKWARD ) {
-
-		    $date_test = $this->m_end_date;
-
-		    if ( $this->m_debug ) echo "\n overflow adjusted to " . $date_test->AsSQL( );
-
-		} else {
-
-		    if ( $this->m_debug ) echo "\n overflow!";
-
-		    return null;
-
-		}
-
-	    }
 
 	    if ( $weiter ) {
 		if ( $direction == self::DIRECTION_FORWARD ) {
@@ -1043,10 +1046,10 @@ class cDateStrategyDailyFixed extends cDateStrategy {
 
     }       // function GetFollower()
 
-
+*/
 
 /*
-    function GetFollower( $date ) {
+    function GetFollower_ORG( $date ) {
         // $date_obj muß ein gültiges Datum sein, an dem ein Termin stattfindet ! -> protected um dies zu gewährleisten
         // es wird keine Korrektur vorgenommen
 
@@ -1160,6 +1163,8 @@ class cDateStrategyDailyFixed extends cDateStrategy {
 
 
     public function GetFirstDate( ) {
+
+	if ( ! $this->IsValid( ) ) die( "\n cDateStrategyDailyFixed::GetFirstDate() : no valid data to calculate anything" );
 
 	$dt = null;
 

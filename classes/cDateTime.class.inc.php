@@ -82,7 +82,7 @@ namespace libdatephp;
 
 /**
   *
-  * represents a timestamp (a datetime obect)
+  * An object of the class cDateTime represents a timestamp (a datetime obect)
   *
   * @author Rainer Stötter
   * @copyright 2010-2017 Rainer Stötter

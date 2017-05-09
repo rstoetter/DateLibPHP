@@ -99,11 +99,13 @@ function SameContents( $a1, $a2, $msg = '' ) {
 	die( "\n error: the arrays have not the same size " );
     }
 
-
+    $found = false;
     foreach ( $a1 as $obj_dt ) {
 
-	$found = false;
+	// $found = false;
 	for( $j = 0; $j < count( $a2 ); $j++ ) {
+
+	    // echo "\n $j " . $a2[ $j ]->AsSQL( );
 
 	    if ( in_array( $j, $a3 ) ) {
 		break;
@@ -115,7 +117,10 @@ function SameContents( $a1, $a2, $msg = '' ) {
 // 	    echo "\n"; var_dump( $a2[ $j ] );
 
 
+	    //for ( $k = 0; $k < count( $a2 ); $k++ ) {
 	    if ( $obj_dt->eq( $a2[ $j ] ) ) {
+
+		// echo "\n removing " . $obj_dt->AsSQL( );
 
 		$a3[] = $j;
 
@@ -123,14 +128,16 @@ function SameContents( $a1, $a2, $msg = '' ) {
 
 		break;
 	    }
+	    //}
 
-	    if ( ! $found ) {
-		die( "\n error: could not find " . $obj_dt->AsSQL( ) . ' in second array ' );
-	    }
+
 
 
 	}
 
+	if ( ! $found ) {
+	    die( "\n error: could not find " . $obj_dt->AsSQL( ) . ' in second array ' );
+	}
 
     }	// foreach
 
@@ -152,7 +159,7 @@ function printDateArray( $ary ) {
 
 function testDateStrategyDailyFixed( ) {
 
-    echo "\n testing cDateStrategyDaily";
+    echo "\n testing cDateStrategyDailyFixed";
 
     $dt_next = new \libdatephp\cDate( );
 
@@ -203,7 +210,7 @@ function testDateStrategyDailyFixed( ) {
     echo "\n day number is " . $strategy->GetDayNumber( ) . ' and the period type is ' . periodTypeAsString( $strategy->GetPeriodType( ) );
     echo "\n the direction is forward";
 
-    $obj_date = $strategy->GetFollower( $strategy->GetStartDate( ), $dt_next );
+    $obj_date = $strategy->GetFollower( $strategy->GetStartDate( ) );
     echo "\n " . $obj_date->AsSQL( );
     if ($obj_date->AsSQL( ) != '2016-05-02') die( "\n Test nicht bestanden" );;
 
@@ -403,6 +410,76 @@ echo "\n ======================================= 7 =============================
 
      if ( ! SameContents( $a_good, $ary ) ) { die("\n error comparing results"); }
 
+echo "\n ======================================= 8 =============================================== ";
+
+    // define, how special situations should be treated
+    $strategy->SetStrategyCelebrity( \libdatephp\cDateStrategy::STRATEGY_DIRECTION_FORWARD );
+    $strategy->SetStrategyHoliday( \libdatephp\cDateStrategy::STRATEGY_DIRECTION_FORWARD );
+    $strategy->SetStrategyImpossible( \libdatephp\cDateStrategy::STRATEGY_DIRECTION_FORWARD );
+    $strategy->SetStrategySaturday( \libdatephp\cDateStrategy::STRATEGY_DIRECTION_FORWARD );
+    $strategy->SetStrategySunday( \libdatephp\cDateStrategy::STRATEGY_DIRECTION_FORWARD );
+
+    $strategy->SetDayNumber( 20 );
+    $strategy->SetPeriodType( \libdatephp\cDateStrategyDailyFixed::FIX_DAY_YEAR );
+
+    printParameters( $obj_date_calc_from, $obj_date_calc_to, $strategy );
+    echo "\n day number is " . $strategy->GetDayNumber( ) . ' and the period type is ' . periodTypeAsString( $strategy->GetPeriodType( ) );
+    echo "\n the direction is backward";
+
+    $obj_date = new \libdatephp\cDate( 8, 2, 2017 );
+
+    $strategy->GetArray( $ary, $obj_date, 5, \libdatephp\cDateStrategy::DIRECTION_BACKWARD, true );
+
+    echo "\n resulting array is: "; printDateArray( $ary );
+
+    $a_good = array(
+	new \libdatephp\cDate( '2017-01-20' ) ,
+	new \libdatephp\cDate( '2016-01-20' ) ,
+	new \libdatephp\cDate( '2015-01-20' ) ,
+	new \libdatephp\cDate( '2014-01-20' ) ,
+	new \libdatephp\cDate( '2013-01-20' )
+	);
+
+     if ( ! SameContents( $a_good, $ary ) ) { die("\n error comparing results"); }
+
+echo "\n ======================================= 9 =============================================== ";
+
+    // define, how special situations should be treated
+    $strategy->SetStrategyCelebrity( \libdatephp\cDateStrategy::STRATEGY_DIRECTION_BACKWARD );
+    $strategy->SetStrategyHoliday( \libdatephp\cDateStrategy::STRATEGY_DIRECTION_BACKWARD );
+    $strategy->SetStrategyImpossible( \libdatephp\cDateStrategy::STRATEGY_DIRECTION_BACKWARD );
+    $strategy->SetStrategySaturday( \libdatephp\cDateStrategy::STRATEGY_DIRECTION_BACKWARD );
+    $strategy->SetStrategySunday( \libdatephp\cDateStrategy::STRATEGY_DIRECTION_BACKWARD );
+
+    $dt_start = $strategy->GetStartDate( );
+    $dt_start->Skip( - 1024 );
+
+    // $strategy->SetStartDate( $dt_start );
+
+    $strategy->SetDayNumber( 20 );
+    $strategy->SetPeriodType( \libdatephp\cDateStrategyDailyFixed::FIX_DAY_YEAR );
+
+    printParameters( $obj_date_calc_from, $obj_date_calc_to, $strategy );
+    echo "\n day number is " . $strategy->GetDayNumber( ) . ' and the period type is ' . periodTypeAsString( $strategy->GetPeriodType( ) );
+    echo "\n the direction is forward";
+
+    $obj_date = $dt_start;
+
+    $strategy->GetArray( $ary, $obj_date, 5, \libdatephp\cDateStrategy::DIRECTION_FORWARD, true );
+
+    echo "\n resulting array is: "; printDateArray( $ary );
+
+    $a_good = array(
+	new \libdatephp\cDate( '2014-01-20' ) ,
+	new \libdatephp\cDate( '2013-01-18' ) ,
+	new \libdatephp\cDate( '2012-01-20' ) ,
+	new \libdatephp\cDate( '2011-01-20' ) ,
+	new \libdatephp\cDate( '2010-01-20' )
+	);
+
+    echo "\n my array is: "; printDateArray( $a_good );
+
+     if ( ! SameContents( $a_good, $ary ) ) { die("\n error comparing results"); }
 
 
     /////////////////////////////////////////////////////////////

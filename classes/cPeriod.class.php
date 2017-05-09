@@ -240,7 +240,7 @@ namespace libdatephp;
 
 /**
   *
-  * represents a period of time with a starting and an ending date
+  * The class cPeriod represents a period of time with a starting and an ending date
   *
   * @author Rainer Stötter
   * @copyright 2010-2017 Rainer Stötter
