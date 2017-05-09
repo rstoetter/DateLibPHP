@@ -1,4 +1,12 @@
 # libdatephp
-A full fledged date class **cDate** and a class to manage periods of time **cPeriod** written in PHP. Then there are some helper classes to calculate recurring events and a datetime class **cDateTime**.
+
+Some classes to work with dates written in PHP:
+
+- A full fledged date class **cDate**
+- a class to manage ISO dates **cDateISO**
+- a class to manage periods of time **cPeriod**
+- a datetime class **cDateTime**.
+- some helper classes to calculate recurring events
 
 See the [project wiki](https://github.com/rstoetter/libdatephp/wiki) for more information.
+
