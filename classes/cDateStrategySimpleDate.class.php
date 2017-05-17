@@ -57,12 +57,12 @@
 //		public method GetFollower($dt)
 //		public method GetNextEventDate($datestart,$dateisfirst=true)
 //		public method GetPrevTerminDate($datestart,$dateisfirst=true)
-//		public method IsEventDate($dateObj)
+//		public method IsEventDate($m_date)
 //		public method IsValid()
 //		public method Reset()
-//		public method SetDate($dateObj)
+//		public method SetDate($m_date)
 //		public method cDateStrategySimpleDate($str="")
-//		protected var $dateObj
+//		protected var $m_date
 //	[[End of classes]]
 //
 //
@@ -80,7 +80,7 @@ class cDateStrategySimpleDate extends cDateStrategy {
 
     // kein Verrutschen bei Samstag / Sonntag / Feiertag , da es sich ja um einen fixen Termin handelt
 
-    protected $dateObj;
+    protected $m_date;
 
     public function cDateStrategySimpleDate( $str = "" ) {
 
@@ -95,14 +95,14 @@ class cDateStrategySimpleDate extends cDateStrategy {
 
     public function Reset() {
         parent::Reset();
-        $this->dateObj = new cDate();
+        $this->m_date = new cDate();
     }
 
     public function IsValid( ){    // TODO
         return true;
     }
     public function GetFollower( $dt) { // TODO
-        return new cDate($this->dateObj);
+        return new cDate($this->m_date);
     }
 
     public function FromString( $str ) {
@@ -114,7 +114,7 @@ class cDateStrategySimpleDate extends cDateStrategy {
             $day, $month, $year
             );
 
-        $this->dateObj->SetDate($month, $day, $year );
+        $this->m_date->SetDate($month, $day, $year );
 
         $this->m_start_date->SetDate($startmonth, $startday, $startyear );
 
@@ -128,12 +128,12 @@ class cDateStrategySimpleDate extends cDateStrategy {
         # echo "\nDay=$day Month=$month Year=$year";
     }   // function FromString
 
-    public function SetDate( $dateObj ) {
-        $this->dateObj->SetDate( $dateObj->Month(), $dateObj->Day(), $dateObj->Year() );
+    public function SetDate( $m_date ) {
+        $this->m_date->SetDate( $m_date->Month(), $m_date->Day(), $m_date->Year() );
     }       // function SetDate()
 
     public function GetDate( ) {
-        return new cDate($this->dateObj);
+        return new cDate($this->m_date);
     }
 
     public function AsString( ) {
@@ -151,7 +151,7 @@ class cDateStrategySimpleDate extends cDateStrategy {
             $this->m_directionOnSaturday, $this->m_directionOnSunday, $this->m_directionOnCelebrity,$this->m_directionOnHoliday,
             $this->m_start_date->Day(), $this->m_start_date->Month(), $this->m_start_date->Year(),
             $endday, $endmonth, $endyear,
-            $this->dateObj->Day(), $this->dateObj->Month(), $this->dateObj->Year()
+            $this->m_date->Day(), $this->m_date->Month(), $this->m_date->Year()
             );
 
     }   // function AsString
@@ -179,8 +179,8 @@ class cDateStrategySimpleDate extends cDateStrategy {
 
         $check = ( $checked ) ? " checked " : "";
 
-        $dt = ( ( $this->dateObj == undef )   ? '' : $this->dateObj->AsDMY() );
-        if (cDateStrategy::$language == "en_en") { $dt = $this->dateObj->AsMDY();}
+        $dt = ( ( $this->m_date == undef )   ? '' : $this->m_date->AsDMY() );
+        if (cDateStrategy::$language == "en_en") { $dt = $this->m_date->AsMDY();}
 
         echo "<tr><td><input type=radio name = 'strategy' value='s1_singledate' $check>$msgSimpleDate</td>";
         echo "<td><input name=s1_date value='$dt'></td></tr>";
@@ -190,18 +190,18 @@ class cDateStrategySimpleDate extends cDateStrategy {
     public function GetNextEventDate( $datestart, $dateisfirst = true  ) {
 
         if ( $dateisfirst ) {
-            if ( $datestart->eq( $this->dateObj ) ) {
+            if ( $datestart->eq( $this->m_date ) ) {
                 return $datestart;
             } else {
-                if ($datestart->lt( $this->dateObj)) {
-                    return $this->dateObj;
+                if ($datestart->lt( $this->m_date)) {
+                    return $this->m_date;
                 } else {
                     return undef;
                 }
             }
         } else {
             $datestart->Inc( );
-            if ( $datestart->eq( $this->dateObj ) ) {
+            if ( $datestart->eq( $this->m_date ) ) {
                 return $datestart;
             }
         }
@@ -213,18 +213,18 @@ class cDateStrategySimpleDate extends cDateStrategy {
     public function GetPrevTerminDate( $datestart, $dateisfirst = true  ) {
 
         if ( $dateisfirst ) {
-            if ( $datestart->eq( $this->dateObj ) ) {
+            if ( $datestart->eq( $this->m_date ) ) {
                 return $datestart;
             } else {
-                if ($datestart->gt( $this->dateObj)) {
-                    return $this->dateObj;
+                if ($datestart->gt( $this->m_date)) {
+                    return $this->m_date;
                 } else {
                     return undef;
                 }
             }
         } else {
             $datestart->Dec( );
-            if ($datestart->eq( $this->dateObj )) {
+            if ($datestart->eq( $this->m_date )) {
                 return $datestart;
             }
         }
@@ -234,12 +234,12 @@ class cDateStrategySimpleDate extends cDateStrategy {
     }   // function GetPrevTerminDate
 
     public function GetFirstDate( ) {
-        return $this->dateObj;
+        return $this->m_date;
     }   // function GetFirstDate()
 
-    public function IsEventDate( $dateObj ) {
+    public function IsEventDate( $m_date ) {
 
-        return $this->dateObj->eq( $dateObj );
+        return $this->m_date->eq( $m_date );
 
     }   // function IsEventDate
 

@@ -43,7 +43,7 @@ class cDateISO extends cDate {
       *
       */
 
-      public $version = '1.0.1';
+      public $version = '1.0.2';
 
 
     /**
@@ -839,6 +839,28 @@ Gemäß Normen der ISO, DIN, ÖNORM und SN: jene Woche, die den ersten Donnersta
 	return $dt;
 
     }  // function LastWeekOfMonth( )
+
+
+    /**
+      *
+      * AsDate( ) returns a cDate-Obejct with the actual date
+      *
+      * Example:
+      *
+      * ```
+      * ```
+      *
+      * @return cDate the Gregorian date object
+      *
+      * @since = 1.0.2
+      *
+      */
+
+      public function AsDate( ) {
+
+	  return new cDate( $this->m_timestamp );
+
+      }	// function AsDate( )
 
     /**
       *

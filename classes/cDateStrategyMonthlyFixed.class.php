@@ -425,6 +425,73 @@ class cDateStrategyMonthlyFixedParams {
 
 
 
+    public function GetFirstDate( ) {
+
+        $dateObj =new cDate($this->m_start_date);
+
+        if ( ($this->onFirst) || ($this->onSecond) || ($this->onThird) || ($this->onFourth) || ($this->onFifth) ) {
+
+            if ( $this->onFirst )  { $anzahl = 1; }
+            if ( $this->onSecond ) { $anzahl = 2; }
+            if ( $this->onThird )  { $anzahl = 3; }
+            if ( $this->onFourth ) { $anzahl = 4; }
+            if ( $this->onFifth )  { $anzahl = 5; }
+
+                if ( $this->onSunday )    { $dateObj->SeekWeekday(0); }
+                if ( $this->onMonday )    { $dateObj->SeekWeekday(1); }
+                if ( $this->onTuesday )   { $dateObj->SeekWeekday(2); }
+                if ( $this->onWednesday ) { $dateObj->SeekWeekday(3); }
+                if ( $this->onThursday )  { $dateObj->SeekWeekday(4); }
+                if ( $this->onFriday )    { $dateObj->SeekWeekday(5); }
+                if ( $this->onSaturday )  { $dateObj->SeekWeekday(6); }
+
+            for ( $i=0; $i<$anzahl;$i++) {
+                $dateObj->inc();
+                # echo "<br> untersuche " . $dateObj->AsDMY() . "i=$i anzahl=$anzahl";
+                if ( $this->onSunday )    { $dateObj->SeekWeekday(0); }
+                if ( $this->onMonday )    { $dateObj->SeekWeekday(1); }
+                if ( $this->onTuesday )   { $dateObj->SeekWeekday(2); }
+                if ( $this->onWednesday ) { $dateObj->SeekWeekday(3); }
+                if ( $this->onThursday )  { $dateObj->SeekWeekday(4); }
+                if ( $this->onFriday )    { $dateObj->SeekWeekday(5); }
+                if ( $this->onSaturday )  { $dateObj->SeekWeekday(6); }
+            }
+
+            if ( $this->IsOverflow( $dateObj ) ) { return null; }
+            if ( $this->IsUnderflow( $dateObj ) ) { return null; }
+
+            return $dateObj;
+
+        } elseif ($this->onLast) {
+
+            $anzahl = 1;
+            $dateObj->GoEOM();
+
+            for ( $i=0; $i<$anzahl;$i++) {
+                if ($i!=0) $dateObj->dec();
+                if ( $this->onSunday )    { $dateObj->SeekWeekday(0, 1); }
+                if ( $this->onMonday )    { $dateObj->SeekWeekday(1, 1); }
+                if ( $this->onTuesday )   { $dateObj->SeekWeekday(2, 1); }
+                if ( $this->onWednesday ) { $dateObj->SeekWeekday(3, 1); }
+                if ( $this->onThursday )  { $dateObj->SeekWeekday(4, 1); }
+                if ( $this->onFriday )    { $dateObj->SeekWeekday(5, 1); }
+                if ( $this->onSaturday )  { $dateObj->SeekWeekday(6, 1); }
+            }
+            # echo "<br>dateobj=".$dateObj->AsDMY();
+
+            if ( $this->IsOverflow( $dateObj ) ) { return null; }
+            if ( $this->IsUnderflow( $dateObj ) ) { return null; }
+
+            return $dateObj;
+
+        }
+
+        return null;
+
+
+    }   // function GetFirstDate
+
+
 
 
 }	// class cDateStrategyMonthlyFixedParams
@@ -2844,370 +2911,6 @@ $this->AdjustWeek( $wom, $month, $year, $weekday_next, $direction );
 
     }	// functiom GetNextEventSlot( )
 
-
-    /*  *
-      * The method GetFollower( ) returns the next date AFTER $date, which fits to the specifications. $date itself will not be taken into consideration.
-      *
-      * @param cDate $date a cDate object, which is the starting point for the next calculation
-      * @param cDate $dt_next GetFollower returns a cDate object, which is the starting point for the next calculation. ie If we are moving backwards and scheduling forward, then a correction is necessary
-      * @param int $direction the constant, which indicates the search direction. It defaults to DIRECTION_FORWARD
-      *
-      * @return cDate cDate object with the next fitting date or null, if no fitting date could be found ( overflow, IsUnderflow)
-      *
-      * @see GetFollower
-      * @see GetFirstDate
-      * @see DIRECTION_BACKWARD
-      * @see DIRECTION_FORWARD
-      *
-      */
-
-/*
-    function GetFollower( $date, & $dt_next, $direction = self::DIRECTION_FORWARD ) {
-
-        // $date_test muß ein gültiges Datum sein, an dem ein Termin stattfindet ! -> protected um dies zu gewährleisten
-        // es wird keine Korrektur vorgenommen
-
-        # echo "\nGetFollower(".$date->AsDMY(). ") : GetLatestDayNumber() ergibt " . $this->GetLatestDayNumber();
-
-        assert( is_int( $direction ) );
-        assert( is_a( $date, '\\libdatephp\\cDate' ) );
-
-        if ( ! $this->IsValid( ) ) die( "\n cDateStrategyMonthly::GetFollower() : no valid data to calculate anything" );
-
-        assert( is_a( $date, '\\libdatephp\\cDate' ) );
-
-//         $month_skipped = false;		// we did not change the week yet
-//         $quarter_skipped = false;	// we did not change the quarter yet
-//         $year_skipped = false;		// we did not change the year yet
-
-        //
-
-        if ( $this->m_debug ) echo "\n GetFollower( ) starts with " . $date->AsSQL( ) . ' called  by ' . debug_backtrace()[1]['function'] . '/' . debug_backtrace()[0]['line'] ;
-	if ( $this->m_debug) echo " direction = " . ( $direction == self::DIRECTION_FORWARD ? ' forward' : ' backward') ;
-        //
-
-        $date_test = new cDate( $date);
-
-        //
-
-        if ( $this->AdjustedUnderOverflow( $date_test, $direction ) ) {
-
-	    if ( is_null( $date_test ) ) {
-		// not adjustable
-
-		return null;
-	    }
-
-        }
-
-        //
-
-        $date_test = $this->GetNextEventSlot( $date_test, $direction );
-
-        // $this->ScheduleLazy( $date_test, $date_test,  $direction  );
-
-        if ( $this->m_debug ) echo "\n normally we would use " . $date_test->AsSQL( );
-
-        //
-
-        if ( is_null( $date ) ) return null;
-
-
-        $fertig = false;
-        $dt_next = null;
-
-        // $direction = self::DIRECTION_FORWARD;
-//         $weiter = true;
-	  $weiter = false;
-
-        do {
-
-// 	    $weiter = false;
-
-	    if ( $this->AdjustedUnderOverflow( $date_test, $direction ) ) {
-
-		if ( is_null( $date_test ) ) {
-		    // not adjustable
-
-		    return null;
-		}
-
-	    }
-
-	    if ( $weiter ) {
-		if ( $direction == self::DIRECTION_FORWARD ) {
-		    $date_test->Inc( );
-		} elseif ( $direction == self::DIRECTION_BACKWARD) {
-		    $date_test->Dec( );
-		}
-	    }
-
-	    $weiter = false;
-
-	    if ( $this->m_debug ) echo "\n skipped to " . $date_test->AsSQL( );
-	    echo ' direction is ' . ( $direction == self::DIRECTION_FORWARD ? ' forward ' : ' backward ' ) ;
-
-
-            if ( $date_test->IsSaturday( ) ) {
-		if ( $this->m_debug ) echo "\n" . $date_test->AsSQL( ) . ' is a saturday';
-		if ( $this->m_directionOnSaturday == cDateStrategy::STRATEGY_DIRECTION_FORWARD ) {
-// 		    $weiter = true;
-// 		    $direction = self::DIRECTION_FORWARD;
-		    if ( $direction == self::DIRECTION_BACKWARD ) $dt_next = new cDate( $date_test );
-		    // if ( is_null( $dt_next ) ) $dt_next = $date_test;
-		    $date_test = $this->MoveDateIfNecessary( $date_test );
-		    // if ( $this->m_debug ) echo "\n moved to " . $date_test->AsSQL( ) . ' from ' . $gemerkt->AsSQL( );
-		    if ( is_null( $date_test ) ) return null;
-
-		} elseif ( $this->m_directionOnSaturday == cDateStrategy::STRATEGY_DIRECTION_BACKWARD ) {
-// 		    $weiter = true;
-// 		    $direction = self::DIRECTION_BACKWARD;
-		    // if ( is_null( $dt_next ) ) $dt_next = $date_test;
-		    if ( $direction == self::DIRECTION_FORWARD ) $dt_next = new cDate( $date_test );
-		    $date_test = $this->MoveDateIfNecessary( $date_test );
-		    // if ( $this->m_debug ) echo "\n moved to " . $date_test->AsSQL( ) . ' from ' . $gemerkt->AsSQL( );
-		    if ( is_null( $date_test ) ) return null;
-
-		} elseif ( $this->m_directionOnSaturday == cDateStrategy::STRATEGY_DIRECTION_ABOLISH ) {
-		    return null;
-		}
-            }
-
-            if ( $date_test->IsSunday( ) ) {
-
-		if ( $this->m_debug ) echo "\n" . $date_test->AsSQL( ) . ' is a sunday';
-
-		if ( $this->m_directionOnSunday == cDateStrategy::STRATEGY_DIRECTION_FORWARD ) {
-// 		    $weiter = true;
-// 		    $direction = self::DIRECTION_FORWARD;
-		   //  if ( is_null( $dt_next ) ) $dt_next = $date_test;
-		   if ( $direction == self::DIRECTION_BACKWARD ) $dt_next = new cDate( $date_test );
-		    $date_test = $this->MoveDateIfNecessary( $date_test );
-		    if ( is_null( $date_test ) ) return null;
-		} elseif ( $this->m_directionOnSunday == cDateStrategy::STRATEGY_DIRECTION_BACKWARD ) {
-// 		    $weiter = true;
-// 		    $direction = self::DIRECTION_BACKWARD;
-		    // if ( ( $direction == self::DIRECTION_BACKWARD ) && ( is_null( $dt_next ) ) ) $dt_next = $date_test;
-		    // if ( ( is_null( $dt_next ) ) ) $dt_next = $date_test;
-		    if ( $direction == self::DIRECTION_FORWARD ) $dt_next = new cDate( $date_test );
-		    $date_test = $this->MoveDateIfNecessary( $date_test );
-		    if ( is_null( $date_test ) ) return null;
-		} elseif ( $this->m_directionOnSunday == cDateStrategy::STRATEGY_DIRECTION_ABOLISH ) {
-		    return null;
-		}
-            }
-
-
-            if ( ! ( is_null( $date_test ) ) && ( $this->IsCelebrity( $date_test ) ) ) {
-
-		if ( $this->m_debug ) echo "\n" . $date_test->AsSQL( ) . ' is a celebrity';
-
-		if ( $this->m_directionOnCelebrity == cDateStrategy::STRATEGY_DIRECTION_FORWARD ) {
-// 		    $weiter = true;
-// 		    $direction = self::DIRECTION_FORWARD;
-		    // if ( is_null( $dt_next ) ) $dt_next = $date_test;
-		    if ( $direction == self::DIRECTION_BACKWARD ) $dt_next = new cDate( $date_test );
-		    $dt_next = $this->MoveDateIfNecessary( $date_test );
-		    if ( is_null( $date_test ) ) return null;
-		} elseif ( $this->m_directionOnCelebrity == cDateStrategy::STRATEGY_DIRECTION_BACKWARD ) {
-// 		    $weiter = true;
-// 		    $direction = self::DIRECTION_BACKWARD;
-		    // if ( is_null( $dt_next ) ) $dt_next = $date_test;
-		    if ( $direction == self::DIRECTION_FORWARD ) $dt_next = new cDate( $date_test );
-		    $date_test = $this->MoveDateIfNecessary( $date_test );
-		    if ( is_null( $date_test ) ) return null;
-		} elseif ( $this->m_directionOnCelebrity == cDateStrategy::STRATEGY_DIRECTION_ABOLISH ) {
-		    return null;
-		}
-            }
-
-            if ( ! ( is_null( $date_test ) ) && ( $this->IsHoliday( $date_test ) ) ) {
-
-		if ( $this->m_debug ) echo "\n" . $date_test->AsSQL( ) . ' is a holiday';
-
-		if ( $this->m_directionOnHoliday == cDateStrategy::STRATEGY_DIRECTION_FORWARD ) {
-// 		    $weiter = true;
-// 		    $direction = self::DIRECTION_FORWARD;
-		    if ( $direction == self::DIRECTION_BACKWARD ) $dt_next = new cDate( $date_test );
-		    $date_test = $this->MoveDateIfNecessary( $date_test );
-		    if ( is_null( $dt_next ) ) $dt_next = $date_test;
-
-		    if ( is_null( $date_test ) ) return null;
-		} elseif ( $this->m_directionOnHoliday == cDateStrategy::STRATEGY_DIRECTION_BACKWARD ) {
-// 		    $weiter = true;
-// 		    $direction = self::DIRECTION_BACKWARD;
-		    if ( $direction == self::DIRECTION_FORWARD ) $dt_next = new cDate( $date_test );
-		    $date_test = $this->MoveDateIfNecessary( $date_test );
-		    if ( is_null( $dt_next ) ) $dt_next = $date_test;
-		    if ( is_null( $date_test ) ) return null;
-		} elseif ( $this->m_directionOnHoliday == cDateStrategy::STRATEGY_DIRECTION_ABOLISH ) {
-		    return null;
-		}
-            }
-
-	    if ($this->IsUnderflow($date_test) && ( $direction == self::DIRECTION_FORWARD )) {
-
-		if ( $this->m_debug ) echo "\n" . $date_test->AsSQL( ) . ' is an underflow';
-
-		$date_test = new \libdatephp\cDate( $this->m_start_date );
-		$date_test->Dec( );
-	    }
-	    if ($this->IsOverflow($date_test) && ( $direction == self::DIRECTION_FORWARD)) return null;
-	    if ($this->IsUnderflow($date_test) && ( $direction == self::DIRECTION_BACKWARD)) return null;
-	    if ($this->IsOverflow($date_test) && ( $direction == self::DIRECTION_BACKWARD )) {
-		if ( $this->m_debug ) echo "\n" . $date_test->AsSQL( ) . ' is an overflow';
-		$date_test = new \libdatephp\cDate( $this->m_end_date );
-		$date_test->Inc( );
-	    }
-
-        } while ( $weiter );
-
-	if ( $this->m_debug ) echo "\n GetFollower returns " . $date_test->AsSQL( ) . ' to ' .  debug_backtrace()[1]['function'];;
-
-	if ( is_null( $dt_next ) ) $dt_next = $date_test;
-
-	echo "\n next try should be " . $dt_next->AsSQL( );
-
-        return $date_test;
-
-    }       // function GetFollower()
-
-*/
-
-    /*
-
-    function GetFollower_org( $date ) {
-        // $dateObj muß ein gültiges Datum sein, an dem ein Termin stattfindet ! -> protected um dies zu gewährleisten
-        // es wird keine Korrektur vorgenommen
-
-        # echo "<br>GetFollower(".$date->AsDMY(). ") : GetLatestDayNumber() ergibt " . $this->GetLatestDayNumber();
-
-        $dateObj = new cDate( $date);
-
-        $orgMonth = $dateObj->Month();
-
-        $dateObj->GoEOM( );     // NOTE : steht auf dem letzten des Vormonats !
-        $fertig = false;
-
-        if ( ($this->onFirst) || ($this->onSecond) || ($this->onThird) || ($this->onFourth) || ($this->onFifth) ) {
-
-            if ( $this->onFirst )  { $anzahl = 1; }
-            if ( $this->onSecond ) { $anzahl = 2; }
-            if ( $this->onThird )  { $anzahl = 3; }
-            if ( $this->onFourth ) { $anzahl = 4; }
-            if ( $this->onFifth )  { $anzahl = 5; }
-
-            for ( $i=0; $i<$anzahl;$i++) {
-                $dateObj->inc();
-                if ( $this->onSunday )    { $dateObj->SeekWeekday(0); }
-                if ( $this->onMonday )    { $dateObj->SeekWeekday(1); }
-                if ( $this->onTuesday )   { $dateObj->SeekWeekday(2); }
-                if ( $this->onWednesday ) { $dateObj->SeekWeekday(3); }
-                if ( $this->onThursday )  { $dateObj->SeekWeekday(4); }
-                if ( $this->onFriday )    { $dateObj->SeekWeekday(5); }
-                if ( $this->onSaturday )  { $dateObj->SeekWeekday(6); }
-            }
-
-            if ( $this->IsOverflow( $dateObj ) ) { return null; }
-            if ( $this->IsUnderflow( $dateObj ) ) { return null; }
-
-            return $dateObj;
-
-        } elseif ($this->onLast) {
-
-            $anzahl = 1;
-            $dateObj->GoEOM();
-            $dateObj->inc();
-            $dateObj->GoEOM();
-
-            for ( $i=0; $i<$anzahl;$i++) {
-                $dateObj->dec();
-                if ( $this->onSunday )    { $dateObj->SeekWeekday(0, 1); }
-                if ( $this->onMonday )    { $dateObj->SeekWeekday(1, 1); }
-                if ( $this->onTuesday )   { $dateObj->SeekWeekday(2, 1); }
-                if ( $this->onWednesday ) { $dateObj->SeekWeekday(3, 1); }
-                if ( $this->onThursday )  { $dateObj->SeekWeekday(4, 1); }
-                if ( $this->onFriday )    { $dateObj->SeekWeekday(5, 1); }
-                if ( $this->onSaturday )  { $dateObj->SeekWeekday(6, 1); }
-            }
-
-            if ( $this->IsOverflow( $dateObj ) ) { return null; }
-            if ( $this->IsUnderflow( $dateObj ) ) { return null; }
-
-            return $dateObj;
-
-        }
-
-        return null;
-
-    }
-*/
-
-    public function GetFirstDate( ) {
-
-        $dateObj =new cDate($this->m_start_date);
-
-        if ( ($this->onFirst) || ($this->onSecond) || ($this->onThird) || ($this->onFourth) || ($this->onFifth) ) {
-
-            if ( $this->onFirst )  { $anzahl = 1; }
-            if ( $this->onSecond ) { $anzahl = 2; }
-            if ( $this->onThird )  { $anzahl = 3; }
-            if ( $this->onFourth ) { $anzahl = 4; }
-            if ( $this->onFifth )  { $anzahl = 5; }
-
-                if ( $this->onSunday )    { $dateObj->SeekWeekday(0); }
-                if ( $this->onMonday )    { $dateObj->SeekWeekday(1); }
-                if ( $this->onTuesday )   { $dateObj->SeekWeekday(2); }
-                if ( $this->onWednesday ) { $dateObj->SeekWeekday(3); }
-                if ( $this->onThursday )  { $dateObj->SeekWeekday(4); }
-                if ( $this->onFriday )    { $dateObj->SeekWeekday(5); }
-                if ( $this->onSaturday )  { $dateObj->SeekWeekday(6); }
-
-            for ( $i=0; $i<$anzahl;$i++) {
-                $dateObj->inc();
-                # echo "<br> untersuche " . $dateObj->AsDMY() . "i=$i anzahl=$anzahl";
-                if ( $this->onSunday )    { $dateObj->SeekWeekday(0); }
-                if ( $this->onMonday )    { $dateObj->SeekWeekday(1); }
-                if ( $this->onTuesday )   { $dateObj->SeekWeekday(2); }
-                if ( $this->onWednesday ) { $dateObj->SeekWeekday(3); }
-                if ( $this->onThursday )  { $dateObj->SeekWeekday(4); }
-                if ( $this->onFriday )    { $dateObj->SeekWeekday(5); }
-                if ( $this->onSaturday )  { $dateObj->SeekWeekday(6); }
-            }
-
-            if ( $this->IsOverflow( $dateObj ) ) { return null; }
-            if ( $this->IsUnderflow( $dateObj ) ) { return null; }
-
-            return $dateObj;
-
-        } elseif ($this->onLast) {
-
-            $anzahl = 1;
-            $dateObj->GoEOM();
-
-            for ( $i=0; $i<$anzahl;$i++) {
-                if ($i!=0) $dateObj->dec();
-                if ( $this->onSunday )    { $dateObj->SeekWeekday(0, 1); }
-                if ( $this->onMonday )    { $dateObj->SeekWeekday(1, 1); }
-                if ( $this->onTuesday )   { $dateObj->SeekWeekday(2, 1); }
-                if ( $this->onWednesday ) { $dateObj->SeekWeekday(3, 1); }
-                if ( $this->onThursday )  { $dateObj->SeekWeekday(4, 1); }
-                if ( $this->onFriday )    { $dateObj->SeekWeekday(5, 1); }
-                if ( $this->onSaturday )  { $dateObj->SeekWeekday(6, 1); }
-            }
-            # echo "<br>dateobj=".$dateObj->AsDMY();
-
-            if ( $this->IsOverflow( $dateObj ) ) { return null; }
-            if ( $this->IsUnderflow( $dateObj ) ) { return null; }
-
-            return $dateObj;
-
-        }
-
-        return null;
-
-
-    }   // function GetFirstDate
 
 
 

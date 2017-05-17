@@ -789,7 +789,15 @@ abstract class cDateStrategy {
 
     public function SetStartDate( $obj_date ) {
 
+      if ( ! is_null( $obj_date ) )  {
+
         $this->m_start_date->SetDate( $obj_date->Month(), $obj_date->Day(), $obj_date->Year() ) ;
+
+      } else {
+
+	$this->m_start_date = null;
+
+      }
 
     }   // function SetStartDate
 
@@ -1188,7 +1196,7 @@ abstract class cDateStrategy {
       *
       */
 
-    function GetFollower( $date, & $dt_next, $direction = self::DIRECTION_FORWARD ) {
+    public function GetFollower( $date, & $dt_next, $direction = self::DIRECTION_FORWARD ) {
 
         // $date_test muß ein gültiges Datum sein, an dem ein Termin stattfindet ! -> protected um dies zu gewährleisten
         // es wird keine Korrektur vorgenommen
@@ -1264,14 +1272,6 @@ abstract class cDateStrategy {
 
         $date_test = $this->GetNextEventSlot( $date_test, $direction );
 
-/*
-static $counter = 0;
-$counter++;
-if ( $counter == 20 ) die( "\n Abbruch in GetFollower( )" );
-*/
-
-        // $this->ScheduleLazy( $date_test, $date_test,  $direction  );
-
         if ( $this->m_debug ) echo "\n normally we would use " . $date_test->AsSQL( );
 
         //
@@ -1282,8 +1282,6 @@ if ( $counter == 20 ) die( "\n Abbruch in GetFollower( )" );
         $fertig = false;
         $dt_next = null;
 
-        // $direction = self::DIRECTION_FORWARD;
-//         $weiter = true;
 	  $weiter = false;
 
         do {
@@ -1323,7 +1321,10 @@ if ( $counter == 20 ) die( "\n Abbruch in GetFollower( )" );
 		    // if ( is_null( $dt_next ) ) $dt_next = $date_test;
 		    $date_test = $this->MoveDateIfNecessary( $date_test );
 		    // if ( $this->m_debug ) echo "\n moved to " . $date_test->AsSQL( ) . ' from ' . $gemerkt->AsSQL( );
-		    if ( is_null( $date_test ) ) return null;
+		    if ( is_null( $date_test ) ) {
+			if ( $this->m_debug ) echo "\n moving saturday forward results in null";
+			return null;
+		    }
 
 		} elseif ( $this->m_directionOnSaturday == cDateStrategy::STRATEGY_DIRECTION_BACKWARD ) {
 // 		    $weiter = true;
@@ -1332,7 +1333,10 @@ if ( $counter == 20 ) die( "\n Abbruch in GetFollower( )" );
 		    if ( $direction == self::DIRECTION_FORWARD ) $dt_next = new cDate( $date_test );
 		    $date_test = $this->MoveDateIfNecessary( $date_test );
 		    // if ( $this->m_debug ) echo "\n moved to " . $date_test->AsSQL( ) . ' from ' . $gemerkt->AsSQL( );
-		    if ( is_null( $date_test ) ) return null;
+		    if ( is_null( $date_test ) )  {
+			if ( $this->m_debug ) echo "\n moving saturday backward results in null";
+			return null;
+		    }
 
 		} elseif ( $this->m_directionOnSaturday == cDateStrategy::STRATEGY_DIRECTION_ABOLISH ) {
 		    return null;
@@ -1349,7 +1353,10 @@ if ( $counter == 20 ) die( "\n Abbruch in GetFollower( )" );
 		   //  if ( is_null( $dt_next ) ) $dt_next = $date_test;
 		   if ( $direction == self::DIRECTION_BACKWARD ) $dt_next = new cDate( $date_test );
 		    $date_test = $this->MoveDateIfNecessary( $date_test );
-		    if ( is_null( $date_test ) ) return null;
+		    if ( is_null( $date_test ) ) {
+			if ( $this->m_debug ) echo "\n moving sunday forward results in null";
+			return null;
+		    }
 		} elseif ( $this->m_directionOnSunday == cDateStrategy::STRATEGY_DIRECTION_BACKWARD ) {
 // 		    $weiter = true;
 // 		    $direction = self::DIRECTION_BACKWARD;
@@ -1357,8 +1364,12 @@ if ( $counter == 20 ) die( "\n Abbruch in GetFollower( )" );
 		    // if ( ( is_null( $dt_next ) ) ) $dt_next = $date_test;
 		    if ( $direction == self::DIRECTION_FORWARD ) $dt_next = new cDate( $date_test );
 		    $date_test = $this->MoveDateIfNecessary( $date_test );
-		    if ( is_null( $date_test ) ) return null;
+		    if ( is_null( $date_test ) ) {
+			if ( $this->m_debug ) echo "\n moving sunday backward results in null";
+			return null;
+		    }
 		} elseif ( $this->m_directionOnSunday == cDateStrategy::STRATEGY_DIRECTION_ABOLISH ) {
+		    if ( $this->m_debug ) echo "\n abolishing sunday results in null";
 		    return null;
 		}
             }
@@ -1374,15 +1385,22 @@ if ( $counter == 20 ) die( "\n Abbruch in GetFollower( )" );
 		    // if ( is_null( $dt_next ) ) $dt_next = $date_test;
 		    if ( $direction == self::DIRECTION_BACKWARD ) $dt_next = new cDate( $date_test );
 		    $dt_next = $this->MoveDateIfNecessary( $date_test );
-		    if ( is_null( $date_test ) ) return null;
+		    if ( is_null( $date_test ) ) {
+			if ( $this->m_debug ) echo "\n moving celebrity forward results in null";
+			return null;
+		    }
 		} elseif ( $this->m_directionOnCelebrity == cDateStrategy::STRATEGY_DIRECTION_BACKWARD ) {
 // 		    $weiter = true;
 // 		    $direction = self::DIRECTION_BACKWARD;
 		    // if ( is_null( $dt_next ) ) $dt_next = $date_test;
 		    if ( $direction == self::DIRECTION_FORWARD ) $dt_next = new cDate( $date_test );
 		    $date_test = $this->MoveDateIfNecessary( $date_test );
-		    if ( is_null( $date_test ) ) return null;
+		    if ( is_null( $date_test ) ) {
+			if ( $this->m_debug ) echo "\n moving celebrity forward results in null";
+			return null;
+		    }
 		} elseif ( $this->m_directionOnCelebrity == cDateStrategy::STRATEGY_DIRECTION_ABOLISH ) {
+		    if ( $this->m_debug ) echo "\n abolishing celebrity results in null";
 		    return null;
 		}
             }
@@ -1398,15 +1416,22 @@ if ( $counter == 20 ) die( "\n Abbruch in GetFollower( )" );
 		    $date_test = $this->MoveDateIfNecessary( $date_test );
 		    if ( is_null( $dt_next ) ) $dt_next = $date_test;
 
-		    if ( is_null( $date_test ) ) return null;
+		    if ( is_null( $date_test ) ) {
+			if ( $this->m_debug ) echo "\n moving holiday forward results in null";
+			return null;
+		    }
 		} elseif ( $this->m_directionOnHoliday == cDateStrategy::STRATEGY_DIRECTION_BACKWARD ) {
 // 		    $weiter = true;
 // 		    $direction = self::DIRECTION_BACKWARD;
 		    if ( $direction == self::DIRECTION_FORWARD ) $dt_next = new cDate( $date_test );
 		    $date_test = $this->MoveDateIfNecessary( $date_test );
 		    if ( is_null( $dt_next ) ) $dt_next = $date_test;
-		    if ( is_null( $date_test ) ) return null;
+		    if ( is_null( $date_test ) ) {
+			if ( $this->m_debug ) echo "\n moving holiday backward results in null";
+			return null;
+		    }
 		} elseif ( $this->m_directionOnHoliday == cDateStrategy::STRATEGY_DIRECTION_ABOLISH ) {
+		    if ( $this->m_debug ) echo "\n abolishing holiday results in null";
 		    return null;
 		}
             }
@@ -1467,7 +1492,6 @@ if ( $counter == 20 ) die( "\n Abbruch in GetFollower( )" );
       *
       * @return cDate cDate object with the next fitting date
       *
-      * @see GetFollower
       * @see GetFirstDate
       * @see GetNextEventSlot
       * @see DIRECTION_BACKWARD
@@ -1485,7 +1509,6 @@ if ( $counter == 20 ) die( "\n Abbruch in GetFollower( )" );
       *
       * @return bool true, if we can start to calculate dates and events
       *
-      * @see GetFollower
       * @see GetFirstDate
       * @see GetNextEventSlot
       * @see DIRECTION_BACKWARD
@@ -1522,17 +1545,12 @@ if ( $counter == 20 ) die( "\n Abbruch in GetFollower( )" );
       * The ABSTRACT method GetFirstDate( ) returns the first valid date of the series to be calculated according to the specifications
       * Subclasses have to code this method before the class can be used
       *
-      * @param cDate $obj_date the date where the calculation should start
-      * @param int $direction how the time line shoulfd be traversed
-      *
       * @return cDate a cDate object with the first fitting date or null, if no fitting date could be found ( overflow, underflow)
       *
       * @see IsValid
-      * @see GetFollower
       * @see GetFirstDate
       * @see FromString
       * @see GetPredecessor
-      * @see GetFollower
       * @see GetArray
       *
       */
@@ -1551,7 +1569,6 @@ if ( $counter == 20 ) die( "\n Abbruch in GetFollower( )" );
       * @param string $str the specifications as string
       *
       * @see IsValid
-      * @see GetFollower
       * @see GetFirstDate
       * @see FromString
       *
@@ -1570,7 +1587,6 @@ if ( $counter == 20 ) die( "\n Abbruch in GetFollower( )" );
       * @return string the specifications as string
       *
       * @see IsValid
-      * @see GetFollower
       * @see GetFirstDate
       * @see FromString
       *
@@ -1618,7 +1634,7 @@ if ( $counter == 20 ) die( "\n Abbruch in GetFollower( )" );
     protected function PrintParameters( $obj_date_calc_from, $obj_date_calc_to ) {
 
 	echo "\n calculating the events between " . (is_null( $obj_date_calc_from ) ? 'n/a' : $obj_date_calc_from->AsSQL( ) ) . ' and ' . (is_null( $obj_date_calc_to ) ? 'n/a' : $obj_date_calc_to->AsSQL( ) );
-	echo "\n calculation bases are  " . $this->GetStartDate( ) ->AsSQL( ) . ' and ' . $this->GetEndDate( ) ->AsSQL( ) ;
+	echo "\n calculation bases are  " . ( is_null( $this->m_start_date) ? ' n/a' : $this->m_start_date ->AsSQL( ) ). ' and ' . ( is_null( $this->m_end_date ) ? ' n/a ' : $this->m_end_date ->AsSQL( ) );
 	echo "\n celebrities = ";
 	foreach ( self::$m_a_celebrities as $cel ) {
 	    echo "\n" . $cel->AsSQL( );
@@ -2496,8 +2512,14 @@ if ( $counter == 20 ) die( "\n Abbruch in GetFollower( )" );
 
     public function GetNextEventDate( $obj_date_start, $is_first_date = true  ) {     // TODO : bei allen gleichen in den abgeleiteten Klassen diese rauswerfen
 
-        if ( $this->IsUnderflow( $obj_date_start ) ) return null;
-        if ( $this->IsOverflow( $obj_date_start ) ) return null;
+        if ( $this->IsUnderflow( $obj_date_start ) ) {
+	    if ( $this->m_debug ) echo "\n Underflow!";
+	    return null;
+	}
+        if ( $this->IsOverflow( $obj_date_start ) ) {
+	    if ( $this->m_debug ) echo "\n Overflow!";
+	    return null;
+	}
 
         $dt = $this->GetFirstDate( );
         $fertig = false;

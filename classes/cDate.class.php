@@ -1819,7 +1819,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       */
 
 
-    public function __construct( $m = -1, $d = -1, $y = -1) {
+    public function __construct( $m = null, $d = null, $y = null) {
 
         if ( is_string( $m ) ) {
 
@@ -1831,13 +1831,25 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
 
 	    if ( is_a( $m, 'libdatephp\cDate' ) ) {
 		$this->FromDate( $m );
-	    }  elseif ( is_int( $y ) && is_int( $m ) && is_int( $d ) ) {
+	    }  elseif ( ( is_null( $y ) ) && ( is_null( $m ) ) && ( is_null( $d ) ) ) {
 
-		if ( ($y==-1) && ($m==-1) && ($d==-1) ) { // cDate()
+		$this->SetToday( );
+
+	    } elseif ( is_int( $m ) && ( is_null( $d ) ) && ( is_null( $y ) ) ) {
+
+		$this->FromTimestamp( $m );
+
+	    } elseif ( is_int( $m ) && ( is_int( $d ) ) && ( is_int( $y ) ) ) {
+
+		$this->SetDate($m, $d, $y);
+
+	    } /*elseif ( is_int( $y ) && is_int( $m ) && is_int( $d ) ) {
+
+		if ( ( is_null( $y ) ) && ( is_null( $m ) ) && ( is_null( $d ) ) ) {
 
 		    $this->SetToday();
 
-		} elseif (($d == -1) && ($y == -1)) { // cDate( $timestamp)
+		} elseif ( ( is_null( $d ) ) && ( is_null( $y ) ) ) { // cDate( $timestamp)
 
 		    $this->FromTimestamp( $m );
 
@@ -1845,7 +1857,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
 		} else {            // cDate($y, $m, $sd)
 		    $this->SetDate($m, $d, $y);
 		}
-	    }  else {
+	    } */ else {
 		# echo "<br>->$d.$m.$y ";
 		// echo ">>".( is_int($y) . "-".is_int($m)."-" . is_int($d) ) ." --- ". $y . $m .$d. "d=".$d."y=".$y."m=".$m;
 		// var_dump( debug_backtrace( ) );
