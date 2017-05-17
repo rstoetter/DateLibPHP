@@ -1788,7 +1788,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       *  Example:
       *
-      *  $p = new cDate( 11, 22, 2016, 11, 23, 2016 );
+      *  $p = new cDate( 11, 22, 2016 );
       *  from month, day, year
       *
       *  $p = new cDate( '2017-02-28' );
@@ -1806,8 +1806,8 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *  $dtm = new cDate( new cDate( 11, 22, 2016 ) );
       *  a copy constructor
       *
-     *
-      *  $dtm = new cPeriod( 20516 );
+      *
+      *  $dtm = new cDate( 200516 );
       *  from a timestamp
       *
       *
