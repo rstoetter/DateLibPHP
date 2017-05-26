@@ -9,11 +9,6 @@
             "email": "rstoetter@users.sourceforge.net"
         }
     ],
-    "config": {
-        "platform": {
-            "php": "5.3.3"
-        }
-    },
     "require": { },
     "require-dev": {
         "phpunit/phpunit": "4.0.*"
