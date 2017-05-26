@@ -92,7 +92,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?><?php
 
-namespace libdatephp;
+namespace rstoetter\libdatephp;
 
 # NOTE : TODO : s7 fehlt noch (nach Dimensionen)
 # NOTE : TODO : alle IsValid () überprüfen
@@ -700,10 +700,10 @@ abstract class cDateStrategy {
 
 	}
 
-        assert( is_a( $this->m_start_date, 'libdatephp\cDate' ) );
+        assert( is_a( $this->m_start_date, '\rstoetter\libdatephp\cDate' ) );
         // var_dump( $start_date );
 
-        if ( $end_date != null ) assert( is_a( $end_date, 'libdatephp\cDate' ) );
+        if ( $end_date != null ) assert( is_a( $end_date, '\rstoetter\libdatephp\cDate' ) );
 
         $this->m_end_date = $end_date;     // falls noch kein Endedatum definiert wurde, verwenden wir null
         $this->m_directionOnCelebrity = $directionOnCelebrity;
@@ -770,7 +770,7 @@ abstract class cDateStrategy {
         } elseif (self::$language == 'fr_fr') {
             $ary = $_msg_en_en;
         } else {
-            die ("cDateStrategy : unbekannte Sprache '" . self::$language . "'");
+            throw new \Exception ("cDateStrategy : unbekannte Sprache '" . self::$language . "'");
         }
 
         $msg = $ary[$id];
@@ -831,7 +831,7 @@ abstract class cDateStrategy {
         if ( is_null( $obj_date ) ) {
             $this->m_end_date = null;
         } else {
-	    $this->m_end_date = new \libdatephp\cDate( $obj_date );
+	    $this->m_end_date = new \rstoetter\libdatephp\cDate( $obj_date );
 	}
 
     }   // function SetEndDate
@@ -1172,7 +1172,7 @@ abstract class cDateStrategy {
 
     public function GetPredecessor( $obj_date, & $dt_prev ) {
 
-	if ( is_a( $obj_date, '\libdatephp\cDate') ) {
+	if ( is_a( $obj_date, '\rstoetter\libdatephp\cDate') ) {
 	    $obj_date = new cDateISO( $obj_date );
 	}
 
@@ -1206,20 +1206,21 @@ abstract class cDateStrategy {
 
 
         if ( is_null( $date ) ) {
-	    assert( true == false );
-	    echo( "\n Error: GetFollower erhielt NULL -> Abbruch" );
-	    return null;
+	    // assert( true == false );
+	    echo "\n from " .  debug_backtrace()[1]['function'] . '/' . debug_backtrace()[0]['line'];
+	    throw new \Exception( "\n Error: GetFollower erhielt NULL -> Abbruch" );
+
         }
 
-	if ( is_a( $date, '\libdatephp\cDate') ) {
+	if ( is_a( $date, '\rstoetter\libdatephp\cDate') ) {
 	    $date = new cDateISO( $date );
 	}
 
 
         assert( is_int( $direction ) );
-        assert( is_a( $date, '\\libdatephp\\cDateISO' ) );
+        assert( is_a( $date, '\rstoetter\libdatephp\\cDateISO' ) );
 
-        if ( ! $this->IsValid( ) ) die( "\n cDateStrategyMonthly::GetFollower() : no valid data to calculate anything" );
+        if ( ! $this->IsValid( ) ) throw new \Exception( "\n cDateStrategyMonthly::GetFollower() : no valid data to calculate anything" );
 
 
 //         $month_skipped = false;		// we did not change the month yet
@@ -1232,7 +1233,7 @@ abstract class cDateStrategy {
 	if ( $this->m_debug) echo " direction = " . ( $direction == self::DIRECTION_FORWARD ? ' forward' : ' backward') ;
         //
 
-        $date_test = new cDateISO( $date);
+        $date_test = new cDateISO( $date );
 
         //
 
@@ -1261,7 +1262,7 @@ abstract class cDateStrategy {
 		    $date_test->Inc( );
 		    // $dt_next = new cDate( $obj_lauf );
 		} else {
-		    die( "\n unknown direction" );
+		    throw new \Exception( "\n unknown direction" );
 		}
 
 		if ( $this->m_debug ) echo "\n adjusted because of adjustement underflow/ overflow. Set to " . $date_test->AsSQL( );
@@ -1440,14 +1441,14 @@ abstract class cDateStrategy {
 
 		if ( $this->m_debug ) echo "\n" . $date_test->AsSQL( ) . ' is an underflow';
 
-		$date_test = new \libdatephp\cDate( $this->m_start_date );
+		$date_test = new rstoetter\libdatephp\cDate( $this->m_start_date );
 		$date_test->Dec( );
 	    }
 	    if ($this->IsOverflow($date_test) && ( $direction == self::DIRECTION_FORWARD)) return null;
 	    if ($this->IsUnderflow($date_test) && ( $direction == self::DIRECTION_BACKWARD)) return null;
 	    if ($this->IsOverflow($date_test) && ( $direction == self::DIRECTION_BACKWARD )) {
 		if ( $this->m_debug ) echo "\n" . $date_test->AsSQL( ) . ' is an overflow';
-		$date_test = new \libdatephp\cDate( $this->m_end_date );
+		$date_test = new rstoetter\libdatephp\cDate( $this->m_end_date );
 		$date_test->Inc( );
 	    }
 
@@ -1458,14 +1459,14 @@ abstract class cDateStrategy {
 
 		if ( $this->m_debug ) echo "\n" . $date_test->AsSQL( ) . ' is an underflow';
 
-		$date_test = new \libdatephp\cDate( $this->m_start_date );
+		$date_test = new rstoetter \libdatephp\cDate( $this->m_start_date );
 		$date_test->Dec( );
 	    }
 	    if ($this->IsOverflow($date_test) && ( $direction == self::DIRECTION_FORWARD)) return null;
 	    if ($this->IsUnderflow($date_test) && ( $direction == self::DIRECTION_BACKWARD)) return null;
 	    if ($this->IsOverflow($date_test) && ( $direction == self::DIRECTION_BACKWARD )) {
 		if ( $this->m_debug ) echo "\n" . $date_test->AsSQL( ) . ' is an overflow';
-		$date_test = new \libdatephp\cDate( $this->m_end_date );
+		$date_test = new rstoetter \libdatephp\cDate( $this->m_end_date );
 		$date_test->Inc( );
 	    }
 */
@@ -1611,10 +1612,10 @@ abstract class cDateStrategy {
 
     protected function DirectionAsString( $direction ) {
 
-	if ( $direction == \libdatephp\cDateStrategy::STRATEGY_DIRECTION_LEAVE ) $str = 'leave';
-	if ( $direction == \libdatephp\cDateStrategy::STRATEGY_DIRECTION_FORWARD ) $str = 'forward';
-	if ( $direction == \libdatephp\cDateStrategy::STRATEGY_DIRECTION_BACKWARD ) $str = 'backward';
-	if ( $direction == \libdatephp\cDateStrategy::STRATEGY_DIRECTION_ABOLISH ) $str = 'abolish';
+	if ( $direction == \rstoetter\libdatephp\cDateStrategy::STRATEGY_DIRECTION_LEAVE ) $str = 'leave';
+	if ( $direction == \rstoetter\libdatephp\cDateStrategy::STRATEGY_DIRECTION_FORWARD ) $str = 'forward';
+	if ( $direction == \rstoetter\libdatephp\cDateStrategy::STRATEGY_DIRECTION_BACKWARD ) $str = 'backward';
+	if ( $direction == \rstoetter\libdatephp\cDateStrategy::STRATEGY_DIRECTION_ABOLISH ) $str = 'abolish';
 
 	return $str;
 
@@ -1667,8 +1668,6 @@ abstract class cDateStrategy {
     	$this->PrintParameters( $obj_date_calc_from, $obj_date_calc_to );
 
     	echo "\n the direction is " . ( $direction == self::DIRECTION_FORWARD ? ' forward' : 'backward' );
-
-
 
     }   // function Dump( )
 
@@ -1727,7 +1726,10 @@ abstract class cDateStrategy {
 
 	    } else {
 
-		if ( $this->m_debug ) echo "\n uncorrectable overflow!";
+		if ( $this->m_debug ) {
+		    echo "\n from " .  debug_backtrace()[1]['function'] . '/' . debug_backtrace()[0]['line'];
+		    echo "\n uncorrectable overflow!";
+		}
 
 		$date_test = null;
 
@@ -1764,6 +1766,7 @@ abstract class cDateStrategy {
 	    echo $follower->AsSQL( );
 	} else {
 	    echo "                                                           ->NULL";
+	    echo "\n -------------------- from " .  debug_backtrace()[1]['function'] . '/' . debug_backtrace()[0]['line'];
 	}
 
     }	// function doPrint( )
@@ -1804,43 +1807,14 @@ abstract class cDateStrategy {
 	if ( $this->m_debug ) echo "\n GetArray( ) starts with " . $obj_date_start->AsSQL( ) . ' and direction = ' . ( $direction == self::DIRECTION_FORWARD ? ' forward ' : ' backward');
 	if ( $this->m_debug ) echo ' from ' .  debug_backtrace()[1]['function'] . '/' . debug_backtrace()[0]['line'];
 
-	if ( ( is_a( $obj_date_start, '\libdatephp\cDate' ) ) && ( is_a( $obj_date_end, '\libdatephp\cDate' ) ) ) {
+	if ( ( is_a( $obj_date_start, '\rstoetter\libdatephp\cDate' ) ) && ( is_a( $obj_date_end, '\rstoetter\libdatephp\cDate' ) ) ) {
 
 	    if ( $this->m_debug ) echo "\n GetArray( ) starts with end date = " . $obj_date_end->AsSQL( ) ;
 
-	/*
-	    if ( $obj_date_start->gt( $obj_date_end ) ) {
 
-		if ( $direction == self::DIRECTION_FORWARD ) return;
-
-		if ( $this->m_debug ) echo "\n swapping limits";
-
-		$tnp = $obj_date_start;
-		$obj_date_start = $obj_date_end;
-		$obj_date_end = $tmp;
-
-		$direction == self::DIRECTION_FORWARD;
-
-	    }
-*/
-	    $obj_date = new \libdatephp\cDate( $obj_date_start );
+	    $obj_date = new cDate( $obj_date_start );
 
 
-/*
-	    if ( $this->IsEventDate( $obj_date ) ) {
-
-		if ( $this->m_debug ) echo "\n" . $obj_date->AsSQL( ) . ' is an event date';
-
-		if ( $debug ) $this->doPrint( $obj_date, $obj_date );
-
-		$ary[] = new cDate( $obj_date_start );
-
-	    } else {
-
-		if ( $this->m_debug ) echo "\n" . $obj_date->AsSQL( ) . ' is not an event date';
-
-	    }
-*/
 
 	    if ( $this->m_debug ) echo "\n GetArray: starting with date " . $obj_date->AsSQL( );
 
@@ -1848,12 +1822,13 @@ abstract class cDateStrategy {
 	    if ( $direction == self::DIRECTION_FORWARD ) {
 		$obj_date->Dec( );
 	    } else {
+
 		$obj_date->Inc( );
 	    }
 
 	    if ( $this->m_debug ) echo "\n adjusted start date to " . $obj_date->AsSQL( );
 
-	    $dt_next = $obj_date;
+	    $dt_next = new cDate( $obj_date );
 	    $dt_tmp = null;
 
 	    if ( $direction == self::DIRECTION_FORWARD ) {
@@ -1862,24 +1837,33 @@ abstract class cDateStrategy {
 
 		do {
 
-		    if ( $debug ) $this->doPrint( $obj_date, $this->GetFollower( $dt_next, $dt_tmp, $direction ) );
+		    if ( $debug ) {
+			$this->doPrint( $obj_date, $this->GetFollower( $dt_next, $dt_tmp, $direction ) );
+		    }
 
 		    $debug = $this->m_debug;	// without debugging, because we debuuged it above
 		    $this->m_debug = false;
+		    $dt_next = new cDate( $obj_date );
+
 		    $obj_date = $this->GetFollower( $dt_next, $dt_next, $direction );
+
 		    $this->m_debug = $debug;
 
-		    if ( $this->m_debug ) echo "\n GetArray( ) got " . $obj_date->AsSQL( );
-
 		    if ( is_null( $obj_date ) ) {
+			if ( $this->m_debug ) echo "\n GetArray( ) received null ";
 
 			break;
 
 		    }
 
+		    if ( $this->m_debug ) {
+
+			    echo "\n GetArray( ) got " . $obj_date->AsSQL( );
+		    }
+
 		    if ( $debug ) echo "\n GetArray( ) received " . $obj_date->AsSQL( );
 
-		    $ary[ ] = new \libdatephp\cDate( $obj_date );
+		    $ary[ ] = new cDate( $obj_date );
 
 		    // $obj_date->Inc( );
 
@@ -1907,7 +1891,7 @@ abstract class cDateStrategy {
 
 		    if ( $debug ) echo "\n GetArray( ) received " . $obj_date->AsSQL( );
 
-		    $ary[ ] = new \libdatephp\cDate( $obj_date );
+		    $ary[ ] = new cDate( $obj_date );
 
 		    // $obj_date->Inc( );
 
@@ -1915,37 +1899,14 @@ abstract class cDateStrategy {
 
 	    }
 
-	} elseif ( ( is_a( $obj_date_start, '\libdatephp\cDate' ) ) && ( is_int( $obj_date_end ) ) ) {
+	} elseif ( ( is_a( $obj_date_start, '\rstoetter\libdatephp\cDate' ) ) && ( is_int( $obj_date_end ) ) ) {
 
-	    $obj_date = new \libdatephp\cDate( $obj_date_start );
-/*
-	    // GetFollower() neglects the start date
-	    if ( $direction == self::DIRECTION_FORWARD ) {
-		$obj_date->Dec( );
-	    } else {
-		$obj_date->Inc( );
-	    }
-*/
+
+	    $obj_date = new cDate( $obj_date_start );
 
 	    $occurences = $obj_date_end;
 
 	    if ( $this->m_debug ) echo "\n calculating $occurences occurences from  " . $obj_date_start->AsSQL( ) . ' on.';
-
-/*	    if ( $this->IsEventDate( $obj_date_start ) ) {
-
-		if ( $debug ) $this->doPrint( $obj_date, $obj_date );
-		if ( $this->m_debug ) echo "\n" . $obj_date_start->AsSQL( ) . ' is an event date';
-
-		$ary[] = new cDate( $obj_date_start );
-
-		$occurences--;
-
-	    } else {
-
-		if ( $this->m_debug ) echo "\n" . $obj_date_start->AsSQL( ) . ' is not an event date';
-
-	    }
-*/
 
 	    if ( $this->m_debug) echo "\n ----- looping forward in GetArray( )";
 
@@ -1978,7 +1939,7 @@ abstract class cDateStrategy {
 
 	} else {
 
-	    die( "\n GetArray: wrong parameters" );
+	    throw new \Exception( "\n GetArray: wrong parameters" );
 
 	}
 
@@ -2037,13 +1998,17 @@ abstract class cDateStrategy {
     protected function IsUnderflow( $dt ) {
 
 	if ( is_null( $dt ) ) {
-	    assert( false == true);
-	    die( "\n error in IsUnderflow( )" );
+	    // assert( false == true);
+	    throw new \Exception( "\n error in IsUnderflow( )" );
 	}
 
-	if ( is_null( $this->m_start_date ) ) return false;
+	if ( is_null( $this->m_start_date ) ) {
+	    return false;
+	}
 
-        if ( $dt->lt( $this->m_start_date ) ) return true;
+        if ( $dt->lt( $this->m_start_date ) ) {
+	    return true;
+	}
 
         return false;
 
@@ -2455,42 +2420,6 @@ abstract class cDateStrategy {
 
 	}
 
-/*
-        $d = new \libdatephp\cDate( $this->GetStartDate( ) );
-        $d->Dec( );
-
-        $fertig = false;
-        $dt_next = $d;
-
-        do {
-
-          if ( $dt_next->eq( $obj_date ) ) {
-	      if ( $this->m_debug ) echo "\n is an event date ";
-	      return true;
-	  }
-
-          if ( $dt_next->gt( $obj_date ) ) {
-	      if ( $this->m_debug ) echo "\n is not an event date ";
-	      return false;
-	  }
-
-          if  ( $this->IsOverflow( $dt_next ) ) {
-	      if ( $this->m_debug ) echo "\n is not an event date ";
-	      return false;
-	  }
-
-          $dt_next = $this->GetFollower( $dt_next );
-
-
-
-          if ( $this->m_debug ) echo "\n .. checking " . $dt_next->AsSQL( );
-
-        } while ( ! $fertig );
-
-        if ( $this->m_debug ) echo "\n is not an event date ";
-*/
-
-
 
         return false;
 
@@ -2718,21 +2647,21 @@ abstract class cDateStrategy {
         elseif ( $selectonsunday =="leave" ) { $this->SetStrategySunday( self::STRATEGY_DIRECTION_LEAVE ); }
         elseif ( $selectonsunday =="forward" ) { $this->SetStrategySunday( self::STRATEGY_DIRECTION_FORWARD ); }
         elseif ( $selectonsunday =="backward" ) { $this->SetStrategySunday( self::STRATEGY_DIRECTION_BACKWARD ); }
-        else die( "unbekannte Auswahl '$selectonsunday'");
+        else throw new \Exception( "unbekannte Auswahl '$selectonsunday'");
 
         $selectonsaturday = $_POST['selectonsaturday'];
         if ( $selectonsaturday =="abolish" ) { $this->SetStrategySaturday( self::STRATEGY_DIRECTION_ABOLISH ); }
         elseif ( $selectonsaturday =="leave" ) { $this->SetStrategySaturday( self::STRATEGY_DIRECTION_LEAVE ); }
         elseif ( $selectonsaturday =="forward" ) { $this->SetStrategySaturday( self::STRATEGY_DIRECTION_FORWARD ); }
         elseif ( $selectonsaturday =="backward" ) { $this->SetStrategySaturday( self::STRATEGY_DIRECTION_BACKWARD ); }
-        else die( "unbekannte Auswahl '$selectonsaturday'");
+        else throw new \Exception( "unbekannte Auswahl '$selectonsaturday'");
 
         $selectoncelebrities = $_POST['selectoncelebrities'];
         if ( $selectoncelebrities =="abolish" ) { $this->SetStrategyCelebrity( self::STRATEGY_DIRECTION_ABOLISH ); }
         elseif ( $selectoncelebrities =="leave" ) { $this->SetStrategyCelebrity( self::STRATEGY_DIRECTION_LEAVE ); }
         elseif ( $selectoncelebrities =="forward" ) { $this->SetStrategyCelebrity( self::STRATEGY_DIRECTION_FORWARD ); }
         elseif ( $selectoncelebrities =="backward" ) { $this->SetStrategyCelebrity( self::STRATEGY_DIRECTION_BACKWARD ); }
-        else die( "unbekannte Auswahl '$selectoncelebrities'");
+        else throw new \Exception( "unbekannte Auswahl '$selectoncelebrities'");
 
     }   // SetSpecialDaysFromForm()
 

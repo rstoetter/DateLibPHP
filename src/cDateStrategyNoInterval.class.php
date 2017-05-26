@@ -77,7 +77,7 @@
 // cDateStrategyNoInterval
 ////////////////////////////////////////////////////////////////////////////////////
 
-namespace libdatephp;
+namespace rstoetter\libdatephp;
 
 /*
 function __cmp_Dates( $d1, $d2 ) {
@@ -566,7 +566,7 @@ class cDateStrategyNoInterval extends cDateStrategy {
     protected function SortArray( ) {
 
 
-	usort( $this->m_dates, array("\libdatephp\cDateStrategyNoInterval", "__cmp_dates") );
+	usort( $this->m_dates, array('\rstoetter\libdatephp\cDateStrategyNoInterval', '__cmp_dates' ) );
 
 
     }	// function SortArray( )

@@ -76,7 +76,7 @@
 // cDateStrategyDailyFixed
 ////////////////////////////////////////////////////////////////////////////////////
 
-namespace libdatephp;
+namespace rstoetter\libdatephp;
 
 
 
@@ -605,10 +605,10 @@ class cDateStrategyDailyFixed extends cDateStrategy {
     private function ScheduleLazy( & $date_test, $date_start, $direction  ) {
 
 	assert( is_int( $direction ) );
-	assert( is_a( $date_test, '\\libdatephp\\cDate' ) );
-	assert( is_a( $date_start, '\\libdatephp\\cDate' ) );
+	assert( is_a( $date_test, '\rstoetter\libdatephp\\cDate' ) );
+	assert( is_a( $date_start, '\rstoetter\libdatephp\\cDate' ) );
 
-	$date_test = new \libdatephp\cDate( $date_start );
+	$date_test = new \rstoetter\libdatephp\cDate( $date_start );
 
 	if ( $this->m_debug) echo "\n ScheduleLazy( ) direction = " . ( $direction == self::DIRECTION_FORWARD ? ' forward' : ' backward') ;
 
@@ -642,7 +642,7 @@ class cDateStrategyDailyFixed extends cDateStrategy {
 
 	    } else {
 
-		die( "\n uncalculated version detected" );
+		throw new \Exception( "\n uncalculated version detected" );
 
 	    }
 
@@ -654,9 +654,10 @@ class cDateStrategyDailyFixed extends cDateStrategy {
 
 		if ( $direction == self::DIRECTION_FORWARD ) {
 
-		    $date_test = new \libdatephp\cDate( $month, 1, $year );
+		    $date_test = new \rstoetter\libdatephp\cDate( $month, 1, $year );
 
 		    $date_test->GoEOM( );
+
 		    $date_test->Inc( );
 		    if ( $this->m_debug ) echo "\n date adapted to " . $date_test->AsSQL( ) ;
 		} else {
@@ -666,7 +667,7 @@ class cDateStrategyDailyFixed extends cDateStrategy {
 			$no--;
 		    } while ( ! checkdate( $month, $no, $year ) );
 
-		    $date_test = new \libdatephp\cDate( $month, $no, $year );
+		    $date_test = new \rstoetter\libdatephp\cDate( $month, $no, $year );
 
 		}
 
@@ -674,57 +675,13 @@ class cDateStrategyDailyFixed extends cDateStrategy {
 
 	    } else {
 
-		$date_test = new \libdatephp\cDate( $month, $this->m_day_number, $year );
+		$date_test = new \rstoetter\libdatephp\cDate( $month, $this->m_day_number, $year );
 		if ( $this->m_debug ) echo "\n date is now " . $date_test->AsSQL( ) ;
 
 	    }
 
-
-
-	    # echo "\nTag = $day Monat = $month Jahr = $year ->" . $date_test->AsDMY();
-/*
-	    if ( ! $month_skipped ) {
-
-		if ( $this->m_debug ) echo "\n skipping month from " . $date_test-> AsSQL( );
-
-		if ( ( $month == 12 ) && ( $direction == self::DIRECTION_FORWARD ) ) {
-		    $month = 1;
-		    $year ++;
-
-		    $date_test = new cDate( $month, $this->m_day_number, $year );
-
-		} elseif ( ( $month == 1 ) && ( $direction == self::DIRECTION_BACKWARD ) ) {
-		    $month = 12;
-		    $year --;
-		    $date_test = new cDate( $month, $this->m_day_number, $year );
-		} else {
-		    if ( $this->m_debug ) echo "\nnormal date : " . $date_test->AsSQL();
-
-		    $month += ( $direction == self::DIRECTION_FORWARD ? +1 : -1 ) ;
-		    $date_test = new cDate( $month, 1, $year);
-		    if ( $this->m_day_number > $date_test->LOM() ) {
-			if ( $this->m_debug ) echo "\n skipping " . $date_test->C_Month_Long_EN( ) . ' in ' . $date_test->Year( );
-			$weiter = true;
-		    } else {
-			if ( checkdate( $month, $this->m_day_number, $year ) ) {
-			    $date_test = new cDate( $month, $this->m_day_number, $year );
-			    if ( $this->m_debug ) echo "\n new try with " . $date_test->AsSQL( ) ;
-			} else {
-			    if ( $this->m_debug ) echo "\n {$this->m_day_number} is too big for month {$month} in year {$year}";
-			    $date_test->Skip( $direction == self::DIRECTION_FORWARD ? +1 : -1 );
-			    $weiter = true;
-			}
-		    }
-		}
-
-		// if ( $this->m_debug ) echo " to " . $date_test-> AsSQL( );
-
-		$month_skipped = true;
-
-	    }
-*/
-
 	} elseif ( $this->m_type_period == self::FIX_DAY_QUARTER ) {
+
 	    $quarter = $date_test->NOQ();
 	    $year = $date_test->Year();
 
@@ -832,323 +789,7 @@ class cDateStrategyDailyFixed extends cDateStrategy {
     }	// function ScheduleLazy( )
 
 
-    /*   *
-      * The method GetFollower( ) returns the next date AFTER $date, which fits to the specifications. $date itself will not be taken into consideration.
-      *
-      * @param cDate $date a cDate object, which is the starting point for the next calculation
-      * @param cDate $dt_next GetFollower returns a cDate object, which is the starting point for the next calculation. ie If we are moving backwards and scheduling forward, then a correction is necessary
-      * @param int $direction the constant, which indicates the search direction. It defaults to DIRECTION_FORWARD
-      *
-      * @return cDate cDate object with the next fitting date or null, if no fitting date could be found ( overflow, IsUnderflow)
-      *
-      * @see GetFollower
-      * @see GetFirstDate
-      * @see DIRECTION_BACKWARD
-      * @see DIRECTION_FORWARD
-      *
-      */
 
-/*
-    function GetFollower( $date, & $dt_next, $direction = self::DIRECTION_FORWARD ) {
-
-        // $date_test muß ein gültiges Datum sein, an dem ein Termin stattfindet ! -> protected um dies zu gewährleisten
-        // es wird keine Korrektur vorgenommen
-
-        # echo "\nGetFollower(".$date->AsDMY(). ") : GetLatestDayNumber() ergibt " . $this->GetLatestDayNumber();
-
-        if ( ! $this->IsValid( ) ) die( "\n cDateStrategyDailyFixed::GetFollower() : no valid data to calculate anything" );
-
-        assert( is_a( $date, '\\libdatephp\\cDate' ) );
-
-        $month_skipped = false;		// we did not change the month yet
-        $quarter_skipped = false;	// we did not change the quarter yet
-        $year_skipped = false;		// we did not change the year yet
-
-        //
-
-        if ( $this->m_debug ) echo "\n GetFollower( ) starts with " . $date->AsSQL( ) . ' called  by ' . debug_backtrace()[1]['function'] . '/' . debug_backtrace()[0]['line'] ;
-	if ( $this->m_debug) echo " direction = " . ( $direction == self::DIRECTION_FORWARD ? ' forward' : ' backward') ;
-        //
-
-        $date_test = new cDate( $date);
-
-        //
-
-        if ( $this->AdjustedUnderOverflow( $date_test, $direction ) ) {
-
-	    if ( is_null( $date_test ) ) {
-		// not adjustable
-
-		return null;
-	    }
-
-        }
-
-        //
-
-        $this->ScheduleLazy( $date_test, $date_test,  $direction  );
-
-        if ( $this->m_debug ) echo "\n normally we would use " . $date_test->AsSQL( );
-
-        //
-
-        if ( is_null( $date ) ) return null;
-
-
-        $fertig = false;
-        $dt_next = null;
-
-        // $direction = self::DIRECTION_FORWARD;
-//         $weiter = true;
-	  $weiter = false;
-
-        do {
-
-// 	    $weiter = false;
-
-	    if ( $this->AdjustedUnderOverflow( $date_test, $direction ) ) {
-
-		if ( is_null( $date_test ) ) {
-		    // not adjustable
-
-		    return null;
-		}
-
-	    }
-
-
-	    if ( $weiter ) {
-		if ( $direction == self::DIRECTION_FORWARD ) {
-		    $date_test->Inc( );
-		} elseif ( $direction == self::DIRECTION_BACKWARD) {
-		    $date_test->Dec( );
-		}
-	    }
-	    $weiter = false;
-
-	    if ( $this->m_debug ) echo "\n skipped to " . $date_test->AsSQL( );
-	    echo ' direction is ' . ( $direction == self::DIRECTION_FORWARD ? ' forward ' : ' backward ' ) ;
-
-
-            if ( $date_test->IsSaturday( ) ) {
-		if ( $this->m_debug ) echo "\n" . $date_test->AsSQL( ) . ' is a saturday';
-		if ( $this->m_directionOnSaturday == cDateStrategy::STRATEGY_DIRECTION_FORWARD ) {
-// 		    $weiter = true;
-// 		    $direction = self::DIRECTION_FORWARD;
-
-		    if ( is_null( $dt_next ) ) $dt_next = $date_test;
-		    $date_test = $this->MoveDateIfNecessary( $date_test );
-		    // if ( $this->m_debug ) echo "\n moved to " . $date_test->AsSQL( ) . ' from ' . $gemerkt->AsSQL( );
-		    if ( is_null( $date_test ) ) return null;
-
-		} elseif ( $this->m_directionOnSaturday == cDateStrategy::STRATEGY_DIRECTION_BACKWARD ) {
-// 		    $weiter = true;
-// 		    $direction = self::DIRECTION_BACKWARD;
-		    if ( is_null( $dt_next ) ) $dt_next = $date_test;
-		    $date_test = $this->MoveDateIfNecessary( $date_test );
-		    // if ( $this->m_debug ) echo "\n moved to " . $date_test->AsSQL( ) . ' from ' . $gemerkt->AsSQL( );
-		    if ( is_null( $date_test ) ) return null;
-
-		} elseif ( $this->m_directionOnSaturday == cDateStrategy::STRATEGY_DIRECTION_ABOLISH ) {
-		    return null;
-		}
-            }
-
-            if ( $date_test->IsSunday( ) ) {
-
-		if ( $this->m_debug ) echo "\n" . $date_test->AsSQL( ) . ' is a sunday';
-
-		if ( $this->m_directionOnSunday == cDateStrategy::STRATEGY_DIRECTION_FORWARD ) {
-// 		    $weiter = true;
-// 		    $direction = self::DIRECTION_FORWARD;
-		   //  if ( is_null( $dt_next ) ) $dt_next = $date_test;
-		    $date_test = $this->MoveDateIfNecessary( $date_test );
-		    if ( is_null( $date_test ) ) return null;
-		} elseif ( $this->m_directionOnSunday == cDateStrategy::STRATEGY_DIRECTION_BACKWARD ) {
-// 		    $weiter = true;
-// 		    $direction = self::DIRECTION_BACKWARD;
-		    // if ( ( $direction == self::DIRECTION_BACKWARD ) && ( is_null( $dt_next ) ) ) $dt_next = $date_test;
-		    if ( ( is_null( $dt_next ) ) ) $dt_next = $date_test;
-		    $date_test = $this->MoveDateIfNecessary( $date_test );
-		    if ( is_null( $date_test ) ) return null;
-		} elseif ( $this->m_directionOnSunday == cDateStrategy::STRATEGY_DIRECTION_ABOLISH ) {
-		    return null;
-		}
-            }
-
-
-            if ( ! ( is_null( $date_test ) ) && ( $this->IsCelebrity( $date_test ) ) ) {
-
-		if ( $this->m_debug ) echo "\n" . $date_test->AsSQL( ) . ' is a celebrity';
-
-		if ( $this->m_directionOnCelebrity == cDateStrategy::STRATEGY_DIRECTION_FORWARD ) {
-// 		    $weiter = true;
-// 		    $direction = self::DIRECTION_FORWARD;
-		    if ( is_null( $dt_next ) ) $dt_next = $date_test;
-		    $dt_next = $this->MoveDateIfNecessary( $date_test );
-		    if ( is_null( $date_test ) ) return null;
-		} elseif ( $this->m_directionOnCelebrity == cDateStrategy::STRATEGY_DIRECTION_BACKWARD ) {
-// 		    $weiter = true;
-// 		    $direction = self::DIRECTION_BACKWARD;
-		    if ( is_null( $dt_next ) ) $dt_next = $date_test;
-		    $date_test = $this->MoveDateIfNecessary( $date_test );
-		    if ( is_null( $date_test ) ) return null;
-		} elseif ( $this->m_directionOnCelebrity == cDateStrategy::STRATEGY_DIRECTION_ABOLISH ) {
-		    return null;
-		}
-            }
-
-            if ( ! ( is_null( $date_test ) ) && ( $this->IsHoliday( $date_test ) ) ) {
-
-		if ( $this->m_debug ) echo "\n" . $date_test->AsSQL( ) . ' is a holiday';
-
-		if ( $this->m_directionOnHoliday == cDateStrategy::STRATEGY_DIRECTION_FORWARD ) {
-// 		    $weiter = true;
-// 		    $direction = self::DIRECTION_FORWARD;
-		    if ( is_null( $dt_next ) ) $dt_next = $date_test;
-		    $date_test = $this->MoveDateIfNecessary( $date_test );
-		    if ( is_null( $date_test ) ) return null;
-		} elseif ( $this->m_directionOnHoliday == cDateStrategy::STRATEGY_DIRECTION_BACKWARD ) {
-// 		    $weiter = true;
-// 		    $direction = self::DIRECTION_BACKWARD;
-		    if ( is_null( $dt_next ) ) $dt_next = $date_test;
-		    $date_test = $this->MoveDateIfNecessary( $date_test );
-		    if ( is_null( $date_test ) ) return null;
-		} elseif ( $this->m_directionOnHoliday == cDateStrategy::STRATEGY_DIRECTION_ABOLISH ) {
-		    return null;
-		}
-            }
-
-	    if ($this->IsUnderflow($date_test) && ( $direction == self::DIRECTION_FORWARD )) {
-
-		if ( $this->m_debug ) echo "\n" . $date_test->AsSQL( ) . ' is an underflow';
-
-		$date_test = new \libdatephp\cDate( $this->m_start_date );
-		$date_test->Dec( );
-	    }
-	    if ($this->IsOverflow($date_test) && ( $direction == self::DIRECTION_FORWARD)) return null;
-	    if ($this->IsUnderflow($date_test) && ( $direction == self::DIRECTION_BACKWARD)) return null;
-	    if ($this->IsOverflow($date_test) && ( $direction == self::DIRECTION_BACKWARD )) {
-		if ( $this->m_debug ) echo "\n" . $date_test->AsSQL( ) . ' is an overflow';
-		$date_test = new \libdatephp\cDate( $this->m_end_date );
-		$date_test->Inc( );
-	    }
-
-        } while ( $weiter );
-
-	if ( $this->m_debug ) echo "\n GetFollower returns " . $date_test->AsSQL( ) . ' to ' .  debug_backtrace()[1]['function'];;
-
-	if ( is_null( $dt_next ) ) $dt_next = $date_test;
-
-	echo "\n next try should be " . $dt_next->AsSQL( );
-
-        return $date_test;
-
-    }       // function GetFollower()
-
-*/
-
-/*
-    function GetFollower_ORG( $date ) {
-        // $date_obj muß ein gültiges Datum sein, an dem ein Termin stattfindet ! -> protected um dies zu gewährleisten
-        // es wird keine Korrektur vorgenommen
-
-        $date_obj = new cDate( $date);
-        $fertig = false;
-        $ret = undef;
-
-        if ( $this->m_type_period == self::FIX_DAY_MONTH ) {
-            $month = $date_obj->Month();
-            $year = $date_obj->Year();
-            $day = $date_obj->Day();
-            # echo "\nTag = $day Monat = $month Jahr = $year ->" . $date_obj->AsDMY();
-
-            if ( $month == 12 ) {
-                $month = 1;
-                $year ++;
-                $ret = new cDate( $month, $this->m_day_number, $year );
-            } else {
-                # echo "\nNormales Datum : " . $date_obj->AsDMY();
-                $month ++;
-                $ret = new cDate( $month, 1, $year);
-                if ( $day > $ret->LOM() ) {
-                    $diff = (int)($day - $ret->LOM());
-                    # echo "\nMonatstage =" . $ret->LOM() . " diff = ".$diff;
-                    $month++;
-                    # echo "\nneues Datum sollwerden $diff.$month.$year";
-                    assert( is_int( $year ) );
-                    assert( is_int( $month ) );
-                    assert( is_int( $diff ) );
-                    $ret = new cDate( $month, $diff, $year );
-                } else {
-                    $ret = new cDate( $month, $this->m_day_number, $year );
-                }
-            }
-        } elseif ( $this->m_type_period == self::FIX_DAY_QUARTER ) {
-            $quarter = $date_obj->NOQ();
-            $year = $date_obj->Year();
-
-            # echo "\nQuartal = $quarter Jahr = $year ->" . $date_obj->AsDMY() . "daynumber = ".$this->m_day_number;
-
-            if ( $quarter == 4 ) {
-                $quarter = 1;
-                $year ++;
-                $quarterstart = new cDate( 1, 1, $year);
-                $quarterstart ->Skip( $this->m_day_number );
-                $quarterstart->dec();
-                $ret = new cDate( $quarterstart );
-            } else {
-                $date_obj->GoEOQ();
-                $date_obj->inc();
-                $date_obj->Skip( $this-> m_day_number);
-                $date_obj->dec();
-                $ret = new cDate( $date_obj );
-
-            }
-
-        }  elseif ( $this->m_type_period == self::FIX_DAY_YEAR ) {
-            $year = $date_obj->Year();
-
-            # echo "\nJahr = $year ->" . $date_obj->AsDMY() . "daynumber = ".$this->m_day_number;
-
-            $date_obj->GoEOY();
-            $date_obj->Skip( $this->m_day_number );
-            $ret = new cDate( $date_obj );
-        }
-
-        # echo "\nGetFollower liefert : " . $ret->AsDMY();
-        return $ret;
-
-    }       // function GetFollower()
-*/
-
-
-/*
-    public function ScheduleLazyDate( $datestart, $dateisfirst = true  ) {
-
-        if ( $this->IsUnderflow( $datestart ) ) {echo "IsUnderflow"; return undef; }
-        if ( $this->IsOverflow( $datestart ) ) return undef;
-
-        $dt = $this->GetFirstDate( );
-
-        # echo "\n ScheduleLazyDate() : erster Termin ist am " . $dt->AsDMY();
-
-        if ( ($dateisfirst == true ) && ($datestart->eq($dt)) ) { return $dt; }
-
-        $fertig = false;
-
-        do {
-            $dt = $this->GetFollower( $dt );
-            # echo "\n ScheduleLazyDate() : untersuche " . $dt->AsDMY();
-            if ( $datestart->eq( $dt ) && ( $dateisfirst ) ) return $dt;
-            if ( $this->IsOverflow( $dt ) ) {  return undef; }
-            if ( $datestart->lt( $dt ) ) return $dt;
-        } while ( !$fertig);
-
-        return undef;
-
-    }   // function ScheduleLazyDate
-*/
 
     /**
       * The method GetFirstDate( ) returns the first valid date of the series to be calculated according to the specifications

@@ -235,7 +235,7 @@ TODO: alle Funktionen mit @see ausstatten
 
 // require_once("cDate.class.php");
 
-namespace libdatephp;
+namespace rstoetter\libdatephp;
 
 
 /**
@@ -274,7 +274,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -297,7 +297,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -319,7 +319,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -346,7 +346,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -360,8 +360,8 @@ class cPeriod {
 
     public function AsString( $representation = self::Representation_DMY ) {
 
-        assert( is_a($this->oStart,'libdatephp\cDate') );
-        assert( is_a($this->oEnd,'libdatephp\cDate') );
+        assert( is_a($this->oStart,'rstoetter\libdatephp\cDate') );
+        assert( is_a($this->oEnd,'rstoetter\libdatephp\cDate') );
 
         if ( $representation === self::Representation_DMY ) {
 	    $s1 = $this->oStart->AsDMY();
@@ -432,7 +432,7 @@ class cPeriod {
                             $o = new cDate( $a );
                             $this->SetFirst( $o );
                             $this->SetLast( $o );
-                    } elseif ( is_a( $a, "libdatephp\cDate") ) {
+                    } elseif ( is_a( $a, "rstoetter\libdatephp\cDate") ) {
                             $this->SetFirst( $a );
                             $this->SetLast( $a );
                     }
@@ -447,8 +447,8 @@ class cPeriod {
                             $o2 = new cDate( $b );
                             $this->Set( $o1, $o2 );
 
-                    } elseif ( is_a( $a, "libdatephp\cDate") ) {
-                            if ( is_a( $b, 'libdatephp\cDate') ) {
+                    } elseif ( is_a( $a, "rstoetter\libdatephp\cDate") ) {
+                            if ( is_a( $b, 'rstoetter\libdatephp\cDate') ) {
                                     $this->Set( $a, $b );
                             } elseif ( is_int( $b ) ) {
                                     $this->Set( $a, $a );
@@ -482,7 +482,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -495,8 +495,8 @@ class cPeriod {
 
 
     public function Set( $oFirst, $oLast ) {
-            assert( (is_a( $oFirst, 'libdatephp\cDate') ) );
-            assert( (is_a( $oLast, 'libdatephp\cDate') ) );
+            assert( (is_a( $oFirst, 'rstoetter\libdatephp\cDate') ) );
+            assert( (is_a( $oLast, 'rstoetter\libdatephp\cDate') ) );
 
             // NOTE : TODO : Fehler : assert( $oFirst->le( $oLast ) );
 
@@ -513,7 +513,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -524,7 +524,7 @@ class cPeriod {
       */
 
     public function SetFirst( $oFirst ) {
-            assert( (is_a( $oFirst, 'libdatephp\cDate') ) );
+            assert( (is_a( $oFirst, 'rstoetter\libdatephp\cDate') ) );
             $this->Set( $oFirst, $this->oEnd );
     } // 	public function SetFirst( )
 
@@ -534,7 +534,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -546,7 +546,7 @@ class cPeriod {
 
 
     public function SetLast( $oLast ) {
-            assert( (is_a( $oLast, 'libdatephp\cDate') ) );
+            assert( (is_a( $oLast, 'rstoetter\libdatephp\cDate') ) );
             $this->Set( $this->oStart, $oLast );
     } // public function SetLast( )
 
@@ -556,7 +556,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -582,7 +582,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -594,8 +594,8 @@ class cPeriod {
 
     public function IsValid( ) {
 
-            assert( (is_a( $oStart, 'libdatephp\cDate') ) );
-            assert( (is_a( $oEnd, 'libdatephp\cDate') ) );
+            assert( (is_a( $oStart, 'rstoetter\libdatephp\cDate') ) );
+            assert( (is_a( $oEnd, 'rstoetter\libdatephp\cDate') ) );
 
             assert( $this->oStart->le( $this->oEnd ) );
 
@@ -609,7 +609,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -639,7 +639,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -665,7 +665,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -695,7 +695,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       * $p2 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 23, 2016 ) );
@@ -710,7 +710,7 @@ class cPeriod {
     public function SameStart( $obj ) {
         if (is_a($obj,"\libdatephp\cPeriod")) {
             return ($this->oStart->eq( $obj->GetFirst() ) );
-        } elseif (is_a($obj,'libdatephp\cDate')) {
+        } elseif (is_a($obj,'rstoetter\libdatephp\cDate')) {
             return ($this->oStart->eq( $obj ) );
         }
     }
@@ -722,7 +722,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       * $p2 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 23, 2016 ) );
@@ -737,7 +737,7 @@ class cPeriod {
     public function SameEnd( $obj ) {
         if (is_a($obj,"\libdatephp\cPeriod")) {
             return ($this->oEnd->eq( $obj->GetLast() ) );
-        } elseif (is_a($obj,'libdatephp\cDate')) {
+        } elseif (is_a($obj,'rstoetter\libdatephp\cDate')) {
             return ($this->oEnd->eq( $obj ) );
         }
     }
@@ -748,7 +748,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       * $p2 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 23, 2016 ) );
@@ -763,7 +763,7 @@ class cPeriod {
     public function StartsBefore( $obj ) {
         if (is_a($obj,"\libdatephp\cPeriod")) {
             return ($this->oStart->lt( $obj->GetFirst() ) );
-        } elseif (is_a($obj,'libdatephp\cDate')) {
+        } elseif (is_a($obj,'rstoetter\libdatephp\cDate')) {
             return ($this->oStart->lt( $obj ) );
         }
     }
@@ -774,7 +774,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       * $p2 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 23, 2016 ) );
@@ -788,9 +788,9 @@ class cPeriod {
 
 
     public function StartsAfter( $obj ) {
-        if (is_a($obj,"libdatephp\cPeriod")) {
+        if (is_a($obj,"rstoetter\libdatephp\cPeriod")) {
             return ($this->oStart->gt( $obj->GetFirst() ) );
-        } elseif (is_a($obj,'libdatephp\cDate')) {
+        } elseif (is_a($obj,'rstoetter\libdatephp\cDate')) {
             return ($this->oStart->gt( $obj ) );
         }
     }
@@ -801,7 +801,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       * $p2 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 23, 2016 ) );
@@ -815,9 +815,9 @@ class cPeriod {
 
 
     public function EndsBefore( $obj ) {
-        if (is_a($obj,"libdatephp\cPeriod")) {
+        if (is_a($obj,"rstoetter\libdatephp\cPeriod")) {
             return ($this->oEnd->lt( $obj->GetFirst() ) );
-        } elseif (is_a($obj,'libdatephp\cDate')) {
+        } elseif (is_a($obj,'rstoetter\libdatephp\cDate')) {
             return ($this->oEnd->lt( $obj ) );
         }
     }
@@ -828,7 +828,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       * $p2 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 23, 2016 ) );
@@ -843,9 +843,9 @@ class cPeriod {
 
 
     public function EndsAfter( $obj ) {
-        if (is_a($obj,"libdatephp\cPeriod")) {
+        if (is_a($obj,"rstoetter\libdatephp\cPeriod")) {
             return ($this->oEnd->gt( $obj->GetFirst() ) );
-        } elseif (is_a($obj,'libdatephp\cDate')) {
+        } elseif (is_a($obj,'rstoetter\libdatephp\cDate')) {
             return ($this->oEnd->gt( $obj ) );
         }
     }
@@ -857,7 +857,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       * $p2 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 23, 2016 ) );
@@ -871,11 +871,11 @@ class cPeriod {
 
 
     public function Contains( $obj ) {
-        if (is_a($obj,"libdatephp\cPeriod")) {
+        if (is_a($obj,"rstoetter\libdatephp\cPeriod")) {
 
             return ( ( $this->oStart->le( $obj->GetFirst() ) ) &&
                    ( $this->oEnd->ge( $obj->GetLast() )) );
-        } elseif (is_a($obj,'libdatephp\cDate')) {
+        } elseif (is_a($obj,'rstoetter\libdatephp\cDate')) {
 
             return ($this->oStart->le( $obj ) ) &&
                     ( $this->oEnd->ge( $obj ) );
@@ -889,7 +889,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       * $p2 = new cPeriod( new cDate( 11, 24, 2016 ), new cDate( 11, 27, 2016 ) );
@@ -907,7 +907,7 @@ class cPeriod {
         if (is_a($obj,"\libdatephp\cPeriod")) {
             return $obj->Contains($this->oStart) ||
                     $obj->Contains($this->oEnd);
-        } elseif (is_a($obj,'libdatephp\cDate')) {
+        } elseif (is_a($obj,'rstoetter\libdatephp\cDate')) {
             return ($this->oStart->Contains( $obj ));
         }
     }
@@ -918,7 +918,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       * $p2 = new cPeriod( new cDate( 11, 24, 2016 ), new cDate( 11, 27, 2016 ) );
@@ -947,7 +947,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       * $p2 = new cPeriod( new cDate( 11, 24, 2016 ), new cDate( 11, 27, 2016 ) );
@@ -964,7 +964,7 @@ class cPeriod {
         if (is_a($p,"\libdatephp\cPeriod")) {
             $d1 = new cDate($p->GetFirst());
             $d2 = new cDate($p->GetLast());
-        } elseif (is_a($p,'libdatephp\cDate')) {
+        } elseif (is_a($p,'rstoetter\libdatephp\cDate')) {
             $d1 = new cDate($p);
             $d2 = new cDate($p);
         } else {
@@ -983,7 +983,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -1004,7 +1004,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -1024,7 +1024,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -1044,7 +1044,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -1066,7 +1066,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -1088,7 +1088,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -1110,7 +1110,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * function myfunc( $dt ) {
       *   echo "\n" . $dt->AsSQL( );
@@ -1147,7 +1147,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * function myfunc( $dt ) {
       *   echo "\n" . $dt->AsSQL( );
@@ -1182,7 +1182,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -1206,7 +1206,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -1230,7 +1230,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -1254,7 +1254,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -1278,7 +1278,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -1302,7 +1302,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -1327,7 +1327,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -1352,7 +1352,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -1375,7 +1375,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -1402,7 +1402,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -1431,7 +1431,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -1468,7 +1468,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -1505,7 +1505,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -1542,7 +1542,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -1582,7 +1582,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -1620,7 +1620,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -1657,7 +1657,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -1694,7 +1694,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -1731,7 +1731,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *
@@ -1757,7 +1757,7 @@ class cPeriod {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $p1 = new cPeriod( new cDate( 11, 23, 2016 ), new cDate( 11, 25, 2016 ) );
       *

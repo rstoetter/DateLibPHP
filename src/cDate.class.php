@@ -1,170 +1,6 @@
 <?php
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//  File          : classes/cDate.class.php
-//  Language      : php
-//  Description   : Die Klasse 'cDate' dient der Verwaltung eines Datumwertes
-//  Project       : libdatephp
-//  Project Site  : https://github.com/rstoetter/libdatephp
-//  Project wiki  : https://github.com/rstoetter/libdatephp/wiki
-//  Created by    : Rainer Stötter ( rstoetter@users.sourceforge.net )
-//  Copyright (c) : 2007 - 2017, Rainer Stötter, All rights reserved
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//  License: MIT
-//
-//  This file has been released under the MIT license
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//
-//	[[Requests]]
-//
-//
-//	no requests were found
-//
-//	[[End of requests]]
-//
-//
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//
-//	[[Functions]]
-//
-//
-//	no functions were found
-//
-//	[[End of functions]]
-//
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//
-//	[[Classes]]
-//
-//
-//	class cDate
-//		public method AddDays($diff)
-//		public method AddMonths($diff)
-//		public method AddWeeks($diff)
-//		public method AddYears($diff=1)
-//		public method AsAMPM()
-//		public method AsDMY()
-//		public method AsDMY0()
-//		public method AsISO8601()
-//		public method AsMDY()
-//		public method AsMDY0()
-//		public method AsRFC2822()
-//		public method AsSQL()
-//		public method AsSwatch()
-//		public method AsTimeStamp()
-//		public method AsUTC()
-//		public method As_ampm()
-//		public method BOM()
-//		public method BOQ()
-//		public method BOW()
-//		public method BOY()
-//		public method C_Month_Long_DE()
-//		public method C_Month_Short_DE()
-//		public method C_Weekday_Long_DE()
-//		public method C_Weekday_Short_DE()
-//		public method DOQ()
-//		public method DOW()
-//		public method DOY()
-//		public method Day()
-//		public method Day0()
-//		public method Dec()
-//		public method EOM()
-//		public method EOQ()
-//		public method EOW()
-//		public method EOY()
-//		public method FromDMY($str)
-//		public method FromDate($obj)
-//		public method FromMDY($str)
-//		public method FromSQL($str)
-//		public method FromTimestamp($ts)
-//		public method GoBOM()
-//		public method GoBOQ()
-//		public method GoBOW()
-//		public method GoBOY()
-//		public method GoEOM()
-//		public method GoEOQ()
-//		public method GoEOW()
-//		public method GoEOY()
-//		public method InApril()
-//		public method InAugust()
-//		public method InDecember()
-//		public method InFebruary()
-//		public method InJanuary()
-//		public method InJuly()
-//		public method InJune()
-//		public method InMarch()
-//		public method InMay()
-//		public method InNovember()
-//		public method InOctober()
-//		public method InSeptember()
-//		public method Inc()
-//		public method IsDST()
-//		public method IsFriday()
-//		public method IsLeapYear()
-//		public method IsMonday()
-//		public method IsSaturday()
-//		public method IsSommerzeit()
-//		public method IsSunday()
-//		public method IsThursday()
-//		public method IsTuesday()
-//		public method IsWednesday()
-//		public method IsWeekday()
-//		public method IsWeekend()
-//		public method LOM()
-//		public method LOQ()
-//		public method LOW()
-//		public method LOY()
-//		public method Month()
-//		public method Month0()
-//		public method NOQ()
-//		public method NOW()
-//		public method PrintOn($fptr)
-//		public method Quarter()
-//		public method ScanFrom($fptr)
-//		public method SeekWeekday($weekday,$direction=0)
-//		public method SetDate($m,$d,$y)
-//		public method SetDay($d)
-//		public method SetMonth($m)
-//		public method SetTimeStamp($j)
-//		public method SetToday()
-//		public method SetYear($y)
-//		public method Skip($count=1)
-//		public method TimeStamp()
-//		public method WOM()
-//		public method WOY()
-//		public method Weekday()
-//		public method Year()
-//		public method __construct($m=-1,$d=-1,$y=-1)
-//		public method eq($cmp)
-//		public method ge($cmp)
-//		public method gt($cmp)
-//		public method le($cmp)
-//		public method lt($cmp)
-//		protected var $m_day
-//		protected var $m_dow
-//		protected var $m_month
-//		protected var $m_timestamp
-//		protected var $m_year
-//		private method CalculateWeekday()
-//		private method mdy2ts()
-//		private method ts2mdy()
-//	[[End of classes]]
-//
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-?><?php
-
-namespace libdatephp;
+namespace rstoetter\libdatephp;
 
 // cDate.class.php
 
@@ -748,7 +584,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -780,7 +616,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -812,7 +648,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -843,7 +679,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -875,7 +711,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -906,7 +742,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -938,7 +774,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -970,7 +806,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -1002,7 +838,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -1034,7 +870,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -1066,7 +902,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -1098,7 +934,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -1133,7 +969,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -1197,7 +1033,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -1228,7 +1064,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -1259,7 +1095,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -1290,7 +1126,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -1361,7 +1197,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -1393,7 +1229,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -1425,7 +1261,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -1460,7 +1296,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -1496,7 +1332,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -1528,7 +1364,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -1632,7 +1468,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -1703,7 +1539,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -1821,15 +1657,20 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
 
     public function __construct( $m = null, $d = null, $y = null) {
 
+// 	if ( is_null( $m ) ) {
+	    // debug_print_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS );
+	    // throw new \Exception( "\n cDate::__construct() mit NULL " );
+// 	}
+
         if ( is_string( $m ) ) {
 
 	    $this->FromAnyString( $m );
 
 	} else {
 
-        # if (!is_a($m, 'libdatephp\cDate')) { echo "<br>cDate::cDate( $m, $d, $y)";}
+        # if (!is_a($m, '\rstoetter\libdatephp\cDate')) { echo "<br>cDate::cDate( $m, $d, $y)";}
 
-	    if ( is_a( $m, 'libdatephp\cDate' ) ) {
+	    if ( is_a( $m, '\rstoetter\libdatephp\cDate' ) ) {
 		$this->FromDate( $m );
 	    }  elseif ( ( is_null( $y ) ) && ( is_null( $m ) ) && ( is_null( $d ) ) ) {
 
@@ -1843,28 +1684,17 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
 
 		$this->SetDate($m, $d, $y);
 
-	    } /*elseif ( is_int( $y ) && is_int( $m ) && is_int( $d ) ) {
-
-		if ( ( is_null( $y ) ) && ( is_null( $m ) ) && ( is_null( $d ) ) ) {
-
-		    $this->SetToday();
-
-		} elseif ( ( is_null( $d ) ) && ( is_null( $y ) ) ) { // cDate( $timestamp)
-
-		    $this->FromTimestamp( $m );
-
-
-		} else {            // cDate($y, $m, $sd)
-		    $this->SetDate($m, $d, $y);
-		}
-	    } */ else {
+	    } else {
 		# echo "<br>->$d.$m.$y ";
 		// echo ">>".( is_int($y) . "-".is_int($m)."-" . is_int($d) ) ." --- ". $y . $m .$d. "d=".$d."y=".$y."m=".$m;
 		// var_dump( debug_backtrace( ) );
-		assert( true == false );
-		die("\n cDate : Fehlerhafte Parameter '$m-$d-$y'");
+		throw new \Exception( "\n cDate : Fehlerhafte Parameter '$m-$d-$y'" );
+// 		assert( true == false );
+// 		die("\n cDate : Fehlerhafte Parameter '$m-$d-$y'");
 	    }
         }
+
+
 
     }   // function cDate( $y, $m, $d)
 
@@ -1967,7 +1797,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
         assert( checkdate($this->m_month, $this->m_day, $this->m_year ));
         if ( ! checkdate($this->m_month, $this->m_day, $this->m_year )) {
 	    assert( false == true );
-	    die(  "\n CalculateWeekday: month = $this->m_month day = $this->m_day year = $this->m_year");
+	    throw new \Exception(  "\n CalculateWeekday: month = $this->m_month day = $this->m_day year = $this->m_year");
         }
 
 	// m is month (1 = March, ..., 10 = December, 11 = Jan, 12 = Feb) Treat Jan & Feb as months of the preceding year
@@ -2029,7 +1859,7 @@ Ein normales Jahr beinhaltet 52 Wochen, wenn es kein Schaltjahr ist. Wenn ein no
         assert( checkdate($this->m_month, $this->m_day, $this->m_year ));
         if ( ! checkdate($this->m_month, $this->m_day, $this->m_year )) {
 	    assert( false == true );
-	    die(  "\n CalculateWeekday: month = $this->m_month day = $this->m_day year = $this->m_year");
+	    throw new \Exception(  "\n CalculateWeekday: month = $this->m_month day = $this->m_day year = $this->m_year");
         }
 
 
@@ -2045,7 +1875,7 @@ assert( $ary['year'] == $this->m_year );
 
         assert( $w == $this->m_dow );		// TODO ganz auf eigene Berechnung umstellen
 
-        if ( $w != $this->m_dow ) die(  "\n CalculateWeekday: dow = $w errechnet, ist aber " . $this->m_dow . " für month = $this->m_month day = $this->m_day year = $this->m_year");
+        if ( $w != $this->m_dow ) throw new \Exception(  "\n CalculateWeekday: dow = $w errechnet, ist aber " . $this->m_dow . " für month = $this->m_month day = $this->m_day year = $this->m_year");
 
 
     }   // function CalculateWeekday ( )
@@ -2129,7 +1959,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -2189,7 +2019,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -2248,7 +2078,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -2309,7 +2139,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -2340,7 +2170,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -2423,7 +2253,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -2535,7 +2365,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -2723,7 +2553,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -2754,7 +2584,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -2794,7 +2624,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -2826,7 +2656,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -2866,7 +2696,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -2898,7 +2728,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -2929,7 +2759,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -2969,7 +2799,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -3001,7 +2831,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -3035,7 +2865,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -3064,7 +2894,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -3108,7 +2938,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -3142,7 +2972,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -3252,7 +3082,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -3379,7 +3209,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -3406,7 +3236,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -3542,6 +3372,7 @@ assert( $ary['year'] == $this->m_year );
     {
 
         //return "$this->m_year-$this->m_month-$this->m_day";
+        if ( is_null( $this ) ) throw new \Exception( "\n cDate::AsSQL() mit NULL" );
         return sprintf( '%4d-%02d-%02d', $this->m_year, $this->m_month, $this->m_day );
 
     }   // public function AsSQL ( )
@@ -3552,7 +3383,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -3590,7 +3421,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -3630,7 +3461,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -3671,7 +3502,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -3711,7 +3542,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -3752,7 +3583,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -3788,7 +3619,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -3825,7 +3656,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -3862,7 +3693,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -3899,7 +3730,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -3939,7 +3770,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -3974,7 +3805,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -4007,7 +3838,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -4061,7 +3892,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -4096,7 +3927,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -4129,7 +3960,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -4174,7 +4005,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -4229,7 +4060,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -4264,7 +4095,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -4288,11 +4119,11 @@ assert( $ary['year'] == $this->m_year );
 
     /**
       *
-      * Dec() increments the managed date ( sets the date to the previous day)
+      * Dec() decrements the managed date ( sets the date to the previous day)
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -4321,7 +4152,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -4373,7 +4204,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -4399,7 +4230,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -4428,7 +4259,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -4465,7 +4296,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -4482,19 +4313,23 @@ assert( $ary['year'] == $this->m_year );
       *
       */
 
-    public function SetDate($m, $d = null, $y = null ) {
+    public function SetDate( $m, $d = null, $y = null ) {
 
         # echo "cDate : SetDate( $m, $d, $y)";
 
-        if ( is_a( $m, '\libdatephp\cDate' ) ) {
+        if ( is_a( $m, '\rstoetter\libdatephp\cDate' ) ) {
 	    $this->m_year = $m->Year( );
 	    $this->m_month = $m->Month( );
 	    $this->m_day = $m->Day( );
 
         } else {
 
-	    assert( checkdate( $m, $d, $y ) );
-	    if ( is_a( $m, 'libdatephp\cDate' ) ) {
+	    if( ! checkdate( $m, $d, $y ) ) {
+		debug_print_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS );
+		throw new \Exception( "\n cDate::SetDate( $m, $d, $y  )  ist ungültig" );
+	    }
+
+	    if ( is_a( $m, '\rstoetter\libdatephp\cDate' ) ) {
 
 		$y = $m->Year( );
 		$m = $m->Month( );
@@ -4519,7 +4354,7 @@ assert( $ary['year'] == $this->m_year );
         $this->mdy2ts ( );
         $this->CalculateWeekday( );
 
-        if ( is_a( $m, '\libdatephp\cDate' ) ) assert( $this->AsSQL( )  == $m->AsSQL( ));
+        if ( is_a( $m, '\rstoetter\libdatephp\cDate' ) ) assert( $this->AsSQL( )  == $m->AsSQL( ));
 
     }  // function SetDate( )
 
@@ -4779,7 +4614,7 @@ assert( $ary['year'] == $this->m_year );
 
             return new cDate( min( $cmp, $this->m_timestamp ) );
 
-        } elseif ( is_a( $cmp, "libdatephp\cdate" ) ) {
+        } elseif ( is_a( $cmp, "rstoetter\libdatephp\cdate" ) ) {
             # print "<br>" . $cmp->AsTimeStamp() . "<->" . $this->AsTimeStamp();
 
             if ( $cmp->lt( $this ) ) return new cDate( $cmp );
@@ -4822,7 +4657,7 @@ assert( $ary['year'] == $this->m_year );
 
             return new cDate( max( $cmp, $this->m_timestamp ) );
 
-        } elseif ( is_a( $cmp, "libdatephp\cdate" ) ) {
+        } elseif ( is_a( $cmp, "rstoetter\libdatephp\cdate" ) ) {
             # print "<br>" . $cmp->AsTimeStamp() . "<->" . $this->AsTimeStamp();
 
             if ( $cmp->gt( $this ) ) return new cDate( $cmp );
@@ -4845,7 +4680,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -4871,15 +4706,13 @@ assert( $ary['year'] == $this->m_year );
 
         if (is_int( $cmp ) ) {
             return $cmp == $this->m_timestamp;
-        } elseif ( is_a( $cmp, "libdatephp\cdate" ) ) {
+        } elseif ( is_a( $cmp, "rstoetter\libdatephp\cdate" ) ) {
             # print "<br>" . $cmp->AsTimeStamp() . "<->" . $this->AsTimeStamp();
             return ($cmp->Month()==$this->Month()) && ($cmp->Year()==$this->Year()) && ($cmp->Day()==$this->Day());
             # funktioniert nicht immer !   return $cmp->AsTimeStamp() == $this->AsTimeStamp();
         }
 
-        var_dump( $cmp );
-        die( "\n cDate: error in eq " );
-        var_dump( $cmp );
+        throw new \Exception("\n error in cDate::eq()");
 
         // NOTE : TODO : Tagesgenaue Berechnung => Minuten sind wurscht
 
@@ -4891,7 +4724,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -4916,11 +4749,11 @@ assert( $ary['year'] == $this->m_year );
 
         if (is_int( $cmp ) ) {
             return $cmp < $this->m_timestamp;
-        } elseif ( is_a( $cmp, "\libdatephp\cDate" ) ) {
+        } elseif ( is_a( $cmp, "rstoetter\libdatephp\cDate" ) ) {
 
             return $this->AsTimeStamp( ) < $cmp->AsTimeStamp( );
         } else  {
-            die;
+            throw new \Exception("\n error in cDate::lt()");
         }
 
         // NOTE : TODO : Tagesgenaue Berechnung => Minuten sind wurscht
@@ -4933,7 +4766,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -4958,11 +4791,14 @@ assert( $ary['year'] == $this->m_year );
 
         if (is_int( $cmp ) ) {
             return $cmp > $this->m_timestamp;
-        } elseif ( is_a( $cmp, 'libdatephp\cDate' ) ) {
+        } elseif ( is_a( $cmp, '\rstoetter\libdatephp\cDate' ) ) {
 
 
             return  $this->AsTimeStamp() > $cmp->AsTimeStamp();
         }
+
+
+        throw new \Exception("\n error in cDate::gt()");
 
         // NOTE : TODO : Tagesgenaue Berechnung => Minuten sind wurscht
 
@@ -4974,7 +4810,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -5004,7 +4840,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -5037,7 +4873,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -5071,7 +4907,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -5105,7 +4941,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -5139,7 +4975,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -5173,7 +5009,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -5207,7 +5043,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -5241,7 +5077,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -5275,7 +5111,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -5310,7 +5146,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -5339,7 +5175,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -5421,7 +5257,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -5456,7 +5292,7 @@ assert( $ary['year'] == $this->m_year );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -5494,7 +5330,7 @@ static $m_month_days = array( 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -5543,7 +5379,7 @@ static $m_month_days = array( 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -5578,7 +5414,7 @@ static $m_month_days = array( 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -5614,7 +5450,7 @@ static $m_month_days = array( 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -5647,7 +5483,7 @@ static $m_month_days = array( 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -5704,7 +5540,7 @@ static $m_month_days = array( 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 );
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *

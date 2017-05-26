@@ -12,12 +12,8 @@ Some classes to work with dates written in PHP:
     * cDateStrategyDailyFixed
     * cDateStrategyMonthly
     * cDateStrategyMonthlyFixed
-    * cDateStrategyMonths
     * cDateStrategyNoInterval
-    * cDateStrategySimpleDate
     * cDateStrategySimpleInterval
-    * cDateStrategyWeekly
-    * cRecurringDates
 
 See the [project wiki](https://github.com/rstoetter/libdatephp/wiki) for more information.
 

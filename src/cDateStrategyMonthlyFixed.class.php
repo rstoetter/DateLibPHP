@@ -107,7 +107,7 @@
 
 ?><?php
 
-namespace libdatephp;
+namespace rstoetter\libdatephp;
 
 class cDateStrategyMonthlyFixedParams {
 
@@ -425,75 +425,6 @@ class cDateStrategyMonthlyFixedParams {
 
 
 
-    public function GetFirstDate( ) {
-
-        $dateObj =new cDate($this->m_start_date);
-
-        if ( ($this->onFirst) || ($this->onSecond) || ($this->onThird) || ($this->onFourth) || ($this->onFifth) ) {
-
-            if ( $this->onFirst )  { $anzahl = 1; }
-            if ( $this->onSecond ) { $anzahl = 2; }
-            if ( $this->onThird )  { $anzahl = 3; }
-            if ( $this->onFourth ) { $anzahl = 4; }
-            if ( $this->onFifth )  { $anzahl = 5; }
-
-                if ( $this->onSunday )    { $dateObj->SeekWeekday(0); }
-                if ( $this->onMonday )    { $dateObj->SeekWeekday(1); }
-                if ( $this->onTuesday )   { $dateObj->SeekWeekday(2); }
-                if ( $this->onWednesday ) { $dateObj->SeekWeekday(3); }
-                if ( $this->onThursday )  { $dateObj->SeekWeekday(4); }
-                if ( $this->onFriday )    { $dateObj->SeekWeekday(5); }
-                if ( $this->onSaturday )  { $dateObj->SeekWeekday(6); }
-
-            for ( $i=0; $i<$anzahl;$i++) {
-                $dateObj->inc();
-                # echo "<br> untersuche " . $dateObj->AsDMY() . "i=$i anzahl=$anzahl";
-                if ( $this->onSunday )    { $dateObj->SeekWeekday(0); }
-                if ( $this->onMonday )    { $dateObj->SeekWeekday(1); }
-                if ( $this->onTuesday )   { $dateObj->SeekWeekday(2); }
-                if ( $this->onWednesday ) { $dateObj->SeekWeekday(3); }
-                if ( $this->onThursday )  { $dateObj->SeekWeekday(4); }
-                if ( $this->onFriday )    { $dateObj->SeekWeekday(5); }
-                if ( $this->onSaturday )  { $dateObj->SeekWeekday(6); }
-            }
-
-            if ( $this->IsOverflow( $dateObj ) ) { return null; }
-            if ( $this->IsUnderflow( $dateObj ) ) { return null; }
-
-            return $dateObj;
-
-        } elseif ($this->onLast) {
-
-            $anzahl = 1;
-            $dateObj->GoEOM();
-
-            for ( $i=0; $i<$anzahl;$i++) {
-                if ($i!=0) $dateObj->dec();
-                if ( $this->onSunday )    { $dateObj->SeekWeekday(0, 1); }
-                if ( $this->onMonday )    { $dateObj->SeekWeekday(1, 1); }
-                if ( $this->onTuesday )   { $dateObj->SeekWeekday(2, 1); }
-                if ( $this->onWednesday ) { $dateObj->SeekWeekday(3, 1); }
-                if ( $this->onThursday )  { $dateObj->SeekWeekday(4, 1); }
-                if ( $this->onFriday )    { $dateObj->SeekWeekday(5, 1); }
-                if ( $this->onSaturday )  { $dateObj->SeekWeekday(6, 1); }
-            }
-            # echo "<br>dateobj=".$dateObj->AsDMY();
-
-            if ( $this->IsOverflow( $dateObj ) ) { return null; }
-            if ( $this->IsUnderflow( $dateObj ) ) { return null; }
-
-            return $dateObj;
-
-        }
-
-        return null;
-
-
-    }   // function GetFirstDate
-
-
-
-
 }	// class cDateStrategyMonthlyFixedParams
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -606,6 +537,74 @@ class cDateStrategyMonthlyFixed extends cDateStrategy {
 
 
 /////////////////////
+
+
+
+    public function GetFirstDate( ) {
+
+        $dateObj =new cDate($this->m_start_date);
+
+        if ( ($this->onFirst) || ($this->onSecond) || ($this->onThird) || ($this->onFourth) || ($this->onFifth) ) {
+
+            if ( $this->onFirst )  { $anzahl = 1; }
+            if ( $this->onSecond ) { $anzahl = 2; }
+            if ( $this->onThird )  { $anzahl = 3; }
+            if ( $this->onFourth ) { $anzahl = 4; }
+            if ( $this->onFifth )  { $anzahl = 5; }
+
+                if ( $this->onSunday )    { $dateObj->SeekWeekday(0); }
+                if ( $this->onMonday )    { $dateObj->SeekWeekday(1); }
+                if ( $this->onTuesday )   { $dateObj->SeekWeekday(2); }
+                if ( $this->onWednesday ) { $dateObj->SeekWeekday(3); }
+                if ( $this->onThursday )  { $dateObj->SeekWeekday(4); }
+                if ( $this->onFriday )    { $dateObj->SeekWeekday(5); }
+                if ( $this->onSaturday )  { $dateObj->SeekWeekday(6); }
+
+            for ( $i=0; $i<$anzahl;$i++) {
+                $dateObj->inc();
+                # echo "<br> untersuche " . $dateObj->AsDMY() . "i=$i anzahl=$anzahl";
+                if ( $this->onSunday )    { $dateObj->SeekWeekday(0); }
+                if ( $this->onMonday )    { $dateObj->SeekWeekday(1); }
+                if ( $this->onTuesday )   { $dateObj->SeekWeekday(2); }
+                if ( $this->onWednesday ) { $dateObj->SeekWeekday(3); }
+                if ( $this->onThursday )  { $dateObj->SeekWeekday(4); }
+                if ( $this->onFriday )    { $dateObj->SeekWeekday(5); }
+                if ( $this->onSaturday )  { $dateObj->SeekWeekday(6); }
+            }
+
+            if ( $this->IsOverflow( $dateObj ) ) { return null; }
+            if ( $this->IsUnderflow( $dateObj ) ) { return null; }
+
+            return $dateObj;
+
+        } elseif ($this->onLast) {
+
+            $anzahl = 1;
+            $dateObj->GoEOM();
+
+            for ( $i=0; $i<$anzahl;$i++) {
+                if ($i!=0) $dateObj->dec();
+                if ( $this->onSunday )    { $dateObj->SeekWeekday(0, 1); }
+                if ( $this->onMonday )    { $dateObj->SeekWeekday(1, 1); }
+                if ( $this->onTuesday )   { $dateObj->SeekWeekday(2, 1); }
+                if ( $this->onWednesday ) { $dateObj->SeekWeekday(3, 1); }
+                if ( $this->onThursday )  { $dateObj->SeekWeekday(4, 1); }
+                if ( $this->onFriday )    { $dateObj->SeekWeekday(5, 1); }
+                if ( $this->onSaturday )  { $dateObj->SeekWeekday(6, 1); }
+            }
+            # echo "<br>dateobj=".$dateObj->AsDMY();
+
+            if ( $this->IsOverflow( $dateObj ) ) { return null; }
+            if ( $this->IsUnderflow( $dateObj ) ) { return null; }
+
+            return $dateObj;
+
+        }
+
+        return null;
+
+
+    }   // function GetFirstDate
 
     /**
       * The method GetWeekDayArray( $ary ) returns in $ary the set week numbers
@@ -2607,11 +2606,11 @@ die( "\n macht weiter" );
 
         assert( is_int( $direction ) );
 
-        if ( is_a( $obj_date, '\\libdatephp\\cDate' ) ) {
+        if ( is_a( $obj_date, '\rstoetter\libdatephp\\cDate' ) ) {
 	    $obj_date = new cDateISO( $obj_date );
         }
 
-        assert( is_a( $obj_date, '\\libdatephp\\cDateISO' ) );
+        assert( is_a( $obj_date, '\rstoetter\libdatephp\\cDateISO' ) );
 
 	if ( $this->m_debug ) echo "\n GetNextEventSlot( ) starts with " . $obj_date->AsSQL( ) . ' direction is ' . ( $direction == self::DIRECTION_FORWARD ? ' forward' : 'backward');
 

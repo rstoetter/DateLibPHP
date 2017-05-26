@@ -75,7 +75,7 @@
 
 // class cDateTime
 
-namespace libdatephp;
+namespace rstoetter\libdatephp;
 
 // require_once( './classes/cDate.class.php' );
 
@@ -137,11 +137,11 @@ class cDateTime {
 
         if ( ( $p1 == 0 ) && ( $p2 == 0 ) && ( $p3 == 0 ) ) {
             $this->SetNow( );
-        } elseif ( is_a( $p1, "libdatephp\cDateTime" ) ) {
+        } elseif ( is_a( $p1, "rstoetter\libdatephp\cDateTime" ) ) {
 
             $this->FromDateTime( $p1 );
 
-        } elseif ( is_a( $p1, "libdatephp\cDate" ) ) {
+        } elseif ( is_a( $p1, "rstoetter\libdatephp\cDate" ) ) {
 
             $this->FromDate( $p1 );
 
@@ -168,7 +168,7 @@ class cDateTime {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( );
       *
@@ -192,7 +192,7 @@ class cDateTime {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dtm1 = new cDateTime( );
       *
@@ -215,7 +215,7 @@ class cDateTime {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dtm = new cDateTime( 20178 );
       *
@@ -235,7 +235,7 @@ class cDateTime {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dtm1 = new cDateTime( '22.12.2016 05:00:00' );
       *
@@ -279,7 +279,7 @@ class cDateTime {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dtm = new cDateTime( '22.12.2016 05:00:00' );
       *
@@ -299,7 +299,7 @@ class cDateTime {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dtm1 = new cDateTime( '22.12.2016 05:00:00' );
       *
@@ -323,7 +323,7 @@ class cDateTime {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dtm2 = new cDateTime( '12/22/2016 05:00:00' );
       *
@@ -347,7 +347,7 @@ class cDateTime {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dtm3 = new cDateTime( '2016-12-22 05:00:00' );
       *
@@ -372,7 +372,7 @@ class cDateTime {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dtm = new cDateTime( '2016-12-22 05:00:00' );
       *
@@ -396,7 +396,7 @@ class cDateTime {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dtm = new cDateTime( '2016-12-22 05:00:00' );
       *
@@ -422,7 +422,7 @@ class cDateTime {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dtm = new cDateTime( '2016-12-22 05:00:00' );
       *
@@ -446,7 +446,7 @@ class cDateTime {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dtm = new cDateTime( '2016-12-22 05:00:00' );
       *
@@ -469,7 +469,7 @@ class cDateTime {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dtm = new cDateTime( '2016-12-22 05:00:00' );
       *
@@ -493,7 +493,7 @@ class cDateTime {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dtm = new cDateTime( '2016-12-22 05:00:00' );
       *
@@ -513,7 +513,7 @@ class cDateTime {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dtm = new cDateTime( '2016-12-22 05:00:00' );
       *
@@ -534,7 +534,7 @@ class cDateTime {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dtm = new cDateTime( '2016-12-22 05:00:00' );
       *
@@ -554,7 +554,7 @@ class cDateTime {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dtm = new cDateTime( '2016-12-22 05:00:00' );
       *
@@ -575,7 +575,7 @@ class cDateTime {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dtm = new cDateTime( '2016-12-22 05:00:00' );
       *
@@ -595,7 +595,7 @@ class cDateTime {
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dtm = new cDateTime( '2016-12-22 05:00:00' );
       *

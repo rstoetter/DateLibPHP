@@ -1,6 +1,6 @@
 <?php
 
-namespace libdatephp;
+namespace rstoetter\libdatephp;
 
 /**
   *
@@ -283,9 +283,9 @@ class cDateISO extends cDate {
       * @return cDateISO
       */
 
-    public function __construct( $m = -1, $d = -1, $y = -1) {
+    public function __construct( $m = null, $d = null, $y = null ) {
 
-	if ( is_a( $m, 'libdatephp\cDateISO' ) ) {
+	if ( is_a( $m, '\rstoetter\libdatephp\cDateISO' ) ) {
 
 	    $this->FromDate( $m );
 
@@ -300,66 +300,7 @@ class cDateISO extends cDate {
 
 
 
-    /**
-      *
-      * FirstWeekOfYear( ) returns the date to the first monday of the actual year.
-      *
-      * The first week does not start on the 1-st January of the year but on the first monday.
-      *
-      * ```
-      *      $dt = new \libdatephp\cDate( 1, 1, 2014 );
-      *      for ( $i = 2013; $i < 2021; $i++ ) {
-      * 	$dt->SetYear( $i );
-      * 	$woy = $dt->WeeksOfYear( );
-      * 	$dt = $dt->FirstWeekOfYearISO( );
-      * 	echo "\n The first week of the ISO year " . $i . ' starts on the ' . $dt->AsSQL( );
-      * 	echo '. The year has ' . $woy . ' calendar weeks ';
-      * }
-      * ```
-      *
-      * @return cDateISO the date of the first week of the actual year
-      *
-      * @see FirstWeekOfMonthISO
-      * @see LastWeekOfMonthISO
 
-      *
-      * @since = 1.0.1
-      *
-      */
-/*
-    public function FirstWeekOfYear( ) {
-
-	// beginnt nicht am Ersten, sondern am ersten Montag!
-
-//     Gemäß Normen der ISO, DIN, ÖNORM und SN: jene Woche, die den ersten Donnerstag des Jahres enthält (ISO 8601, früher DIN 1355-1). Äquivalent sind folgende Definitionen (da ISO 8601 den Montag als ersten Tag der Woche definiert):
-//
-//     jene Woche, die den 4. Januar enthält
-//     jene Woche, die den 1. Januar enthält, falls dieser ein Montag, Dienstag, Mittwoch oder Donnerstag ist, sonst die darauf folgende Woche
-//     die erste Woche, von der mehr Tage (mindestens vier) auf das neue Jahr fallen als auf das alte Jahr
-
-
-
-	$dt = new cDate( $this );
-
-	$dt = $dt->FirstWeekOfMonthISO( );
-
-	echo "\n FirstWeekOfYearISO: " . $dt->AsSQL( );
-
-	$dt = $dt->FirstMondayOfJanuaryISO( $dt->Year( ) );
-
-	echo "\n FirstWeekOfYearISO: ->" . $dt->AsSQL( );
-
-	return $dt;
-
-/*
-	$dt = $this->FirstMondayOfJanuaryISO( );
-// 	$dt->AddWeeks( 1 );	// weil die erste Woche schon zum Vormonat gehören kann
-
-
-	return $dt->FirstWeekOfMonthISO( );
-* /
-    }  // function FirstWeekOfYearISO( )
-*/
 
 
     /**
@@ -1305,7 +1246,7 @@ Gemäß Normen der ISO, DIN, ÖNORM und SN: jene Woche, die den ersten Donnersta
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDateISO( 11, 23, 2016 );
       *
@@ -1347,7 +1288,7 @@ Gemäß Normen der ISO, DIN, ÖNORM und SN: jene Woche, die den ersten Donnersta
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *
@@ -1587,7 +1528,7 @@ echo "\n brechne normal";
       *
       * Example:
       *
-      * use libdatephp;
+      * use rstoetter\libdatephp;
       *
       * $dt = new cDate( 11, 23, 2016 );
       *

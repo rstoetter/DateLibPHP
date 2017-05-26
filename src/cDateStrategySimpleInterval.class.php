@@ -71,7 +71,7 @@
 // cDateStrategySimpleInterval
 ////////////////////////////////////////////////////////////////////////////////////
 
-namespace libdatephp;
+namespace rstoetter\libdatephp;
 
 /**
   *
@@ -481,7 +481,7 @@ class cDateStrategySimpleInterval extends cDateStrategy {
 // 	    $obj_date = new cDateISO( $obj_date );
 //         }
 
-        assert( is_a( $obj_date, '\\libdatephp\\cDate' ) || is_a( $obj_date, '\\libdatephp\\cDateISO' ) );
+        assert( is_a( $obj_date, '\rstoetter\libdatephp\cDate' ) || is_a( $obj_date, '\rstoetter\libdatephp\cDateISO' ) );
 
 	if ( $this->m_debug ) echo "\n GetNextEventSlot( ) starts with " . $obj_date->AsSQL( ) . ' direction is ' . ( $direction == self::DIRECTION_FORWARD ? ' forward' : 'backward');
 	if ( $this->m_debug ) echo ' from ' .  debug_backtrace()[1]['function'] . '/' . debug_backtrace()[0]['line'];

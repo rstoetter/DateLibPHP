@@ -62,7 +62,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?><?php
 
-namespace libdatephp;
+namespace rstoetter\libdatephp;
 
 /////////////////////////////////////////////////////////////////////////////////////
 // cDateStrategyDaily
@@ -369,7 +369,7 @@ class cDateStrategyDaily extends cDateStrategy {
       * @see DIRECTION_FORWARD
       *
       */
-      */
+
 
     // function GetFollower( $date, & $dt_next, $direction = self::DIRECTION_FORWARD ) {
     function GetNextEventSlot( $date, $direction = self::DIRECTION_FORWARD ) {
@@ -383,7 +383,7 @@ class cDateStrategyDaily extends cDateStrategy {
 
         if ( is_null( $date ) ) return null;
 
-        $date2 = new \libdatephp\cDate( $date );
+        $date2 = new \rstoetter\libdatephp\cDate( $date );
         $dt_next = null;
 
 
@@ -473,113 +473,10 @@ if ( $direction == self::DIRECTION_FORWARD) {
 
 	    $weiter = false;
 
-/*
-            if ( $obj_lauf->IsSaturday( ) ) {
-		if ( $this->m_debug ) echo "\n is a saturday : " . $obj_lauf->AsSQL( );
-		if ( $this->m_directionOnSaturday == cDateStrategy::STRATEGY_DIRECTION_FORWARD ) {
-// 		    $weiter = true;
-// 		    $direction = self::DIRECTION_FORWARD;
-		    // $dt_next = new cDate( $obj_lauf );
-		    if ( $direction == self::DIRECTION_BACKWARD ) $dt_next = new cDate( $obj_lauf );
-		    $obj_lauf = $this->MoveDateIfNecessary( $obj_lauf );
-		    if ( is_null( $obj_lauf ) ) return null;
-		} elseif ( $this->m_directionOnSaturday == cDateStrategy::STRATEGY_DIRECTION_BACKWARD ) {
-// 		    $weiter = true;
-// 		    $direction = self::DIRECTION_BACKWARD;
-		    if ( $direction == self::DIRECTION_FORWARD ) $dt_next = new cDate( $obj_lauf );
-		    $obj_lauf = $this->MoveDateIfNecessary( $obj_lauf );
-		    if ( is_null( $obj_lauf ) ) return null;
-		} elseif ( $this->m_directionOnSaturday == cDateStrategy::STRATEGY_DIRECTION_ABOLISH ) {
-		    return null;
-		}
-            }
-
-            if ( $obj_lauf->IsSunday( ) ) {
-		if ( $this->m_debug ) echo "\n is a sunday : " . $obj_lauf->AsSQL( );
-		if ( $this->m_directionOnSunday == cDateStrategy::STRATEGY_DIRECTION_FORWARD ) {
-// 		    $weiter = true;
-// 		    $direction = self::DIRECTION_FORWARD;
-		    if ( $direction == self::DIRECTION_BACKWARD ) $dt_next = new cDate( $obj_lauf );
-		    $obj_lauf = $this->MoveDateIfNecessary( $obj_lauf );
-		    if ( is_null( $obj_lauf ) ) return null;
-		} elseif ( $this->m_directionOnSunday == cDateStrategy::STRATEGY_DIRECTION_BACKWARD ) {
-// 		    $weiter = true;
-// 		    $direction = self::DIRECTION_BACKWARD;
-		    if ( $direction == self::DIRECTION_FORWARD ) $dt_next = new cDate( $obj_lauf );
-		    $obj_lauf = $this->MoveDateIfNecessary( $obj_lauf );
-		    if ( is_null( $obj_lauf ) ) return null;
-		} elseif ( $this->m_directionOnSunday == cDateStrategy::STRATEGY_DIRECTION_ABOLISH ) {
-		    return null;
-		}
-            }
-
-
-            if ( $this->IsCelebrity($obj_lauf) ) {
-		if ( $this->m_debug ) echo "\n is a celebrity : " . $obj_lauf->AsSQL( );
-		if ( $this->m_directionOnCelebrity == cDateStrategy::STRATEGY_DIRECTION_FORWARD ) {
-// 		    $weiter = true;
-// 		    $direction = self::DIRECTION_FORWARD;
-		    if ( $direction == self::DIRECTION_BACKWARD ) $dt_next = new cDate( $obj_lauf );
-		    $obj_lauf = $this->MoveDateIfNecessary( $obj_lauf );
-		    if ( is_null( $obj_lauf ) ) return null;
-		} elseif ( $this->m_directionOnCelebrity == cDateStrategy::STRATEGY_DIRECTION_BACKWARD ) {
-// 		    $weiter = true;
-// 		    $direction = self::DIRECTION_BACKWARD;
-		    if ( $direction == self::DIRECTION_FORWARD ) $dt_next = new cDate( $obj_lauf );
-		    $obj_lauf = $this->MoveDateIfNecessary( $obj_lauf );
-		    if ( is_null( $obj_lauf ) ) return null;
-		} elseif ( $this->m_directionOnCelebrity == cDateStrategy::STRATEGY_DIRECTION_ABOLISH ) {
-		    return null;
-		}
-            }
-
-            if ( $this->IsHoliday($obj_lauf) ) {
-		if ( $this->m_debug ) echo "\n is a holiday : " . $obj_lauf->AsSQL( );
-		if ( $this->m_directionOnHoliday == cDateStrategy::STRATEGY_DIRECTION_FORWARD ) {
-// 		    $weiter = true;
-// 		    $direction = self::DIRECTION_FORWARD;
-		    if ( $direction == self::DIRECTION_BACKWARD ) $dt_next = new cDate( $obj_lauf );
-		    $obj_lauf = $this->MoveDateIfNecessary( $obj_lauf );
-		    if ( is_null( $obj_lauf ) ) return null;
-		} elseif ( $this->m_directionOnHoliday == cDateStrategy::STRATEGY_DIRECTION_BACKWARD ) {
-// 		    $weiter = true;
-// 		    $direction = self::DIRECTION_BACKWARD;
-		    if ( $direction == self::DIRECTION_FORWARD ) $dt_next = new cDate( $obj_lauf );
-		    $obj_lauf = $this->MoveDateIfNecessary( $obj_lauf );
-		    if ( is_null( $obj_lauf ) ) return null;
-		} elseif ( $this->m_directionOnHoliday == cDateStrategy::STRATEGY_DIRECTION_ABOLISH ) {
-		    return null;
-		}
-            }
-*/
-/*
-	    if ( $direction == self::DIRECTION_FORWARD) {
-		$obj_lauf->Inc( );
-	    } elseif ( $direction == self::DIRECTION_BACKWARD) {
-		$obj_lauf->Dec( );
-	    } else {
-		die( "\n unknown direction" );
-	    }
-*/
-
-
         } while ( $weiter );
 
-/*
-        if ($this->IsUnderflow($obj_lauf) && ( $direction == self::DIRECTION_FORWARD )) {
-
-	    //return new \libdatephp\cDate( $this->m_start_date );
-	    $obj_lauf = new \libdatephp\cDate( $this->m_start_date );
-	}
-        if ($this->IsOverflow($obj_lauf) && ( $direction == self::DIRECTION_FORWARD)) return null;
-        if ($this->IsUnderflow($obj_lauf) && ( $direction == self::DIRECTION_BACKWARD)) return null;
-        if ($this->IsOverflow($obj_lauf) && ( $direction == self::DIRECTION_BACKWARD )) {
-	    // return new \libdatephp\cDate( $this->m_end_date );
-	    $obj_lauf = new \libdatephp\cDate( $this->m_end_date );
-	}
-*/
         if ( $this->m_debug ) echo "\n GetNextEventSlot( ) returns " . $obj_lauf->AsSQL( );
-// die( "\n jjj" );
+
 
 	if ( is_null( $dt_next ) ) $dt_next = new cDate( $obj_lauf );
 
