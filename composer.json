@@ -1,8 +1,8 @@
 {
     "name": "rstoetter/libdatephp",
-    "description": "library with date classes",
+    "description": "library with date and iso date classes and calculation of recurring dates",
     "license": "MIT",
-    "keywords": ["rstoetter/libdatephp", "date", "library"],
+    "keywords": ["date", "library"],
     "authors": [
         {
             "name": "Rainer Stötter",
