@@ -2,7 +2,7 @@
     "name": "rstoetter/libdatephp",
     "description": "library with date classes",
     "license": "MIT",
-    "keywords": ["rstoetter\libdatephp", "date", "library"],
+    "keywords": ["rstoetter/libdatephp", "date", "library"],
     "authors": [
         {
             "name": "Rainer Stötter",
