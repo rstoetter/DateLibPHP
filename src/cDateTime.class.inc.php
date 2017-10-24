@@ -312,7 +312,7 @@ class cDateTime {
 
         $day = $month = $year = $hour = $min = $sec = 0;
 
-        sscanf( trim( $str ), '%d.%d.%d %d:%d:%d', &$day, &$month, &$year, &$hour, &$min, &$sec  );
+        sscanf( trim( $str ), '%d.%d.%d %d:%d:%d', $day, $month, $year, $hour, $min, $sec  );
         $this->m_time = mktime ( $hour, $min, $sec, $month, $day, $year);
 
     }   // function FromDMY( )
@@ -336,7 +336,7 @@ class cDateTime {
 
         $day = $month = $year = $hour = $min = $sec = 0;
 
-        sscanf( trim( $str ), '%d/%d/%d %d:%d:%d', &$month, &$day, &$year, &$hour, &$min, &$sec  );
+        sscanf( trim( $str ), '%d/%d/%d %d:%d:%d', $month, $day, $year, $hour, $min, $sec  );
         $this->m_time = mktime ( $hour, $min, $sec, $month, $day, $year);
 
     }   // function FromDMY( )
@@ -360,7 +360,7 @@ class cDateTime {
 
         $day = $month = $year = $hour = $min = $sec = 0;
 
-        sscanf( trim( $str ), '%d-%d-%d %d:%d:%d', &$year, &$month, &$day, &$hour, &$min, &$sec  );
+        sscanf( trim( $str ), '%d-%d-%d %d:%d:%d', $year, $month, $day, $hour, $min, $sec  );
         $this->m_time = mktime ( $hour, $min, $sec, $month, $day, $year);
 
     }   // function FromSQL( )

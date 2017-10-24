@@ -15,5 +15,7 @@ Some classes to work with dates written in PHP:
     * cDateStrategyNoInterval
     * cDateStrategySimpleInterval
 
+The namespace is \\rstoetter\\libdatephp
+
 See the [project wiki](https://github.com/rstoetter/libdatephp/wiki) for more information.
 
